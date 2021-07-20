@@ -13,9 +13,6 @@ export default function Home() {
 
       <ClientOnly>
         <h1>Welcome to Nutriplan</h1>
-        <Link href="/graphql-test/vercel">
-          <a>Vercel Test</a>
-        </Link>
         <Link href="/graphql-test/heroku">
           <a>Heroku Test</a>
         </Link>
