@@ -2,7 +2,7 @@ import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
 import SimpleQuery from "../../components/SimpleQuery";
 
 const client = new ApolloClient({
-  uri: "https://nutriplan-api.herokuapp.com/",
+  uri: process.env.NEXT_PUBLIC_API_URL,
   cache: new InMemoryCache(),
   defaultOptions: {
     watchQuery: {

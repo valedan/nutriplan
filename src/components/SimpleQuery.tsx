@@ -2,14 +2,19 @@ import { useLazyQuery, gql } from "@apollo/client";
 import { useState } from "react";
 
 const query = gql`
-  query HelloWorld {
-    greeting
+  query getFood($id: Int!) {
+    food(id: $id) {
+      id
+      description
+      brand
+    }
   }
 `;
 const SimpleQuery = () => {
   const [started, setStarted] = useState(0);
   const [responseTime, setResponseTime] = useState(0);
   const [loadQuery, { data, loading, error }] = useLazyQuery(query, {
+    variables: { id: 167512 },
     onCompleted: () => setResponseTime(Date.now() - started),
   });
 
@@ -27,7 +32,7 @@ const SimpleQuery = () => {
         <p>Error :(</p>
       ) : data ? (
         <div>
-          <p>{data.greeting}</p>
+          <p>{data.food.description}</p>
           <p>{responseTime}ms</p>
         </div>
       ) : (
