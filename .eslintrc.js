@@ -7,7 +7,7 @@ module.exports = {
     ecmaVersion: "latest",
     sourceType: "module",
   },
-  plugins: ["@typescript-eslint", "jest", "cypress"],
+  plugins: ["@typescript-eslint", "jest", "cypress", "testing-library", "jest-dom"],
   extends: [
     "airbnb-typescript",
     "plugin:@typescript-eslint/recommended",
@@ -15,6 +15,8 @@ module.exports = {
     "plugin:jest/recommended",
     "plugin:jest/style",
     "plugin:cypress/recommended",
+    "plugin:testing-library/react",
+    "plugin:jest-dom/recommended",
     "plugin:import/recommended",
     "plugin:import/typescript",
     "plugin:@next/next/recommended",
