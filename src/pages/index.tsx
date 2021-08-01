@@ -1,4 +1,6 @@
 import Head from "next/head";
+import Link from "next/link";
+import ClientOnly from "../components/ClientOnly";
 
 export default function Home() {
   return (
@@ -9,7 +11,12 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <div>Welcome to Nutriplan</div>
+      <ClientOnly>
+        <h1>Welcome to Nutriplan</h1>
+        <Link href="/graphql-test/heroku">
+          <a>Heroku Test</a>
+        </Link>
+      </ClientOnly>
     </div>
   );
 }

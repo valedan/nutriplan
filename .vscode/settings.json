@@ -1,0 +1,9 @@
+{
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.autoClosingBrackets": "languageDefined"
+  },
+  "[typescriptreact]": {
+    "editor.autoClosingBrackets": "languageDefined"
+  },
+}
