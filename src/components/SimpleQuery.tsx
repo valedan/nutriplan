@@ -1,16 +1,7 @@
 /* eslint-disable no-nested-ternary */
-import { useLazyQuery, gql } from "@apollo/client";
+import { useLazyQuery } from "@apollo/client";
 import { useState } from "react";
-
-const query = gql`
-  query getFood($id: Int!) {
-    food(id: $id) {
-      id
-      description
-      brand
-    }
-  }
-`;
+import { GET_FOOD } from "../graphql";
 
 interface Food {
   id: number;
@@ -24,7 +15,7 @@ interface FoodData {
 const SimpleQuery = () => {
   const [started, setStarted] = useState(0);
   const [responseTime, setResponseTime] = useState(0);
-  const [loadQuery, { data, loading, error }] = useLazyQuery<FoodData>(query, {
+  const [loadQuery, { data, loading, error }] = useLazyQuery<FoodData>(GET_FOOD, {
     variables: { id: 167512 },
     onCompleted: () => setResponseTime(Date.now() - started),
   });
