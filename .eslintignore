@@ -1,0 +1,8 @@
+.next
+node_modules
+dist
+coverage
+.eslintrc.js
+jest.config.js
+tailwind.config.js
+next.config.js
