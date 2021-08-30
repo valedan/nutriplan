@@ -11,10 +11,17 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <ClientOnly>
+      <ClientOnly className="flex flex-col space-y-6">
         <h1>Welcome to Nutriplan</h1>
         <Link href="/graphql-test/heroku">
-          <a>Heroku Test</a>
+          <a className="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 w-28 ml-8">
+            Heroku Test
+          </a>
+        </Link>
+        <Link href="/search-test">
+          <a className="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 w-28 ml-8">
+            Search Test
+          </a>
         </Link>
       </ClientOnly>
     </div>
