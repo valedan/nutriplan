@@ -1,13 +1,13 @@
 import React from "react";
 
-interface FoodNutrient {
+export interface FoodNutrient {
   id: number;
   nutrient: {
     name: string;
   };
 }
 
-interface Portion {
+export interface Portion {
   id: number;
   gram_weight: number;
   measure: string;
@@ -20,30 +20,34 @@ export interface FoodProps {
   data_source?: string;
   description?: string;
   id: number;
-  portions: Portion[];
+  portions?: Portion[];
+  food_nutrients?: FoodNutrient[];
   serving_size?: number;
   searchScore?: number;
 }
 
-const Food = (props: FoodProps) => {
+const titleCase = (str: string) => {
+  const newString = str.toLowerCase();
+  newString.charAt(0).toUpperCase();
+  return newString;
+};
+
+const Food = ({ description, data_source, brand, category, searchScore, portions }: FoodProps) => {
   return (
     <div className="py-2 px-8">
       <div className="flex flex-row justify-between text-gray-800">
         <div className="flex-grow">
-          <span>{props.description?.charAt(0).toUpperCase().join(props.description.slice(1).toLowerCase())}</span>
+          <span>{description ? titleCase(description) : ""}</span>
           <div className="flex justify-between w-full pr-32 text-sm text-gray-500">
-            <span>{props.data_source}</span>
-            <span>Brand: {props.brand || "--"}</span>
-            <span>Category: {props.category || "--"}</span>
-            <span>Score: {props.searchScore || "--"}</span>
+            <span>{data_source}</span>
+            <span>Brand: {brand || "--"}</span>
+            <span>Category: {category || "--"}</span>
+            <span>Score: {searchScore || "--"}</span>
           </div>
         </div>
         <div className="flex-col">
           <p>
-            {props.food_nutrients.length} <span className="text-sm text-gray-500">Nutrients</span>{" "}
-          </p>
-          <p>
-            {props.portions.length} <span className="text-sm text-gray-500">Portions</span>{" "}
+            {portions?.length} <span className="text-sm text-gray-500">Portions</span>{" "}
           </p>
         </div>
       </div>

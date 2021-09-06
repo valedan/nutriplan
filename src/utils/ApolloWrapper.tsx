@@ -11,6 +11,7 @@ const ApolloWrapper = ({ children }: { children: React.ReactNode }) => {
 
     getToken().then(
       (fetchedToken) => setToken(fetchedToken),
+      // eslint-disable-next-line no-console
       (error) => console.log(error)
     );
   }, [getAccessTokenSilently, isAuthenticated]);
