@@ -1,31 +1,36 @@
-import { useLazyQuery, gql } from "@apollo/client";
+/* eslint-disable no-nested-ternary */
+import { useLazyQuery } from "@apollo/client";
 import { useState } from "react";
+import { GET_FOOD } from "../graphql";
 
-const query = gql`
-  query getFood($id: Int!) {
-    food(id: $id) {
-      id
-      description
-      brand
-    }
-  }
-`;
+interface Food {
+  id: number;
+  description: string;
+  brand: string;
+}
+interface FoodData {
+  food: Food;
+}
+
 const SimpleQuery = () => {
   const [started, setStarted] = useState(0);
   const [responseTime, setResponseTime] = useState(0);
-  const [loadQuery, { data, loading, error }] = useLazyQuery(query, {
+  const [loadQuery, { data, loading, error }] = useLazyQuery<FoodData>(GET_FOOD, {
     variables: { id: 167512 },
     onCompleted: () => setResponseTime(Date.now() - started),
   });
 
-  const handleClick = async () => {
+  const handleClick = () => {
     setStarted(Date.now());
     loadQuery();
   };
+
   return (
     <div>
       <h2>Simple Query</h2>
-      <button onClick={handleClick}>Hello world</button>
+      <button type="button" onClick={handleClick}>
+        Hello world
+      </button>
       {loading ? (
         <p>Loading...</p>
       ) : error ? (
