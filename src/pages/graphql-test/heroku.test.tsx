@@ -1,9 +1,8 @@
 import React from "react";
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 import { render, fireEvent, waitFor, waitForElementToBeRemoved, screen } from "@testing-library/react";
-import "@testing-library/jest-dom/extend-expect";
 import { MockedProvider } from "@apollo/client/testing";
-import Heroku from "./heroku";
+import Heroku from "./heroku.page";
 import { GET_FOOD } from "../../graphql";
 
 const mocks = [
