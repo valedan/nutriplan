@@ -19,7 +19,6 @@ export interface FoodProps {
   category?: string;
   data_source?: string;
   description?: string;
-  food_nutrients: FoodNutrient[];
   id: number;
   portions: Portion[];
   serving_size?: number;

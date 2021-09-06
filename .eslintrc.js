@@ -26,6 +26,7 @@ module.exports = {
   rules: {
     "import/no-extraneous-dependencies": ["error", { devDependencies: true }],
     "react/jsx-props-no-spreading": "off",
+    "no-void": ["error", { allowAsStatement: true }],
     "@typescript-eslint/explicit-module-boundary-types": "off",
     "arrow-body-style": "off",
     "jsx-a11y/anchor-is-valid": [

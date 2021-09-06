@@ -5,7 +5,10 @@ import { useCombobox } from "downshift";
 import { useCallback, useEffect, useState } from "react";
 import FoodSuggestion from "./FoodSuggestion";
 import { SEARCH_FOODS } from "../graphql";
+import { useAuth0 } from "@auth0/auth0-react";
+
 import { Listbox, Transition } from "@headlessui/react";
+import LoginButton from "./LoginButton";
 
 interface SearchFoodsData {
   searchFoods: IFoodSuggestion[];
@@ -113,6 +116,10 @@ const FoodSearch = ({ onSelectFood }: Props) => {
   });
 
   const shouldShowDropdown = isOpen && (loading || error || data?.searchFoods !== undefined);
+
+  // if (!isAuthenticated) {
+  //   return <LoginButton />;
+  // }
 
   return (
     <div className="mt-12 ml-28 mr-28">

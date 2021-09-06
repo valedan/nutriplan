@@ -4,7 +4,7 @@ query SearchFoods($searchTerm: String!) {
     id
     data_source
     category
-    brand
+    brand_name
     serving_size
     searchScore
     ingredients

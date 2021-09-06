@@ -1,27 +1,25 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
+import React from "react";
 import "tailwindcss/tailwind.css";
+import { Auth0Provider } from "@auth0/auth0-react";
 import type { AppProps } from "next/app";
-import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
-
-const client = new ApolloClient({
-  uri: process.env.NEXT_PUBLIC_API_URL,
-  cache: new InMemoryCache(),
-  defaultOptions: {
-    watchQuery: {
-      fetchPolicy: "no-cache",
-      errorPolicy: "ignore",
-    },
-    query: {
-      fetchPolicy: "no-cache",
-      errorPolicy: "all",
-    },
-  },
-});
+import ApolloWrapper from "../utils/ApolloWrapper";
 
 const MyApp = ({ Component, pageProps }: AppProps) => {
   return (
-    <ApolloProvider client={client}>
-      <Component {...pageProps} />
-    </ApolloProvider>
+    <React.StrictMode>
+      <Auth0Provider
+        domain={process.env.NEXT_PUBLIC_AUTH0_DOMAIN!}
+        clientId={process.env.NEXT_PUBLIC_AUTH0_CLIENT_ID!}
+        redirectUri={process.env.NEXT_PUBLIC_AUTH0_REDIRECT_URI}
+        audience={process.env.NEXT_PUBLIC_AUTH0_AUDIENCE}
+        scope="read:current_user update:current_user_metadata"
+      >
+        <ApolloWrapper>
+          <Component {...pageProps} />
+        </ApolloWrapper>
+      </Auth0Provider>
+    </React.StrictMode>
   );
 };
 
