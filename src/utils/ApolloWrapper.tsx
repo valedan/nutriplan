@@ -29,7 +29,7 @@ const ApolloWrapper = ({ children }: { children: React.ReactNode }) => {
   });
 
   const httpLink = new HttpLink({ uri: process.env.NEXT_PUBLIC_API_URL });
-
+  let foo;
   const client = new ApolloClient({
     cache: new InMemoryCache(),
     link: from([authLink, httpLink]),
