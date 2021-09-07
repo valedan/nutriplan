@@ -4,6 +4,8 @@ dist
 coverage
 .eslintrc.js
 jest.config.js
+jest.setup.js
+postcss.config.js
 tailwind.config.js
 next.config.js
 babel.config.js
