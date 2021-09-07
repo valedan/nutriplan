@@ -1,3 +1,4 @@
+/* eslint-disable import/no-duplicates */
 declare module "*.graphql" {
   import { DocumentNode } from "graphql";
 
