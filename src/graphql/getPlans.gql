@@ -1,0 +1,8 @@
+query getPlans {
+  plans {
+    id
+    name
+    startDate
+    endDate
+  }
+}

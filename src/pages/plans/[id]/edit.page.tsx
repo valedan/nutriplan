@@ -1,8 +1,7 @@
 import Head from "next/head";
-import Link from "next/link";
-import ClientOnly from "../components/ClientOnly";
-import RequireAuth from "../components/RequireAuth";
-import PlanDashboard from "../components/Plans/PlanDashboard";
+import ClientOnly from "../../../components/ClientOnly";
+import RequireAuth from "../../../components/RequireAuth";
+import PlanEditor from "../../../components/Plans/PlanEditor";
 
 export default function Home() {
   return (
@@ -15,7 +14,7 @@ export default function Home() {
         </Head>
 
         <ClientOnly>
-          <PlanDashboard />
+          <PlanEditor />
         </ClientOnly>
       </div>
     </RequireAuth>

@@ -1,0 +1,8 @@
+mutation createPlan($input: CreatePlanInput!) {
+  createPlan(input: $input) {
+    id
+    name
+    startDate
+    endDate
+  }
+}

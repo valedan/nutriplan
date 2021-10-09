@@ -4,8 +4,8 @@ import { debounce } from "lodash";
 import { useCombobox } from "downshift";
 import { useCallback } from "react";
 import FoodSuggestion from "./FoodSuggestion";
-import { SEARCH_FOODS } from "../graphql";
 import { Portion, FoodNutrient } from "./Food";
+import { useSearchFoodsLazyQuery } from "../generated/graphql";
 
 interface SearchFoodsData {
   searchFoods: IFoodSuggestion[];
@@ -31,7 +31,9 @@ interface Props {
 }
 
 const FoodSearch = ({ onSelectFood }: Props) => {
-  const [searchFoods, { loading, error, data }] = useLazyQuery<SearchFoodsData, SearchFoodsVars>(SEARCH_FOODS, {});
+  // const [searchFoods, { loading, error, data }] = useLazyQuery<SearchFoodsData, SearchFoodsVars>(SEARCH_FOODS, {});
+
+  const [searchFoods, { loading, error, data }] = useSearchFoodsLazyQuery();
 
   // We need debouncedSearch to be a singleton
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -61,7 +63,7 @@ const FoodSearch = ({ onSelectFood }: Props) => {
   const shouldShowDropdown = isOpen && (loading || error || data?.searchFoods !== undefined);
 
   return (
-    <div className="mt-12 ml-28 mr-28">
+    <div className="">
       <div {...getComboboxProps()}>
         <input
           type="text"

@@ -1,0 +1,8 @@
+mutation updatePlan($input: UpdatePlanInput!) {
+  updatePlan(input: $input) {
+    id
+    name
+    startDate
+    endDate
+  }
+}

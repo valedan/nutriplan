@@ -36,11 +36,9 @@ const ApolloWrapper = ({ children }: { children: React.ReactNode }) => {
 
     defaultOptions: {
       watchQuery: {
-        fetchPolicy: "no-cache",
         errorPolicy: "ignore",
       },
       query: {
-        fetchPolicy: "no-cache",
         errorPolicy: "all",
       },
     },
