@@ -1,12 +1,9 @@
 import { useRouter } from "next/router";
 import { useAddIngredientMutation, useGetPlanQuery } from "../../generated/graphql";
-import FoodSearch from "../FoodSearch";
+import { FoodSearch } from "../shared";
 import PlanNameInput from "./PlanNameInput";
 import Ingredient from "./Ingredient";
-
-// TODO:
-// Show data
-// Provide form for ingredients
+import Head from "next/head";
 
 export default function PlanEditor() {
   const router = useRouter();
@@ -30,6 +27,10 @@ export default function PlanEditor() {
   if (error) return <p>Error :(</p>;
   return (
     <div className="p-8">
+      <Head>
+        {/* TODO: This is stale after updating */}
+        <title key="title">Edit {data?.plan?.name || "plan"}</title>
+      </Head>
       <PlanNameInput planId={planId} />
       <hr className="mt-4 mb-4" />
       <h3 className="text-center mb-2">Foods</h3>

@@ -40,7 +40,6 @@ export type Food = {
   nutrients: Array<FoodNutrient>;
   portions: Array<Portion>;
   searchScore?: Maybe<Scalars['Float']>;
-  servingSize?: Maybe<ServingSize>;
 };
 
 export type FoodNutrient = {
@@ -269,7 +268,7 @@ export type SearchFoodsQueryVariables = Exact<{
 }>;
 
 
-export type SearchFoodsQuery = { __typename?: 'Query', searchFoods?: Maybe<Array<Maybe<{ __typename?: 'Food', description?: Maybe<string>, id: number, dataSource: string, category?: Maybe<string>, brandName?: Maybe<string>, searchScore?: Maybe<number>, servingSize?: Maybe<{ __typename?: 'ServingSize', amount: number }>, portions: Array<{ __typename?: 'Portion', measure: string, gramWeight: number }> }>>> };
+export type SearchFoodsQuery = { __typename?: 'Query', searchFoods?: Maybe<Array<Maybe<{ __typename?: 'Food', description?: Maybe<string>, id: number, dataSource: string, category?: Maybe<string>, brandName?: Maybe<string>, searchScore?: Maybe<number>, portions: Array<{ __typename?: 'Portion', measure: string, gramWeight: number }> }>>> };
 
 export type UpdateIngredientMutationVariables = Exact<{
   input: UpdateIngredientInput;
@@ -531,9 +530,6 @@ export const SearchFoodsDocument = gql`
     dataSource
     category
     brandName
-    servingSize {
-      amount
-    }
     searchScore
     portions {
       measure

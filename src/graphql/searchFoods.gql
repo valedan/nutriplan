@@ -5,9 +5,6 @@ query SearchFoods($searchTerm: String!) {
     dataSource
     category
     brandName
-    servingSize {
-      amount
-    }
     searchScore
     portions {
       measure

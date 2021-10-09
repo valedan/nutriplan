@@ -1,38 +1,15 @@
 /* eslint-disable no-nested-ternary */
-import { useLazyQuery } from "@apollo/client";
 import { debounce } from "lodash";
 import { useCombobox } from "downshift";
 import { useCallback } from "react";
 import FoodSuggestion from "./FoodSuggestion";
-import { Portion, FoodNutrient } from "./Food";
-import { useSearchFoodsLazyQuery } from "../generated/graphql";
-
-interface SearchFoodsData {
-  searchFoods: IFoodSuggestion[];
-}
-
-interface SearchFoodsVars {
-  searchTerm: string;
-}
-
-export interface IFoodSuggestion {
-  id: number;
-  description?: string;
-  data_source?: string;
-  brand_owner?: string;
-  category?: string;
-  searchScore?: number;
-  food_nutrients?: FoodNutrient[];
-  portions?: Portion[];
-}
+import { useSearchFoodsLazyQuery, Food } from "../../../generated/graphql";
 
 interface Props {
-  onSelectFood: (food: IFoodSuggestion) => void;
+  onSelectFood: (food: Food) => void;
 }
 
 const FoodSearch = ({ onSelectFood }: Props) => {
-  // const [searchFoods, { loading, error, data }] = useLazyQuery<SearchFoodsData, SearchFoodsVars>(SEARCH_FOODS, {});
-
   const [searchFoods, { loading, error, data }] = useSearchFoodsLazyQuery();
 
   // We need debouncedSearch to be a singleton
