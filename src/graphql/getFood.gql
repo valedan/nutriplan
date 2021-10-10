@@ -2,6 +2,6 @@ query getFood($id: Int!) {
   food(id: $id) {
     id
     description
-    brand
+    brandName
   }
 }

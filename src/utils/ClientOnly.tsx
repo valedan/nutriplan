@@ -2,7 +2,6 @@ import { useEffect, useState, ReactNode } from "react";
 
 interface Props {
   children: ReactNode;
-  className: string;
 }
 
 const ClientOnly = ({ children, ...delegated }: Props) => {

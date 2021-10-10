@@ -2,24 +2,10 @@ query SearchFoods($searchTerm: String!) {
   searchFoods(searchTerm: $searchTerm) {
     description
     id
-    data_source
+    dataSource
     category
-    brand_name
-    serving_size
+    brandName
     searchScore
-    ingredients
-    portions {
-      id
-      measure
-      gram_weight
-      sequence_number
-    }
-    food_nutrients {
-      id
-      amount
-      nutrient {
-        name
-      }
-    }
+    nutrientCount
   }
 }

@@ -1,0 +1,21 @@
+query getPlan($id: Int!) {
+  plan(id: $id) {
+    name
+    startDate
+    endDate
+    ingredients {
+      id
+      amount
+      measure
+      order
+      food {
+        id
+        description
+        portions {
+          measure
+          gramWeight
+        }
+      }
+    }
+  }
+}

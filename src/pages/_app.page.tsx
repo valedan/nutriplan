@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import "tailwindcss/tailwind.css";
+import Head from "next/head";
 import { Auth0Provider } from "@auth0/auth0-react";
 import type { AppProps } from "next/app";
 import ApolloWrapper from "../utils/ApolloWrapper";
@@ -14,6 +15,10 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
       scope="read:current_user update:current_user_metadata"
     >
       <ApolloWrapper>
+        <Head>
+          <title key="title">Nutriplan | Nutrition made simple</title>
+          <link rel="icon" href="/favicon.ico" key="favicon" />
+        </Head>
         <Component {...pageProps} />
       </ApolloWrapper>
     </Auth0Provider>
