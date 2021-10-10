@@ -1,33 +1,23 @@
 import { debounce } from "lodash";
-import Link from "next/link";
 import { useState } from "react";
-import { useGetPlansQuery, useRemoveIngredientMutation, useUpdateIngredientMutation } from "../../generated/graphql";
-import { Button } from "../shared";
+import { Portion, useRemoveIngredientMutation, useUpdateIngredientMutation } from "../../generated/graphql";
 
 interface Props {
   id: number;
   amount: number;
   measure: string;
-  order: number;
+  foodDescription: string;
+  portions: Portion[];
   refetch: () => void;
-  food: {
-    id: number;
-    description: string;
-    portions: {
-      amount: number;
-      measure: string;
-      gramWeight: number;
-    };
-  };
 }
 
-export default function Ingredient({ id, refetch, amount, measure, food: { description, portions } }: Props) {
+export default function Ingredient({ id, amount, measure, foodDescription, portions, refetch }: Props) {
   const [localAmount, setLocalAmount] = useState(amount);
   const [localMeasure, setLocalMeasure] = useState(measure);
   const [updateIngredient] = useUpdateIngredientMutation();
   const [removeIngredient] = useRemoveIngredientMutation();
 
-  const updateAmount = debounce((newAmount: string) => {
+  const updateAmount = debounce((newAmount: number) => {
     void updateIngredient({ variables: { input: { id: Number(id), amount: Number(newAmount) } } });
   }, 500);
 
@@ -35,9 +25,14 @@ export default function Ingredient({ id, refetch, amount, measure, food: { descr
     void updateIngredient({ variables: { input: { id: Number(id), measure: newMeasure } } });
   }, 500);
 
-  const handleChangeAmount = (newAmount: string) => {
+  const handleChangeAmount = (newAmount: number) => {
     setLocalAmount(newAmount);
     updateAmount(newAmount);
+  };
+
+  const handleChangeMeasure = (newMeasure: string) => {
+    setLocalMeasure(newMeasure);
+    updateMeasure(newMeasure);
   };
 
   const handleRemoveIngredient = async () => {
@@ -45,28 +40,21 @@ export default function Ingredient({ id, refetch, amount, measure, food: { descr
     void refetch();
   };
 
-  const handleUpdateMeasure = async (newMeasure: string) => {
-    setLocalMeasure(newMeasure);
-    updateMeasure(newMeasure);
-  };
-
-  // TODO
-  // - perform portion update
   return (
     <div className="flex justify-between mb-4">
-      <span>{description}</span>
+      <span>{foodDescription}</span>
       <div>
         <input
           type="number"
           name="amount"
           value={localAmount}
-          onChange={(e) => handleChangeAmount(e.target.value)}
+          onChange={(e) => handleChangeAmount(Number(e.target.value))}
           className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 w-24 sm:text-sm border-gray-300 rounded-md"
         />
         <select
           id="portion"
           name="portion"
-          onChange={(e) => handleUpdateMeasure(e.target.value)}
+          onChange={(e) => handleChangeMeasure(e.target.value)}
           className=" ml-3 mr-3 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md w-24"
           defaultValue={localMeasure}
         >

@@ -20,6 +20,7 @@ export default function NewPlan() {
         void router.push(`/plans/${result.data.createPlan.id}/edit`);
       } else {
         // TODO: figure out error handling here
+        // eslint-disable-next-line no-console
         console.error(result);
       }
     };

@@ -35,8 +35,9 @@ export type Food = {
   brandName?: Maybe<Scalars['String']>;
   category?: Maybe<Scalars['String']>;
   dataSource: Scalars['String'];
-  description?: Maybe<Scalars['String']>;
+  description: Scalars['String'];
   id: Scalars['Int'];
+  nutrientCount: Scalars['Int'];
   nutrients: Array<FoodNutrient>;
   portions: Array<Portion>;
   searchScore?: Maybe<Scalars['Float']>;
@@ -54,10 +55,9 @@ export type Ingredient = {
   __typename?: 'Ingredient';
   amount: Scalars['Float'];
   food?: Maybe<Food>;
-  foodId: Scalars['Int'];
   id: Scalars['Int'];
   measure: Scalars['String'];
-  order?: Maybe<Scalars['Int']>;
+  order: Scalars['Int'];
 };
 
 export enum IngredientParent {
@@ -228,7 +228,7 @@ export type AddIngredientMutationVariables = Exact<{
 }>;
 
 
-export type AddIngredientMutation = { __typename?: 'Mutation', addIngredient?: Maybe<{ __typename?: 'Ingredient', id: number, amount: number, measure: string, order?: Maybe<number>, food?: Maybe<{ __typename?: 'Food', id: number, portions: Array<{ __typename?: 'Portion', measure: string, gramWeight: number }> }> }> };
+export type AddIngredientMutation = { __typename?: 'Mutation', addIngredient?: Maybe<{ __typename?: 'Ingredient', id: number, amount: number, measure: string, order: number, food?: Maybe<{ __typename?: 'Food', id: number, portions: Array<{ __typename?: 'Portion', measure: string, gramWeight: number }> }> }> };
 
 export type CreatePlanMutationVariables = Exact<{
   input: CreatePlanInput;
@@ -242,14 +242,14 @@ export type GetFoodQueryVariables = Exact<{
 }>;
 
 
-export type GetFoodQuery = { __typename?: 'Query', food?: Maybe<{ __typename?: 'Food', id: number, description?: Maybe<string>, brandName?: Maybe<string> }> };
+export type GetFoodQuery = { __typename?: 'Query', food?: Maybe<{ __typename?: 'Food', id: number, description: string, brandName?: Maybe<string> }> };
 
 export type GetPlanQueryVariables = Exact<{
   id: Scalars['Int'];
 }>;
 
 
-export type GetPlanQuery = { __typename?: 'Query', plan?: Maybe<{ __typename?: 'Plan', name?: Maybe<string>, startDate?: Maybe<any>, endDate?: Maybe<any>, ingredients: Array<{ __typename?: 'Ingredient', id: number, amount: number, measure: string, order?: Maybe<number>, food?: Maybe<{ __typename?: 'Food', id: number, description?: Maybe<string>, portions: Array<{ __typename?: 'Portion', measure: string, gramWeight: number }> }> }> }> };
+export type GetPlanQuery = { __typename?: 'Query', plan?: Maybe<{ __typename?: 'Plan', name?: Maybe<string>, startDate?: Maybe<any>, endDate?: Maybe<any>, ingredients: Array<{ __typename?: 'Ingredient', id: number, amount: number, measure: string, order: number, food?: Maybe<{ __typename?: 'Food', id: number, description: string, portions: Array<{ __typename?: 'Portion', measure: string, gramWeight: number }> }> }> }> };
 
 export type GetPlansQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -268,14 +268,14 @@ export type SearchFoodsQueryVariables = Exact<{
 }>;
 
 
-export type SearchFoodsQuery = { __typename?: 'Query', searchFoods?: Maybe<Array<Maybe<{ __typename?: 'Food', description?: Maybe<string>, id: number, dataSource: string, category?: Maybe<string>, brandName?: Maybe<string>, searchScore?: Maybe<number>, portions: Array<{ __typename?: 'Portion', measure: string, gramWeight: number }> }>>> };
+export type SearchFoodsQuery = { __typename?: 'Query', searchFoods?: Maybe<Array<Maybe<{ __typename?: 'Food', description: string, id: number, dataSource: string, category?: Maybe<string>, brandName?: Maybe<string>, searchScore?: Maybe<number>, nutrientCount: number }>>> };
 
 export type UpdateIngredientMutationVariables = Exact<{
   input: UpdateIngredientInput;
 }>;
 
 
-export type UpdateIngredientMutation = { __typename?: 'Mutation', updateIngredient?: Maybe<{ __typename?: 'Ingredient', id: number, amount: number, measure: string, order?: Maybe<number> }> };
+export type UpdateIngredientMutation = { __typename?: 'Mutation', updateIngredient?: Maybe<{ __typename?: 'Ingredient', id: number, amount: number, measure: string, order: number }> };
 
 export type UpdatePlanMutationVariables = Exact<{
   input: UpdatePlanInput;
@@ -531,10 +531,7 @@ export const SearchFoodsDocument = gql`
     category
     brandName
     searchScore
-    portions {
-      measure
-      gramWeight
-    }
+    nutrientCount
   }
 }
     `;

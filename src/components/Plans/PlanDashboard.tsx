@@ -2,12 +2,6 @@ import Link from "next/link";
 import { useGetPlansQuery } from "../../generated/graphql";
 import { Button } from "../shared";
 
-// TODO:
-// Show a loading screen
-// Fetch plans
-// If no plans, show empty state
-// If plans, show populated state
-
 export default function PlanDashboard() {
   const { loading, error, data } = useGetPlansQuery();
 
@@ -23,7 +17,7 @@ export default function PlanDashboard() {
     return (
       <div className="flex flex-col items-center justify-center h-screen">
         <h1 className="mb-4 text-xl leading-6 font-medium text-gray-900">Get started by creating your first plan!</h1>
-        <Link href="plans/new">
+        <Link href="plans/new" passHref>
           <Button>Create meal plan</Button>
         </Link>
       </div>
@@ -38,7 +32,7 @@ export default function PlanDashboard() {
           <li key={plan.id}>{plan.name}</li>
         ))}
       </ul>
-      <Link href="plans/new">
+      <Link href="plans/new" passHref>
         <Button>Create meal plan</Button>
       </Link>
     </div>

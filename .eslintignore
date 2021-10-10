@@ -1,6 +1,7 @@
 .next
 node_modules
 dist
+src/generated
 coverage
 .eslintrc.js
 jest.config.js

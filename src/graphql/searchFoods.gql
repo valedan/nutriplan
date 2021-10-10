@@ -6,9 +6,6 @@ query SearchFoods($searchTerm: String!) {
     category
     brandName
     searchScore
-    portions {
-      measure
-      gramWeight
-    }
+    nutrientCount
   }
 }

@@ -3,7 +3,7 @@ import { debounce } from "lodash";
 import { useGetPlanQuery, useUpdatePlanMutation } from "../../generated/graphql";
 
 interface Props {
-  planId: string;
+  planId: number;
 }
 
 export default function PlanNameInput({ planId }: Props) {
@@ -33,17 +33,15 @@ export default function PlanNameInput({ planId }: Props) {
     <div>
       <label htmlFor="name" className="block text-sm font-medium text-gray-700">
         Plan name
-      </label>
-      <div className="mt-1">
         <input
           type="text"
           name="name"
           id="name"
           value={name}
           onChange={(e) => handleChangeName(e.target.value)}
-          className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
+          className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md mt-1"
         />
-      </div>
+      </label>
     </div>
   );
 }

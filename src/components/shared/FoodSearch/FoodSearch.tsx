@@ -3,10 +3,10 @@ import { debounce } from "lodash";
 import { useCombobox } from "downshift";
 import { useCallback } from "react";
 import FoodSuggestion from "./FoodSuggestion";
-import { useSearchFoodsLazyQuery, Food } from "../../../generated/graphql";
+import { useSearchFoodsLazyQuery } from "../../../generated/graphql";
 
 interface Props {
-  onSelectFood: (food: Food) => void;
+  onSelectFood: (foodId: number) => void;
 }
 
 const FoodSearch = ({ onSelectFood }: Props) => {
@@ -24,11 +24,11 @@ const FoodSearch = ({ onSelectFood }: Props) => {
   );
 
   const { isOpen, reset, getMenuProps, getInputProps, getComboboxProps, highlightedIndex, getItemProps } = useCombobox({
-    items: data ? data.searchFoods : [],
-    itemToString: (item) => item?.description || "",
+    items: data?.searchFoods ? data.searchFoods : [],
+    itemToString: (food) => food?.description || "",
     onSelectedItemChange: (changes) => {
       if (changes.selectedItem) {
-        onSelectFood(changes.selectedItem);
+        onSelectFood(changes.selectedItem.id);
       }
       reset();
     },
@@ -64,36 +64,17 @@ const FoodSearch = ({ onSelectFood }: Props) => {
           ) : data?.searchFoods?.length === 0 ? (
             <p>No foods found</p>
           ) : data?.searchFoods?.length ? (
-            data?.searchFoods?.map((item, index: number) => (
-              <FoodSuggestion
-                selected={highlightedIndex === index}
-                key={`${item.id}`}
-                {...getItemProps({ item, index })}
-              >
-                <div className="flex flex-row justify-between text-gray-800">
-                  <div className="flex-grow">
-                    <span>
-                      {item.description &&
-                        item.description?.charAt(0).toUpperCase().concat(item.description.slice(1).toLowerCase())}
-                    </span>
-                    <div className="flex justify-between w-full pr-32 text-sm text-gray-500">
-                      <span>{item.data_source}</span>
-                      <span>Brand: {item.brand_owner || "--"}</span>
-                      <span>Category: {item.category || "--"}</span>
-                      <span>Score: {item.searchScore || "--"}</span>
-                    </div>
-                  </div>
-                  <div className="flex-col">
-                    <p>
-                      {item.food_nutrients?.length} <span className="text-sm text-gray-500">Nutrients</span>{" "}
-                    </p>
-                    <p>
-                      {item.portions?.length} <span className="text-sm text-gray-500">Portions</span>{" "}
-                    </p>
-                  </div>
-                </div>
-              </FoodSuggestion>
-            ))
+            data?.searchFoods?.map(
+              (food, index: number) =>
+                food && (
+                  <FoodSuggestion
+                    selected={highlightedIndex === index}
+                    key={`${food.id}`}
+                    food={food}
+                    {...getItemProps({ item: food, index })}
+                  />
+                )
+            )
           ) : null}
         </div>
       </div>
