@@ -10,15 +10,50 @@ import { useAuth0 } from "@auth0/auth0-react";
 import Title from "./Title";
 import Subtitle from "./Subtitle";
 
+interface NavLinkProps {
+  isActive: boolean;
+  children: React.ReactNode;
+  href: string;
+}
+
+const NavLink = ({ children, isActive, href }: NavLinkProps) => (
+  <Link href={href}>
+    <a
+      className={classNames(
+        isActive ? "border-indigo-500 text-gray-900" : "border-transparent text-gray-500 hover:border-gray-300",
+        "inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium"
+      )}
+    >
+      {children}
+    </a>
+  </Link>
+);
+
+const MobileNavLink = ({ children, isActive, href }: NavLinkProps) => (
+  <Link href={href}>
+    <a
+      className={classNames(
+        isActive
+          ? "bg-indigo-50 border-indigo-500 text-indigo-700"
+          : "border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700",
+        "block pl-3 pr-4 py-2 border-l-4 text-base font-medium"
+      )}
+    >
+      {children}
+    </a>
+  </Link>
+);
+
+// TODO: Refactor this class soup once I have an established component library
 export default function Navbar() {
   const { isAuthenticated, logout, user } = useAuth0();
   const { pathname } = useRouter();
 
-  let active = "plans";
+  let currentPage = "plans";
   if (pathname.startsWith("/recipes")) {
-    active = "recipes";
+    currentPage = "recipes";
   } else if (pathname.startsWith("/groceries")) {
-    active = "groceries";
+    currentPage = "groceries";
   }
 
   if (!isAuthenticated) return null;
@@ -41,44 +76,15 @@ export default function Navbar() {
               </div>
               <div className="hidden md:ml-6 md:flex md:items-center">
                 <div className="hidden md:flex md:space-x-8 mr-4">
-                  {/* Profile dropdown */}
-                  {/* Current: "border-indigo-500 text-gray-900", Default: "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700" */}
-                  <Link href="/">
-                    <a
-                      className={classNames(
-                        active === "plans"
-                          ? "border-indigo-500 text-gray-900"
-                          : "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700",
-                        "inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium"
-                      )}
-                    >
-                      Plans
-                    </a>
-                  </Link>
-                  <Link href="/recipes">
-                    <a
-                      className={classNames(
-                        active === "recipes"
-                          ? "border-indigo-500 text-gray-900"
-                          : "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700",
-                        "inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium"
-                      )}
-                    >
-                      Recipes
-                    </a>
-                  </Link>
-                  <Link href="/groceries">
-                    <a
-                      className={classNames(
-                        active === "groceries"
-                          ? "border-indigo-500 text-gray-900"
-                          : "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700",
-                        "inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium"
-                      )}
-                    >
-                      Groceries
-                    </a>
-                  </Link>
+                  <NavLink href="/" isActive={currentPage === "plans"}>
+                    Plans
+                  </NavLink>
+                  <NavLink href="/recipes" isActive={currentPage === "recipes"}>
+                    Recipes
+                  </NavLink>
+                  <NavLink href="/groceries" isActive={currentPage === "groceries"}>
+                    Groceries
+                  </NavLink>
                 </div>
                 <Menu as="div" className="ml-3 relative">
                   <div>
@@ -114,6 +120,7 @@ export default function Navbar() {
                       <Menu.Item>
                         {({ active }) => (
                           <button
+                            type="button"
                             onClick={() => logout({ returnTo: `${window.location.origin}/logged-out` })}
                             className={classNames(
                               active ? "bg-gray-100" : "",
@@ -145,21 +152,15 @@ export default function Navbar() {
           <Disclosure.Panel className="md:hidden">
             <div className="pt-2 pb-3 space-y-1">
               {/* Current: "bg-indigo-50 border-indigo-500 text-indigo-700", Default: "border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700" */}
-              <Link href="/">
-                <a className="bg-indigo-50 border-indigo-500 text-indigo-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium">
-                  Plans
-                </a>
-              </Link>
-              <Link href="/recipes">
-                <a className="border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium">
-                  Recipes
-                </a>
-              </Link>
-              <Link href="/groceries">
-                <a className="border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium">
-                  Groceries
-                </a>
-              </Link>
+              <MobileNavLink href="/" isActive={currentPage === "plans"}>
+                Plans
+              </MobileNavLink>
+              <MobileNavLink href="/recipes" isActive={currentPage === "recipes"}>
+                Recipes
+              </MobileNavLink>
+              <MobileNavLink href="/groceries" isActive={currentPage === "groceries"}>
+                Groceries
+              </MobileNavLink>
             </div>
             <div className="pt-4 pb-3 border-t border-gray-200">
               <div className="flex items-center px-4">

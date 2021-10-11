@@ -6,9 +6,10 @@ export default function Recipes() {
     <RequireAuth>
       <ClientOnly>
         {Array(200)
-          .fill()
+          .fill(undefined)
           .map((_, i) => (
-            <div key={i}>
+            // eslint-disable-next-line react/jsx-key
+            <div>
               <h1>Recipe {i}</h1>
             </div>
           ))}
