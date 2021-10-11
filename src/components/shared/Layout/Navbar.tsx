@@ -71,7 +71,7 @@ export default function Navbar() {
                       <Title />
                     </a>
                   </Link>
-                  <Subtitle className="hidden md:flex ml-6" />
+                  <Subtitle />
                 </div>
               </div>
               <div className="hidden md:ml-6 md:flex md:items-center">
