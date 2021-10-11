@@ -36,11 +36,25 @@ Danger.args = {
 
 export const All: ComponentStory<typeof Button> = () => {
   return (
-    <div className="flex gap-2">
-      <Button> Primary</Button>
-      <Button variant="secondary">Secondary</Button>
-      <Button variant="ghost">Ghost</Button>
-      <Button variant="danger">Danger</Button>
+    <div className="flex flex-col gap-6">
+      <div className="flex gap-2">
+        <Button> Primary</Button>
+        <Button variant="secondary">Secondary</Button>
+        <Button variant="ghost">Ghost</Button>
+        <Button variant="danger">Danger</Button>
+      </div>
+      <div className="flex gap-2">
+        <Button size="small"> Primary</Button>
+        <Button size="small" variant="secondary">
+          Secondary
+        </Button>
+        <Button size="small" variant="ghost">
+          Ghost
+        </Button>
+        <Button size="small" variant="danger">
+          Danger
+        </Button>
+      </div>
     </div>
   );
 };
