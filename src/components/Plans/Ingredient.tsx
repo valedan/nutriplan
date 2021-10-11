@@ -49,13 +49,13 @@ export default function Ingredient({ id, amount, measure, foodDescription, porti
           name="amount"
           value={localAmount}
           onChange={(e) => handleChangeAmount(Number(e.target.value))}
-          className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 w-24 sm:text-sm border-gray-300 rounded-md"
+          className="shadow-sm focus:ring-blue-500 focus:border-blue-500 w-24 sm:text-sm border-gray-300 rounded-md"
         />
         <select
           id="portion"
           name="portion"
           onChange={(e) => handleChangeMeasure(e.target.value)}
-          className=" ml-3 mr-3 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md w-24"
+          className=" ml-3 mr-3 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md w-24"
           defaultValue={localMeasure}
         >
           {portions.map((portion) => (

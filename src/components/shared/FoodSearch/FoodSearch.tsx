@@ -48,7 +48,7 @@ const FoodSearch = ({ onSelectFood }: Props) => {
           id="foodSearch"
           dropdownOpen={shouldShowDropdown}
           {...getInputProps()}
-          className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 px-4 rounded-full "
+          className="shadow-sm focus:ring-blue-500 focus:border-blue-500 block w-full sm:text-sm border-gray-300 px-4 rounded-full "
           placeholder="Search food database"
         />
       </div>

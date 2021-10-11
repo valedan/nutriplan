@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import "tailwindcss/tailwind.css";
+import "./styles.css";
 import Head from "next/head";
 import { Auth0Provider } from "@auth0/auth0-react";
 import type { AppProps } from "next/app";

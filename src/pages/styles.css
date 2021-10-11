@@ -1,0 +1,17 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  /* Add custom global styles here */
+}
+
+@layer components {
+  /* Add custom component classes here */
+  /* https://tailwindcss.com/docs/extracting-components#extracting-component-classes-with-apply */
+}
+
+@layer utilities {
+  /* Add custom utilities here */
+  /* https://tailwindcss.com/docs/adding-new-utilities#using-css */
+}
