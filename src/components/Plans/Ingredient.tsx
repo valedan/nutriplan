@@ -1,6 +1,7 @@
 import { debounce } from "lodash";
 import { useState } from "react";
 import { Portion, useRemoveIngredientMutation, useUpdateIngredientMutation } from "../../generated/graphql";
+import { Input } from "../shared";
 
 interface Props {
   id: number;
@@ -44,13 +45,14 @@ export default function Ingredient({ id, amount, measure, foodDescription, porti
     <div className="flex justify-between mb-4">
       <span>{foodDescription}</span>
       <div>
-        <input
+        <Input
           type="number"
-          name="amount"
           value={localAmount}
           onChange={(e) => handleChangeAmount(Number(e.target.value))}
-          className="shadow-sm focus:ring-blue-500 focus:border-blue-500 w-24 sm:text-sm border-gray-300 rounded-md"
+          name="amount"
+          className="w-24"
         />
+
         <select
           id="portion"
           name="portion"

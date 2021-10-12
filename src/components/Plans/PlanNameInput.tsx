@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { debounce } from "lodash";
 import { useGetPlanQuery, useUpdatePlanMutation } from "../../generated/graphql";
+import { Input } from "../shared";
 
 interface Props {
   planId: number;
@@ -30,18 +31,12 @@ export default function PlanNameInput({ planId }: Props) {
   if (loading || error || !data?.plan) return null;
 
   return (
-    <div>
-      <label htmlFor="name" className="block text-sm font-medium text-gray-700">
-        Plan name
-        <input
-          type="text"
-          name="name"
-          id="name"
-          value={name}
-          onChange={(e) => handleChangeName(e.target.value)}
-          className="shadow-sm focus:ring-blue-500 focus:border-blue-500 block w-full sm:text-sm border-gray-300 rounded-md mt-1"
-        />
-      </label>
-    </div>
+    <Input
+      value={name}
+      onChange={(e) => handleChangeName(e.target.value)}
+      label="Plan name"
+      id="planName"
+      name="planName"
+    />
   );
 }
