@@ -1,11 +1,7 @@
-interface Props {
-  className: string;
-}
-
-const Subtitle = ({ className }: Props) => {
+const Subtitle = () => {
   return (
     <svg
-      className={className}
+      className="fill-current text-gray-600 hidden md:flex ml-6"
       width="148"
       height="14"
       viewBox="0 0 148 14"

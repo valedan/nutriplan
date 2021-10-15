@@ -26,7 +26,6 @@ export default function PlanDashboard() {
 
   return (
     <div className="p-8">
-      <h1 className="text-center">Plan Dashboard</h1>
       <ul>
         {data.plans.map((plan) => (
           <li key={plan.id}>{plan.name}</li>

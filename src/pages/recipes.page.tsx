@@ -5,15 +5,13 @@ export default function Recipes() {
   return (
     <RequireAuth>
       <ClientOnly>
-        {Array(200)
-          .fill(undefined)
-          .map((_, i) => (
-            // eslint-disable-next-line react/jsx-key
-            <div>
-              <h1>Recipe {i}</h1>
+        <div className="py-10">
+          <header>
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+              <h1 className="text-2xl font-bold leading-tight text-gray-700">Recipes</h1>
             </div>
-          ))}
-        <p>Recipes page!</p>
+          </header>
+        </div>
       </ClientOnly>
     </RequireAuth>
   );

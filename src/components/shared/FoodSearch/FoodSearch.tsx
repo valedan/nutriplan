@@ -4,6 +4,7 @@ import { useCombobox } from "downshift";
 import { useCallback } from "react";
 import FoodSuggestion from "./FoodSuggestion";
 import { useSearchFoodsLazyQuery } from "../../../generated/graphql";
+import Input from "../Forms/Input/Input";
 
 interface Props {
   onSelectFood: (foodId: number) => void;
@@ -42,19 +43,18 @@ const FoodSearch = ({ onSelectFood }: Props) => {
   return (
     <div className="">
       <div {...getComboboxProps()}>
-        <input
-          type="text"
+        <Input
           name="foodSearch"
           id="foodSearch"
+          placeholder="Search food database"
+          rounded
           dropdownOpen={shouldShowDropdown}
           {...getInputProps()}
-          className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 px-4 rounded-full "
-          placeholder="Search food database"
         />
       </div>
       <div
         hidden={!shouldShowDropdown}
-        className=" absolute z-10 mt-1 w-10/12 bg-white shadow-lg h-2/3 rounded-lg py-1 text-base ring-1 ring-black ring-opacity-5 overflow-auto py-4 px-0"
+        className=" absolute z-10 mt-1 w-10/12 bg-white shadow-lg h-2/3 rounded-lg py-1 text-base ring-1 ring-black ring-opacity-5 overflow-auto px-0"
       >
         <div {...getMenuProps()} className="divide-y divide-gray-200">
           {!shouldShowDropdown ? null : loading ? (
