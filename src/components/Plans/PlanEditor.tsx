@@ -3,6 +3,7 @@ import { useRouter } from "next/router";
 import { useAddIngredientMutation, useGetPlanQuery } from "../../generated/graphql";
 import { FoodSearch } from "../shared";
 import PlanNameInput from "./PlanNameInput";
+import PlanDateInput from "./PlanDateInput";
 import Ingredient from "./Ingredient";
 
 export default function PlanEditor() {
@@ -29,12 +30,15 @@ export default function PlanEditor() {
   if (error || !planId) return <p>Error :(</p>;
 
   return (
-    <div className="p-8">
+    <div className="p-4 ">
       <Head>
         {/* TODO: This is stale after updating */}
         <title key="title">Edit {data?.plan?.name || "plan"}</title>
       </Head>
-      <PlanNameInput planId={Number(planId)} />
+      <div className="shadow sm:rounded-md sm:overflow-hidden bg-white py-4 px-8 flex justify-between ">
+        <PlanNameInput planId={Number(planId)} className="w-2/3" />
+        <PlanDateInput planId={Number(planId)} />
+      </div>
       <hr className="mt-4 mb-4" />
       <h3 className="text-center mb-2">Foods</h3>
       <FoodSearch onSelectFood={handleSelectFood} />
