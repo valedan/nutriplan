@@ -4,7 +4,7 @@ import { useCombobox } from "downshift";
 import { useCallback } from "react";
 import FoodSuggestion from "./FoodSuggestion";
 import { useSearchFoodsLazyQuery } from "../../../generated/graphql";
-import { Input } from "../";
+import Input from "../Forms/Input/Input";
 
 interface Props {
   onSelectFood: (foodId: number) => void;
