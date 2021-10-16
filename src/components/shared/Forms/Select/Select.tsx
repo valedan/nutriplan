@@ -1,9 +1,13 @@
+import classNames from "classnames";
+
 interface Props extends React.ComponentProps<"select"> {
   label?: string;
   hint?: string;
+  inputClassName?: string;
+  sizing?: "small" | "medium"; // select already has a size prop
 }
 
-const Select = ({ className, id, label, hint, children, ...props }: Props) => {
+const Select = ({ className, sizing = "medium", inputClassName, id, label, hint, children, ...props }: Props) => {
   return (
     <div className={className}>
       {label && (
@@ -14,7 +18,11 @@ const Select = ({ className, id, label, hint, children, ...props }: Props) => {
       <div className="relative rounded-md shadow-sm">
         <select
           id={id}
-          className="block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md"
+          className={classNames(
+            "block w-full pl-3 pr-10 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md",
+            { "py-2": sizing === "medium", "py-1": sizing === "small" },
+            inputClassName
+          )}
           {...props}
         >
           {children}

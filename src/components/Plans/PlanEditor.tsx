@@ -30,34 +30,48 @@ export default function PlanEditor() {
   if (error || !planId) return <p>Error :(</p>;
 
   return (
-    <div className="p-4 ">
+    <div className="p-2 h-full flex flex-col">
       <Head>
         {/* TODO: This is stale after updating */}
         <title key="title">Edit {data?.plan?.name || "plan"}</title>
       </Head>
-      <div className="shadow sm:rounded-md sm:overflow-hidden bg-white py-4 px-8 flex justify-between ">
+      <h1 className="text-gray-500 text-lg leading-6 mb-4">Edit meal plan</h1>
+      <div className="shadow sm:rounded-md sm:overflow-hidden bg-white py-4 px-8 flex justify-between mb-4">
         <PlanNameInput planId={Number(planId)} className="w-2/3" />
         <PlanDateInput planId={Number(planId)} />
       </div>
-      <hr className="mt-4 mb-4" />
-      <h3 className="text-center mb-2">Foods</h3>
-      <FoodSearch onSelectFood={handleSelectFood} />
-      <ul className="mt-4">
-        {data?.plan?.ingredients?.map(
-          (ingredient) =>
-            ingredient.food && (
-              <Ingredient
-                id={ingredient.id}
-                amount={ingredient.amount}
-                measure={ingredient.measure}
-                foodDescription={ingredient.food?.description}
-                portions={ingredient.food?.portions}
-                refetch={refetch}
-                key={ingredient.id}
-              />
-            )
-        )}
-      </ul>
+      <div className="flex flex-grow items-stretch">
+        <div className="flex-1 flex-col w-2/3 mr-4 shadow sm:rounded-md sm:overflow-hidden bg-white h-full">
+          <div className="py-4 px-8 shadow bg-grey-50">
+            <h3 className="text-center mb-2 text-gray-500 text-lg leading-6 ">Foods</h3>
+            <FoodSearch onSelectFood={handleSelectFood} />
+          </div>
+          <div className="px-8">
+            <ul className="mt-4">
+              {data?.plan?.ingredients?.map(
+                (ingredient) =>
+                  ingredient.food && (
+                    <Ingredient
+                      id={ingredient.id}
+                      amount={ingredient.amount}
+                      measure={ingredient.measure}
+                      foodDescription={ingredient.food?.description}
+                      portions={ingredient.food?.portions}
+                      refetch={refetch}
+                      key={ingredient.id}
+                    />
+                  )
+              )}
+            </ul>
+          </div>
+        </div>
+
+        <div className="flex flex-col w-1/3 shadow sm:rounded-md sm:overflow-hidden bg-white h-full">
+          <div className="py-4 px-8 shadow bg-grey-50">
+            <h3 className="text-center text-gray-500 text-lg leading-6 ">Average daily nutrients</h3>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
