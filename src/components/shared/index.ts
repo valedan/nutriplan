@@ -4,3 +4,4 @@ export { default as Button } from "./Button/Button";
 export { default as LoadingScreen } from "./LoadingScreen";
 export { default as Input } from "./Forms/Input/Input";
 export { default as Select } from "./Forms/Select/Select";
+export { default as Checkbox } from "./Forms/Checkbox/Checkbox";

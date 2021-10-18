@@ -2,7 +2,7 @@
 import { Fragment } from "react";
 import classNames from "classnames";
 import Link from "next/link";
-import { useRouter } from "next/router";
+// import { useRouter } from "next/router";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { MenuIcon, XIcon } from "@heroicons/react/outline";
 import { UserCircleIcon } from "@heroicons/react/solid";
@@ -10,51 +10,51 @@ import { useAuth0 } from "@auth0/auth0-react";
 import Title from "./Title";
 import Subtitle from "./Subtitle";
 
-interface NavLinkProps {
-  isActive: boolean;
-  children: React.ReactNode;
-  href: string;
-}
+// interface NavLinkProps {
+//   isActive: boolean;
+//   children: React.ReactNode;
+//   href: string;
+// }
 
-const NavLink = ({ children, isActive, href }: NavLinkProps) => (
-  <Link href={href}>
-    <a
-      className={classNames(
-        isActive ? "border-blue-500 text-gray-900" : "border-transparent text-gray-500 hover:border-gray-300",
-        "inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium"
-      )}
-    >
-      {children}
-    </a>
-  </Link>
-);
+// const NavLink = ({ children, isActive, href }: NavLinkProps) => (
+//   <Link href={href}>
+//     <a
+//       className={classNames(
+//         isActive ? "border-blue-500 text-gray-900" : "border-transparent text-gray-500 hover:border-gray-300",
+//         "inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium"
+//       )}
+//     >
+//       {children}
+//     </a>
+//   </Link>
+// );
 
-const MobileNavLink = ({ children, isActive, href }: NavLinkProps) => (
-  <Link href={href}>
-    <a
-      className={classNames(
-        isActive
-          ? "bg-blue-50 border-blue-500 text-blue-700"
-          : "border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700",
-        "block pl-3 pr-4 py-2 border-l-4 text-base font-medium"
-      )}
-    >
-      {children}
-    </a>
-  </Link>
-);
+// const MobileNavLink = ({ children, isActive, href }: NavLinkProps) => (
+//   <Link href={href}>
+//     <a
+//       className={classNames(
+//         isActive
+//           ? "bg-blue-50 border-blue-500 text-blue-700"
+//           : "border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700",
+//         "block pl-3 pr-4 py-2 border-l-4 text-base font-medium"
+//       )}
+//     >
+//       {children}
+//     </a>
+//   </Link>
+// );
 
 // TODO: Refactor this class soup once I have an established component library
 export default function Navbar() {
   const { isAuthenticated, logout, user } = useAuth0();
-  const { pathname } = useRouter();
+  // const { pathname } = useRouter();
 
-  let currentPage = "plans";
-  if (pathname.startsWith("/recipes")) {
-    currentPage = "recipes";
-  } else if (pathname.startsWith("/groceries")) {
-    currentPage = "groceries";
-  }
+  // let currentPage = "plans";
+  // if (pathname.startsWith("/recipes")) {
+  //   currentPage = "recipes";
+  // } else if (pathname.startsWith("/groceries")) {
+  //   currentPage = "groceries";
+  // }
 
   if (!isAuthenticated) return null;
 
@@ -62,7 +62,7 @@ export default function Navbar() {
     <Disclosure as="nav" className="bg-white shadow fixed inset-x-0 z-50 top-0">
       {({ open }) => (
         <>
-          <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
+          <div className="px-4 md:px-6 lg:px-8">
             <div className="flex justify-between h-16">
               <div className="flex">
                 <div className="flex-shrink-0 flex items-center align-items-center">
@@ -76,15 +76,15 @@ export default function Navbar() {
               </div>
               <div className="hidden md:ml-6 md:flex md:items-center">
                 <div className="hidden md:flex md:space-x-8 mr-4">
-                  <NavLink href="/" isActive={currentPage === "plans"}>
+                  {/* <NavLink href="/" isActive={currentPage === "plans"}>
                     Plans
-                  </NavLink>
-                  <NavLink href="/recipes" isActive={currentPage === "recipes"}>
+                  </NavLink> */}
+                  {/* <NavLink href="/recipes" isActive={currentPage === "recipes"}>
                     Recipes
                   </NavLink>
                   <NavLink href="/groceries" isActive={currentPage === "groceries"}>
                     Groceries
-                  </NavLink>
+                  </NavLink> */}
                 </div>
                 <Menu as="div" className="ml-3 relative">
                   <div>
@@ -150,9 +150,9 @@ export default function Navbar() {
           </div>
 
           <Disclosure.Panel className="md:hidden">
-            <div className="pt-2 pb-3 space-y-1">
-              {/* Current: "bg-blue-50 border-blue-500 text-blue-700", Default: "border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700" */}
-              <MobileNavLink href="/" isActive={currentPage === "plans"}>
+            {/* <div className="pt-2 pb-3 space-y-1"> */}
+            {/* Current: "bg-blue-50 border-blue-500 text-blue-700", Default: "border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700" */}
+            {/* <MobileNavLink href="/" isActive={currentPage === "plans"}>
                 Plans
               </MobileNavLink>
               <MobileNavLink href="/recipes" isActive={currentPage === "recipes"}>
@@ -160,8 +160,8 @@ export default function Navbar() {
               </MobileNavLink>
               <MobileNavLink href="/groceries" isActive={currentPage === "groceries"}>
                 Groceries
-              </MobileNavLink>
-            </div>
+              </MobileNavLink> */}
+            {/* </div> */}
             <div className="pt-4 pb-3 border-t border-gray-200">
               <div className="flex items-center px-4">
                 <div className="flex-shrink-0">

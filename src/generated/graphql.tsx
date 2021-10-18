@@ -126,6 +126,13 @@ export type MutationUpdatePlanArgs = {
   input: UpdatePlanInput;
 };
 
+export type Nutrient = {
+  __typename?: 'Nutrient';
+  id: Scalars['Int'];
+  name: Scalars['String'];
+  unit: Scalars['String'];
+};
+
 export type Plan = {
   __typename?: 'Plan';
   endDate?: Maybe<Scalars['DateTime']>;
@@ -146,6 +153,7 @@ export type Query = {
   __typename?: 'Query';
   food?: Maybe<Food>;
   foods: Array<Food>;
+  nutrients: Array<Nutrient>;
   plan?: Maybe<Plan>;
   plans: Array<Plan>;
   recipe?: Maybe<Recipe>;
@@ -243,6 +251,18 @@ export type GetFoodQueryVariables = Exact<{
 
 
 export type GetFoodQuery = { __typename?: 'Query', food?: Maybe<{ __typename?: 'Food', id: number, description: string, brandName?: Maybe<string> }> };
+
+export type GetFoodsWithNutrientsQueryVariables = Exact<{
+  foodIds: Array<Scalars['Int']> | Scalars['Int'];
+}>;
+
+
+export type GetFoodsWithNutrientsQuery = { __typename?: 'Query', foods: Array<{ __typename?: 'Food', id: number, nutrients: Array<{ __typename?: 'FoodNutrient', id: number, amount: number, name: string, unit: string }> }> };
+
+export type GetNutrientsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetNutrientsQuery = { __typename?: 'Query', nutrients: Array<{ __typename?: 'Nutrient', id: number, name: string, unit: string }> };
 
 export type GetPlanQueryVariables = Exact<{
   id: Scalars['Int'];
@@ -401,6 +421,83 @@ export function useGetFoodLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<Ge
 export type GetFoodQueryHookResult = ReturnType<typeof useGetFoodQuery>;
 export type GetFoodLazyQueryHookResult = ReturnType<typeof useGetFoodLazyQuery>;
 export type GetFoodQueryResult = Apollo.QueryResult<GetFoodQuery, GetFoodQueryVariables>;
+export const GetFoodsWithNutrientsDocument = gql`
+    query getFoodsWithNutrients($foodIds: [Int!]!) {
+  foods(ids: $foodIds) {
+    id
+    nutrients {
+      id
+      amount
+      name
+      unit
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetFoodsWithNutrientsQuery__
+ *
+ * To run a query within a React component, call `useGetFoodsWithNutrientsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetFoodsWithNutrientsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetFoodsWithNutrientsQuery({
+ *   variables: {
+ *      foodIds: // value for 'foodIds'
+ *   },
+ * });
+ */
+export function useGetFoodsWithNutrientsQuery(baseOptions: Apollo.QueryHookOptions<GetFoodsWithNutrientsQuery, GetFoodsWithNutrientsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetFoodsWithNutrientsQuery, GetFoodsWithNutrientsQueryVariables>(GetFoodsWithNutrientsDocument, options);
+      }
+export function useGetFoodsWithNutrientsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetFoodsWithNutrientsQuery, GetFoodsWithNutrientsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetFoodsWithNutrientsQuery, GetFoodsWithNutrientsQueryVariables>(GetFoodsWithNutrientsDocument, options);
+        }
+export type GetFoodsWithNutrientsQueryHookResult = ReturnType<typeof useGetFoodsWithNutrientsQuery>;
+export type GetFoodsWithNutrientsLazyQueryHookResult = ReturnType<typeof useGetFoodsWithNutrientsLazyQuery>;
+export type GetFoodsWithNutrientsQueryResult = Apollo.QueryResult<GetFoodsWithNutrientsQuery, GetFoodsWithNutrientsQueryVariables>;
+export const GetNutrientsDocument = gql`
+    query getNutrients {
+  nutrients {
+    id
+    name
+    unit
+  }
+}
+    `;
+
+/**
+ * __useGetNutrientsQuery__
+ *
+ * To run a query within a React component, call `useGetNutrientsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetNutrientsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetNutrientsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetNutrientsQuery(baseOptions?: Apollo.QueryHookOptions<GetNutrientsQuery, GetNutrientsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetNutrientsQuery, GetNutrientsQueryVariables>(GetNutrientsDocument, options);
+      }
+export function useGetNutrientsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetNutrientsQuery, GetNutrientsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetNutrientsQuery, GetNutrientsQueryVariables>(GetNutrientsDocument, options);
+        }
+export type GetNutrientsQueryHookResult = ReturnType<typeof useGetNutrientsQuery>;
+export type GetNutrientsLazyQueryHookResult = ReturnType<typeof useGetNutrientsLazyQuery>;
+export type GetNutrientsQueryResult = Apollo.QueryResult<GetNutrientsQuery, GetNutrientsQueryVariables>;
 export const GetPlanDocument = gql`
     query getPlan($id: Int!) {
   plan(id: $id) {

@@ -29,6 +29,7 @@ module.exports = {
     "react/require-default-props": "off",
     "no-void": ["error", { allowAsStatement: true }],
     "@typescript-eslint/explicit-module-boundary-types": "off",
+    "@typescript-eslint/prefer-regexp-exec": "off",
     "arrow-body-style": "off",
     "jsx-a11y/anchor-is-valid": [
       "error",

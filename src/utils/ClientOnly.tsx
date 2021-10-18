@@ -15,7 +15,11 @@ const ClientOnly = ({ children, ...delegated }: Props) => {
     return null;
   }
 
-  return <div {...delegated}>{children}</div>;
+  return (
+    <div className="h-full" {...delegated}>
+      {children}
+    </div>
+  );
 };
 
 export default ClientOnly;

@@ -6,9 +6,22 @@ interface Props extends React.ComponentProps<"input"> {
   error?: string;
   hint?: string;
   rounded?: boolean;
+  inputClassName?: string;
+  sizing?: "small" | "medium";
 }
 
-const Input = ({ className, id, rounded, label, error, hint, type = "text", ...props }: Props) => {
+const Input = ({
+  className,
+  sizing = "medium",
+  inputClassName,
+  id,
+  rounded,
+  label,
+  error,
+  hint,
+  type = "text",
+  ...props
+}: Props) => {
   return (
     <div className={className}>
       {label && (
@@ -20,11 +33,16 @@ const Input = ({ className, id, rounded, label, error, hint, type = "text", ...p
         <input
           type={type}
           id={id}
-          className={classNames("block w-full focus:outline-none sm:text-sm rounded-md", {
-            "pr-10 border-red-300 text-red-900 placeholder-red-300 focus:ring-red-500 focus:border-red-500": error,
-            "shadow-sm focus:ring-blue-500 focus:border-blue-500 border-gray-300": !error,
-            "rounded-full": rounded,
-          })}
+          className={classNames(
+            "block w-full focus:outline-none sm:text-sm rounded-md",
+            {
+              "pr-10 border-red-300 text-red-900 placeholder-red-300 focus:ring-red-500 focus:border-red-500": error,
+              "shadow-sm focus:ring-blue-500 focus:border-blue-500 border-gray-300": !error,
+              "rounded-full": rounded,
+            },
+            { "py-2": sizing === "medium", "py-1": sizing === "small" },
+            inputClassName
+          )}
           {...props}
         />
         {error && (

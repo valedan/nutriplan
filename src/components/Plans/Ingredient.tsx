@@ -1,7 +1,8 @@
 import { debounce } from "lodash";
 import { useState } from "react";
+import { XIcon } from "@heroicons/react/solid";
 import { Portion, useRemoveIngredientMutation, useUpdateIngredientMutation } from "../../generated/graphql";
-import { Input, Select } from "../shared";
+import { Input, Select, Checkbox } from "../shared";
 
 interface Props {
   id: number;
@@ -42,41 +43,43 @@ export default function Ingredient({ id, amount, measure, foodDescription, porti
   };
 
   return (
-    <div className="flex justify-between mb-4">
-      <span>{foodDescription}</span>
-      <div className="flex">
-        <Input
-          type="number"
-          value={localAmount}
-          onChange={(e) => handleChangeAmount(Number(e.target.value))}
-          name="amount"
-          className="w-24"
-        />
+    <div className="flex  items-center">
+      <Checkbox />
+      <div className="flex items-center ml-4 px-2 py-2 flex-grow justify-between border-b border-gray-200">
+        <p className="text-gray-700">{foodDescription}</p>
+        <div className="flex my-2">
+          <Input
+            type="number"
+            value={localAmount}
+            onChange={(e) => handleChangeAmount(Number(e.target.value))}
+            name="amount"
+            className="w-24"
+            sizing="small"
+          />
 
-        <Select
-          id="portion"
-          name="portion"
-          onChange={(e) => handleChangeMeasure(e.target.value)}
-          className="w-24 ml-2"
-          defaultValue={localMeasure}
-        >
-          {portions.map((portion) => (
-            <option key={portion.measure} value={portion.measure}>
-              {portion.measure}
-            </option>
-          ))}
-        </Select>
-        <button type="button" onClick={handleRemoveIngredient}>
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="h-4 w-4 inline ml-8 text-gray-400 cursor-pointer"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
+          <Select
+            id="portion"
+            name="portion"
+            onChange={(e) => handleChangeMeasure(e.target.value)}
+            className="w-24 ml-4"
+            sizing="small"
+            defaultValue={localMeasure}
           >
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-          </svg>
-        </button>
+            {portions.map((portion) => (
+              <option key={portion.measure} value={portion.measure}>
+                {portion.measure}
+              </option>
+            ))}
+          </Select>
+
+          <button
+            type="button"
+            onClick={handleRemoveIngredient}
+            className="inline-flex items-center p-1 border border-transparent rounded-full shadow-sm text-gray-500  hover:bg-red-100 focus:outline-none ml-4"
+          >
+            <XIcon className="h-5 w-5" />
+          </button>
+        </div>
       </div>
     </div>
   );

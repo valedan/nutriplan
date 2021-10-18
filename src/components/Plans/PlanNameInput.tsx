@@ -5,9 +5,10 @@ import { Input } from "../shared";
 
 interface Props {
   planId: number;
+  className: string;
 }
 
-export default function PlanNameInput({ planId }: Props) {
+export default function PlanNameInput({ planId, className }: Props) {
   const { data, loading, error } = useGetPlanQuery({ variables: { id: Number(planId) } });
   const [name, setName] = useState("");
 
@@ -37,6 +38,7 @@ export default function PlanNameInput({ planId }: Props) {
       label="Plan name"
       id="planName"
       name="planName"
+      className={className}
     />
   );
 }

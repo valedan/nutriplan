@@ -1,0 +1,11 @@
+query getFoodsWithNutrients($foodIds: [Int!]!) {
+  foods(ids: $foodIds) {
+    id
+    nutrients {
+      id
+      amount
+      name
+      unit
+    }
+  }
+}
