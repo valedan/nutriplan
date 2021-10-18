@@ -4,5 +4,7 @@ query getPlans {
     name
     startDate
     endDate
+    createdAt
+    updatedAt
   }
 }

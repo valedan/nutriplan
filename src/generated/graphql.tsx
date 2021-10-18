@@ -135,12 +135,14 @@ export type Nutrient = {
 
 export type Plan = {
   __typename?: 'Plan';
+  createdAt: Scalars['DateTime'];
   endDate?: Maybe<Scalars['DateTime']>;
   id: Scalars['Int'];
   ingredients: Array<Ingredient>;
   meals: Array<Meal>;
   name?: Maybe<Scalars['String']>;
   startDate?: Maybe<Scalars['DateTime']>;
+  updatedAt: Scalars['DateTime'];
 };
 
 export type Portion = {
@@ -274,7 +276,7 @@ export type GetPlanQuery = { __typename?: 'Query', plan?: Maybe<{ __typename?: '
 export type GetPlansQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetPlansQuery = { __typename?: 'Query', plans: Array<{ __typename?: 'Plan', id: number, name?: Maybe<string>, startDate?: Maybe<any>, endDate?: Maybe<any> }> };
+export type GetPlansQuery = { __typename?: 'Query', plans: Array<{ __typename?: 'Plan', id: number, name?: Maybe<string>, startDate?: Maybe<any>, endDate?: Maybe<any>, createdAt: any, updatedAt: any }> };
 
 export type RemoveIngredientMutationVariables = Exact<{
   id: Scalars['Int'];
@@ -556,6 +558,8 @@ export const GetPlansDocument = gql`
     name
     startDate
     endDate
+    createdAt
+    updatedAt
   }
 }
     `;
