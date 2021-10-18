@@ -1,8 +1,8 @@
 import { debounce } from "lodash";
 import { useState } from "react";
+import { XIcon } from "@heroicons/react/solid";
 import { Portion, useRemoveIngredientMutation, useUpdateIngredientMutation } from "../../generated/graphql";
 import { Input, Select, Checkbox } from "../shared";
-import { XIcon } from "@heroicons/react/solid";
 
 interface Props {
   id: number;
