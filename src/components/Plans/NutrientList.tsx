@@ -1,10 +1,6 @@
 import { Disclosure } from "@headlessui/react";
 import { ChevronUpIcon } from "@heroicons/react/solid";
-import {
-  useGetFoodsWithNutrientsQuery,
-  GetFoodsWithNutrientsQuery,
-  useGetNutrientsQuery,
-} from "../../generated/graphql";
+import { useGetFoodsWithNutrientsQuery, useGetNutrientsQuery } from "../../generated/graphql";
 import Nutrient from "./Nutrient";
 
 interface FoodAmount {
@@ -148,16 +144,17 @@ export default function NutrientList({ foodAmounts, daysInPlan }: Props) {
 
   const { data, loading, error } = useGetFoodsWithNutrientsQuery({ variables: { foodIds } });
 
-  if (!nutrientData || loading || error || nutrientLoading || nutrientError) {
+  if (!nutrientData || !data?.foods || loading || error || nutrientLoading || nutrientError) {
     return null;
   }
-  console.log(nutrientData);
 
-  const nutrientAmounts = aggregateNutrientAmounts(data?.foods, foodAmounts);
+  const nutrientAmounts = aggregateNutrientAmounts(data.foods, foodAmounts);
   return (
     <div className="min-h-0 flex flex-col overflow-y-auto">
       {NUTRIENT_GROUPS.map(({ name, nutrients: nutrientsInGroup }) => {
         return (
+          // Add transition to open/close
+          // https://headlessui.dev/react/disclosure#transitions
           <Disclosure key={name} defaultOpen>
             {({ open }) => (
               <>

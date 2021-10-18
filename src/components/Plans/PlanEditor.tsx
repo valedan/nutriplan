@@ -1,13 +1,13 @@
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { compact } from "lodash";
+import { differenceInCalendarDays } from "date-fns";
 import { useAddIngredientMutation, useGetPlanQuery } from "../../generated/graphql";
 import { FoodSearch } from "../shared";
 import PlanNameInput from "./PlanNameInput";
 import PlanDateInput from "./PlanDateInput";
 import Ingredient from "./Ingredient";
 import NutrientList from "./NutrientList";
-import { differenceInCalendarDays } from "date-fns";
 
 interface IngredientWithPortion {
   food?: { id: number; portions: { measure: string; gramWeight: number }[] } | null;
@@ -42,7 +42,6 @@ export default function PlanEditor() {
   const { data, loading, error, refetch } = useGetPlanQuery({ variables: { id: Number(planId) } });
   const [addIngredient] = useAddIngredientMutation();
 
-  console.log(data);
   const handleSelectFood = async (foodId: number) => {
     await addIngredient({
       variables: {

@@ -1,5 +1,4 @@
 import classNames from "classnames";
-import { FoodNutrient } from "../../generated/graphql";
 
 interface Props {
   id: number;
@@ -77,7 +76,7 @@ const nutrientTargets = {
   // B3 (Niacin)
   1167: {
     min: 16,
-    max: 35, //Only for synthetic forms
+    max: 35, // Only for synthetic forms
   },
   // B5 (Pantothenic acid)
   1170: { min: 5, max: null },
@@ -91,8 +90,9 @@ const nutrientTargets = {
     min: 30,
     max: null,
   },
+  // TODO: research  this more - folate and folic acid both in db
   // B9 (Folate)
-  1186: {
+  1177: {
     min: 400,
     max: 1000,
   },
@@ -277,29 +277,42 @@ const nutrientTargets = {
 };
 
 export default function Nutrient({ id, name, amount, unit }: Props) {
-  const minTarget = nutrientTargets[id]?.min;
-  if (!minTarget) return null;
-  const isAboveMax = nutrientTargets[id].max && amount > nutrientTargets[id].max;
-  const percentageOfTarget = (amount / nutrientTargets[id].min) * 100;
+  const targets = nutrientTargets[id as keyof typeof nutrientTargets];
+  const percentageOfTarget = targets.min && (amount / targets.min) * 100;
+  const isAboveMax = targets.max && amount > targets.max;
   const nameWithParens = name.match(/(.+)(\(.+\))/);
-  // TODO: show nutrients with missing targets
+
+  // TODO: hover state
+
   return (
     <div className="flex items-center">
       <div className="text-right w-32 text-gray-700">
         <span>{nameWithParens ? nameWithParens[1] : name}</span>
         <span className="text-sm">{nameWithParens ? nameWithParens[2] : null}</span>
       </div>
-      <div className="flex flex-grow bg-gray-200 h-2 mx-2 rounded">
-        <div
-          className={classNames("rounded", {
-            "bg-green-500": Math.round(percentageOfTarget) >= 100 && !isAboveMax,
-            "bg-yellow-300": Math.round(percentageOfTarget) < 100,
-            "bg-red-600": isAboveMax,
-          })}
-          style={{ width: `${Math.round(percentageOfTarget)}%` }}
-        />
-      </div>
-      <span className="w-8 text-gray-700">{Math.round(percentageOfTarget)}%</span>
+      {typeof percentageOfTarget === "number" ? (
+        <>
+          <div className="flex flex-grow bg-gray-200 h-2 mx-2 rounded">
+            <div
+              className={classNames("rounded", {
+                "bg-green-500": Math.round(percentageOfTarget) >= 100 && !isAboveMax,
+                "bg-yellow-300": Math.round(percentageOfTarget) < 100,
+                "bg-red-600": isAboveMax,
+              })}
+              style={{ width: `${Math.round(percentageOfTarget)}%` }}
+            />
+          </div>
+          <span className="w-8 text-gray-700">{Math.round(percentageOfTarget)}%</span>
+        </>
+      ) : (
+        <>
+          <p className="flex flex-grow mx-2 italic text-gray-500 text-sm justify-center">No target</p>
+          <div className="w-8 text-gray-600">
+            <span>{Math.round(amount)}</span>
+            <span className="ml-0.5">{unit.toLowerCase()}</span>
+          </div>
+        </>
+      )}
     </div>
   );
 }
