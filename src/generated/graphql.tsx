@@ -247,6 +247,13 @@ export type CreatePlanMutationVariables = Exact<{
 
 export type CreatePlanMutation = { __typename?: 'Mutation', createPlan?: Maybe<{ __typename?: 'Plan', id: number, name?: Maybe<string>, startDate?: Maybe<any>, endDate?: Maybe<any> }> };
 
+export type DeletePlanMutationVariables = Exact<{
+  planId: Scalars['Int'];
+}>;
+
+
+export type DeletePlanMutation = { __typename?: 'Mutation', deletePlan?: Maybe<{ __typename?: 'Plan', id: number }> };
+
 export type GetFoodQueryVariables = Exact<{
   id: Scalars['Int'];
 }>;
@@ -386,6 +393,39 @@ export function useCreatePlanMutation(baseOptions?: Apollo.MutationHookOptions<C
 export type CreatePlanMutationHookResult = ReturnType<typeof useCreatePlanMutation>;
 export type CreatePlanMutationResult = Apollo.MutationResult<CreatePlanMutation>;
 export type CreatePlanMutationOptions = Apollo.BaseMutationOptions<CreatePlanMutation, CreatePlanMutationVariables>;
+export const DeletePlanDocument = gql`
+    mutation deletePlan($planId: Int!) {
+  deletePlan(id: $planId) {
+    id
+  }
+}
+    `;
+export type DeletePlanMutationFn = Apollo.MutationFunction<DeletePlanMutation, DeletePlanMutationVariables>;
+
+/**
+ * __useDeletePlanMutation__
+ *
+ * To run a mutation, you first call `useDeletePlanMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeletePlanMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deletePlanMutation, { data, loading, error }] = useDeletePlanMutation({
+ *   variables: {
+ *      planId: // value for 'planId'
+ *   },
+ * });
+ */
+export function useDeletePlanMutation(baseOptions?: Apollo.MutationHookOptions<DeletePlanMutation, DeletePlanMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<DeletePlanMutation, DeletePlanMutationVariables>(DeletePlanDocument, options);
+      }
+export type DeletePlanMutationHookResult = ReturnType<typeof useDeletePlanMutation>;
+export type DeletePlanMutationResult = Apollo.MutationResult<DeletePlanMutation>;
+export type DeletePlanMutationOptions = Apollo.BaseMutationOptions<DeletePlanMutation, DeletePlanMutationVariables>;
 export const GetFoodDocument = gql`
     query getFood($id: Int!) {
   food(id: $id) {
