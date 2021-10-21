@@ -5,6 +5,7 @@ import { useCallback } from "react";
 import FoodSuggestion from "./FoodSuggestion";
 import { useSearchFoodsLazyQuery } from "../../../generated/graphql";
 import Input from "../Forms/Input/Input";
+import Spinner from "../Spinner";
 
 interface Props {
   onSelectFood: (foodId: number) => void;
@@ -58,7 +59,9 @@ const FoodSearch = ({ onSelectFood }: Props) => {
       >
         <div {...getMenuProps()} className="divide-y divide-gray-200">
           {!shouldShowDropdown ? null : loading ? (
-            <p>Loading...</p>
+            <div className="w-full mt-16 flex items-center align-middle justify-center">
+              <Spinner />
+            </div>
           ) : error ? (
             <p>Error :(</p>
           ) : data?.searchFoods?.length === 0 ? (

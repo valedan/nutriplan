@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import { compact } from "lodash";
 import { differenceInCalendarDays } from "date-fns";
 import { useAddIngredientMutation, useGetPlanQuery } from "../../generated/graphql";
-import { FoodSearch } from "../shared";
+import { FoodSearch, LoadingScreen } from "../shared";
 import PlanNameInput from "./PlanNameInput";
 import PlanDateInput from "./PlanDateInput";
 import Ingredient from "./Ingredient";
@@ -56,7 +56,9 @@ export default function PlanEditor() {
     void refetch();
   };
 
-  if (loading) return <p>Loading...</p>;
+  if (loading) {
+    return <LoadingScreen />;
+  }
   if (error || !planId) return <p>Error :(</p>;
 
   return (

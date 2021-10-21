@@ -4,7 +4,7 @@ import { ChevronRightIcon } from "@heroicons/react/solid";
 import { TrashIcon } from "@heroicons/react/outline";
 import { formatDistanceToNow, addDays } from "date-fns";
 import { Plan, useCreatePlanMutation, useDeletePlanMutation, useGetPlansQuery } from "../../generated/graphql";
-import { Button } from "../shared";
+import { Button, LoadingScreen } from "../shared";
 import AlertModal from "../shared/Modal/AlertModal";
 
 const findNextUnusedPlanName = (plans: Partial<Plan>[]) => {
@@ -69,7 +69,7 @@ export default function PlanDashboard() {
   };
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <LoadingScreen message="Loading plans..." />;
   }
 
   if (error) {
