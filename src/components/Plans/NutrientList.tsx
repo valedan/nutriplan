@@ -150,7 +150,7 @@ export default function NutrientList({ foodAmounts, daysInPlan }: Props) {
 
   const nutrientAmounts = aggregateNutrientAmounts(data.foods, foodAmounts);
   return (
-    <div className="min-h-0 flex flex-col overflow-y-auto">
+    <div className="min-h-0 flex flex-col overflow-y-auto overflow-x-hidden">
       {NUTRIENT_GROUPS.map(({ name, nutrients: nutrientsInGroup }) => {
         return (
           // Add transition to open/close

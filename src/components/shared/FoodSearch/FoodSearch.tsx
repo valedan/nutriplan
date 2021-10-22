@@ -2,10 +2,13 @@
 import { debounce } from "lodash";
 import { useCombobox } from "downshift";
 import { useCallback } from "react";
+import classNames from "classnames";
 import FoodSuggestion from "./FoodSuggestion";
 import { useSearchFoodsLazyQuery } from "../../../generated/graphql";
 import Input from "../Forms/Input/Input";
 import Spinner from "../Spinner";
+
+const DEBUG = false;
 
 interface Props {
   onSelectFood: (foodId: number) => void;
@@ -42,7 +45,7 @@ const FoodSearch = ({ onSelectFood }: Props) => {
   const shouldShowDropdown = isOpen && (loading || error || data?.searchFoods !== undefined);
 
   return (
-    <div className="">
+    <div className="relative">
       <div {...getComboboxProps()}>
         <Input
           name="foodSearch"
@@ -55,7 +58,12 @@ const FoodSearch = ({ onSelectFood }: Props) => {
       </div>
       <div
         hidden={!shouldShowDropdown}
-        className=" absolute z-10 mt-1 w-10/12 bg-white shadow-lg h-2/3 rounded-lg py-1 text-base ring-1 ring-black ring-opacity-5 overflow-auto px-0"
+        className={classNames("", {
+          "absolute z-10 mt-1 w-full bg-white shadow-lg h-96 rounded-lg py-1 text-base ring-1 ring-black ring-opacity-5 overflow-auto px-0":
+            DEBUG,
+          " absolute z-10 mt-1 w-full bg-white shadow-lg h-96 rounded-lg py-1 text-base ring-1 ring-black ring-opacity-5 overflow-auto px-0":
+            !DEBUG,
+        })}
       >
         <div {...getMenuProps()} className="divide-y divide-gray-200">
           {!shouldShowDropdown ? null : loading ? (
@@ -71,6 +79,7 @@ const FoodSearch = ({ onSelectFood }: Props) => {
               (food, index: number) =>
                 food && (
                   <FoodSuggestion
+                    debug={DEBUG}
                     selected={highlightedIndex === index}
                     key={`${food.id}`}
                     food={food}
