@@ -14,6 +14,21 @@ const sentenceCase = (str: string) =>
     .map((word) => capitalize(word))
     .join(" ");
 
+const humanSource = (source: string) => {
+  switch (source) {
+    case "usda_sr_legacy_food":
+      return "USDA-SR";
+    case "usda_survey_fndds_food":
+      return "USDA-FNDDS";
+    case "usda_branded_food":
+      return "USDA-Branded";
+    case "usda_foundation_food":
+      return "USDA-Foundation";
+    default:
+      return "USDA";
+  }
+};
+
 const DebugSuggestion = ({ food }: { food: Food }) => {
   return (
     <div className="flex flex-row justify-between text-gray-800">
@@ -55,8 +70,9 @@ const FoodSuggestion = forwardRef<HTMLDivElement, Props>(({ food, debug, ...prop
               <span className="text-gray-400 text-sm">{food.category || "No category"}</span>
             </div>
           </div>
-          <div className="flex flex-col justify-center">
-            <p className="text-sm text-gray-500">Nutrients: {food.nutrientCount}</p>
+          <div className="flex flex-col justify-center w-40">
+            <p className="text-sm text-gray-500 text-right">Nutrients: {food.nutrientCount}</p>
+            <p className="text-sm text-gray-500 text-right">Source: {humanSource(food.dataSource)}</p>
           </div>
         </div>
       )}

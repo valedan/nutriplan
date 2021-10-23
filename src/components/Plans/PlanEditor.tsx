@@ -1,7 +1,7 @@
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { compact } from "lodash";
-import { differenceInCalendarDays } from "date-fns";
+import { differenceInCalendarDays, parseISO } from "date-fns";
 import { useAddIngredientMutation, useGetPlanQuery } from "../../generated/graphql";
 import { FoodSearch, LoadingScreen } from "../shared";
 import PlanNameInput from "./PlanNameInput";
@@ -60,7 +60,6 @@ export default function PlanEditor() {
     return <LoadingScreen />;
   }
   if (error || !planId) return <p>Error :(</p>;
-
   return (
     <div className=" h-full overflow-hidden flex flex-col">
       <Head>
@@ -104,7 +103,7 @@ export default function PlanEditor() {
           </div>
           {data?.plan?.ingredients && (
             <NutrientList
-              daysInPlan={differenceInCalendarDays(data.plan.endDate, data.plan.startDate)}
+              daysInPlan={differenceInCalendarDays(parseISO(data.plan.endDate), parseISO(data.plan.startDate))}
               foodAmounts={compact(foodAmountsFromIngredients(data?.plan?.ingredients))}
             />
           )}

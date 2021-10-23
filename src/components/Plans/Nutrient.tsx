@@ -283,7 +283,6 @@ export default function Nutrient({ id, name, amount, unit }: Props) {
   const nameWithParens = name.match(/(.+)(\(.+\))/);
 
   // TODO: hover state
-
   return (
     <div className="flex items-center">
       <div className="text-right w-32 text-gray-700">
