@@ -33,6 +33,7 @@ const ApolloWrapper = ({ children }: { children: React.ReactNode }) => {
   const client = new ApolloClient({
     cache: new InMemoryCache(),
     link: from([authLink, httpLink]),
+    connectToDevTools: true,
 
     defaultOptions: {
       watchQuery: {

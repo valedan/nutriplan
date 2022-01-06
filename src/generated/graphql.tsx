@@ -89,6 +89,7 @@ export type Mutation = {
   reorderIngredients?: Maybe<Array<Maybe<Ingredient>>>;
   updateIngredient?: Maybe<Ingredient>;
   updatePlan?: Maybe<Plan>;
+  updateTarget?: Maybe<NutrientTarget>;
 };
 
 
@@ -126,11 +127,36 @@ export type MutationUpdatePlanArgs = {
   input: UpdatePlanInput;
 };
 
+
+export type MutationUpdateTargetArgs = {
+  input: UpdateTargetInput;
+};
+
 export type Nutrient = {
   __typename?: 'Nutrient';
   id: Scalars['Int'];
   name: Scalars['String'];
   unit: Scalars['String'];
+};
+
+export type NutrientProfile = {
+  __typename?: 'NutrientProfile';
+  createdAt: Scalars['DateTime'];
+  id: Scalars['Int'];
+  isActive: Scalars['Boolean'];
+  name: Scalars['String'];
+  nutrientTargets: Array<NutrientTarget>;
+  updatedAt: Scalars['DateTime'];
+};
+
+export type NutrientTarget = {
+  __typename?: 'NutrientTarget';
+  createdAt: Scalars['DateTime'];
+  id: Scalars['Int'];
+  max?: Maybe<Scalars['Float']>;
+  min?: Maybe<Scalars['Float']>;
+  nutrient: Nutrient;
+  updatedAt: Scalars['DateTime'];
 };
 
 export type Plan = {
@@ -153,6 +179,7 @@ export type Portion = {
 
 export type Query = {
   __typename?: 'Query';
+  activeNutrientProfile: NutrientProfile;
   food?: Maybe<Food>;
   foods: Array<Food>;
   nutrients: Array<Nutrient>;
@@ -232,6 +259,17 @@ export type UpdatePlanInput = {
   name?: Maybe<Scalars['String']>;
   startDate?: Maybe<Scalars['DateTime']>;
 };
+
+export type UpdateTargetInput = {
+  id: Scalars['Int'];
+  max?: Maybe<Scalars['Float']>;
+  min?: Maybe<Scalars['Float']>;
+};
+
+export type GetActiveProfileQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetActiveProfileQuery = { __typename?: 'Query', activeNutrientProfile: { __typename?: 'NutrientProfile', id: number, name: string, isActive: boolean, nutrientTargets: Array<{ __typename?: 'NutrientTarget', id: number, min?: Maybe<number>, max?: Maybe<number>, nutrient: { __typename?: 'Nutrient', id: number, name: string } }> } };
 
 export type AddIngredientMutationVariables = Exact<{
   input: AddIngredientInput;
@@ -314,6 +352,51 @@ export type UpdatePlanMutationVariables = Exact<{
 export type UpdatePlanMutation = { __typename?: 'Mutation', updatePlan?: Maybe<{ __typename?: 'Plan', id: number, name?: Maybe<string>, startDate?: Maybe<any>, endDate?: Maybe<any> }> };
 
 
+export const GetActiveProfileDocument = gql`
+    query getActiveProfile {
+  activeNutrientProfile {
+    id
+    name
+    isActive
+    nutrientTargets {
+      id
+      min
+      max
+      nutrient {
+        id
+        name
+      }
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetActiveProfileQuery__
+ *
+ * To run a query within a React component, call `useGetActiveProfileQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetActiveProfileQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetActiveProfileQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetActiveProfileQuery(baseOptions?: Apollo.QueryHookOptions<GetActiveProfileQuery, GetActiveProfileQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetActiveProfileQuery, GetActiveProfileQueryVariables>(GetActiveProfileDocument, options);
+      }
+export function useGetActiveProfileLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetActiveProfileQuery, GetActiveProfileQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetActiveProfileQuery, GetActiveProfileQueryVariables>(GetActiveProfileDocument, options);
+        }
+export type GetActiveProfileQueryHookResult = ReturnType<typeof useGetActiveProfileQuery>;
+export type GetActiveProfileLazyQueryHookResult = ReturnType<typeof useGetActiveProfileLazyQuery>;
+export type GetActiveProfileQueryResult = Apollo.QueryResult<GetActiveProfileQuery, GetActiveProfileQueryVariables>;
 export const AddIngredientDocument = gql`
     mutation addIngredient($input: AddIngredientInput!) {
   addIngredient(input: $input) {

@@ -1,6 +1,7 @@
 import { Disclosure } from "@headlessui/react";
 import { ChevronUpIcon } from "@heroicons/react/solid";
-import { useGetFoodsWithNutrientsQuery, useGetNutrientsQuery } from "../../generated/graphql";
+import { useGetFoodsWithNutrientsQuery, useGetNutrientsQuery, useGetActiveProfileQuery } from "../../generated/graphql";
+
 import Nutrient from "./Nutrient";
 
 interface FoodAmount {
@@ -23,6 +24,9 @@ interface FoodWithNutrients {
   }[];
 }
 
+// Units for targets are the human-presentable forms of the nutrient units. In many cases they will be the same. In some cases they will be lowercased. In some versions they will be a smaller unit (ug instead of mg), and a conversion will need to happen. The targets from the database will always have the same unit as their nutrient.
+
+// TODO: store these in db?
 const NUTRIENT_GROUPS = [
   {
     name: "General",
@@ -140,11 +144,22 @@ const aggregateNutrientAmounts = (foods: FoodWithNutrients[], foodAmounts: FoodA
 
 export default function NutrientList({ foodAmounts, daysInPlan }: Props) {
   const foodIds = foodAmounts.map((fa) => fa.foodId);
+  const { data: profileData, loading: profileLoading, error: profileError } = useGetActiveProfileQuery();
+  console.log(profileData);
   const { data: nutrientData, loading: nutrientLoading, error: nutrientError } = useGetNutrientsQuery();
 
   const { data, loading, error } = useGetFoodsWithNutrientsQuery({ variables: { foodIds } });
 
-  if (!nutrientData || !data?.foods || loading || error || nutrientLoading || nutrientError) {
+  if (
+    !nutrientData ||
+    !data?.foods ||
+    loading ||
+    error ||
+    nutrientLoading ||
+    nutrientError ||
+    profileLoading ||
+    profileError
+  ) {
     return null;
   }
 
@@ -163,21 +178,21 @@ export default function NutrientList({ foodAmounts, daysInPlan }: Props) {
                   <ChevronUpIcon className={`${open ? "transform rotate-180" : ""} w-5 h-5 text-gray-500`} />
                 </Disclosure.Button>
 
-                <Disclosure.Panel className="flex flex-col px-8 py-4 gap-2">
+                <Disclosure.Panel className="flex flex-col py-4 ">
                   {nutrientsInGroup.map((nutrientInGroup) => {
                     const nutrient = nutrientData.nutrients.find((nut) => nut.id === nutrientInGroup.id);
                     if (!nutrient) {
                       return null;
                     }
-                    return (
-                      <Nutrient
-                        key={nutrient.id}
-                        id={nutrient.id}
-                        amount={nutrientAmounts[nutrient.id] ? nutrientAmounts[nutrient.id] / daysInPlan : 0}
-                        unit={nutrient.unit}
-                        name={nutrientInGroup.name}
-                      />
-                    );
+                    // return (
+                    //   <Nutrient
+                    //     key={nutrient.id}
+                    //     id={nutrient.id}
+                    //     amount={nutrientAmounts[nutrient.id] ? nutrientAmounts[nutrient.id] / daysInPlan : 0}
+                    //     unit={nutrient.unit}
+                    //     name={nutrientInGroup.name}
+                    //   />
+                    // );
                   })}
                 </Disclosure.Panel>
               </>
