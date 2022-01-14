@@ -17,6 +17,7 @@
     "@auth0/auth0-react": "^1.6.0",
     "@headlessui/react": "^1.4.0",
     "@heroicons/react": "^1.0.4",
+    "@reduxjs/toolkit": "^1.7.1",
     "classnames": "^2.3.1",
     "date-fns": "^2.25.0",
     "downshift": "^6.1.3",

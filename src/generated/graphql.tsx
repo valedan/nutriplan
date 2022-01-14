@@ -134,9 +134,20 @@ export type MutationUpdateTargetArgs = {
 
 export type Nutrient = {
   __typename?: 'Nutrient';
+  activeTarget: NutrientTarget;
+  displayName?: Maybe<Scalars['String']>;
   id: Scalars['Int'];
   name: Scalars['String'];
+  order?: Maybe<Scalars['Int']>;
   unit: Scalars['String'];
+};
+
+export type NutrientGroup = {
+  __typename?: 'NutrientGroup';
+  id: Scalars['Int'];
+  name: Scalars['String'];
+  nutrients: Array<Nutrient>;
+  order: Scalars['Int'];
 };
 
 export type NutrientProfile = {
@@ -182,6 +193,7 @@ export type Query = {
   activeNutrientProfile: NutrientProfile;
   food?: Maybe<Food>;
   foods: Array<Food>;
+  nutrientGroups: Array<NutrientGroup>;
   nutrients: Array<Nutrient>;
   plan?: Maybe<Plan>;
   plans: Array<Plan>;
@@ -270,6 +282,11 @@ export type GetActiveProfileQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type GetActiveProfileQuery = { __typename?: 'Query', activeNutrientProfile: { __typename?: 'NutrientProfile', id: number, name: string, isActive: boolean, nutrientTargets: Array<{ __typename?: 'NutrientTarget', id: number, min?: Maybe<number>, max?: Maybe<number>, nutrient: { __typename?: 'Nutrient', id: number, name: string } }> } };
+
+export type GetNutrientGroupsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetNutrientGroupsQuery = { __typename?: 'Query', nutrientGroups: Array<{ __typename?: 'NutrientGroup', id: number, name: string, order: number, nutrients: Array<{ __typename?: 'Nutrient', id: number, name: string, unit: string, order?: Maybe<number>, displayName?: Maybe<string>, activeTarget: { __typename?: 'NutrientTarget', id: number, min?: Maybe<number>, max?: Maybe<number> } }> }> };
 
 export type AddIngredientMutationVariables = Exact<{
   input: AddIngredientInput;
@@ -397,6 +414,54 @@ export function useGetActiveProfileLazyQuery(baseOptions?: Apollo.LazyQueryHookO
 export type GetActiveProfileQueryHookResult = ReturnType<typeof useGetActiveProfileQuery>;
 export type GetActiveProfileLazyQueryHookResult = ReturnType<typeof useGetActiveProfileLazyQuery>;
 export type GetActiveProfileQueryResult = Apollo.QueryResult<GetActiveProfileQuery, GetActiveProfileQueryVariables>;
+export const GetNutrientGroupsDocument = gql`
+    query getNutrientGroups {
+  nutrientGroups {
+    id
+    name
+    order
+    nutrients {
+      id
+      name
+      unit
+      order
+      displayName
+      activeTarget {
+        id
+        min
+        max
+      }
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetNutrientGroupsQuery__
+ *
+ * To run a query within a React component, call `useGetNutrientGroupsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetNutrientGroupsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetNutrientGroupsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetNutrientGroupsQuery(baseOptions?: Apollo.QueryHookOptions<GetNutrientGroupsQuery, GetNutrientGroupsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetNutrientGroupsQuery, GetNutrientGroupsQueryVariables>(GetNutrientGroupsDocument, options);
+      }
+export function useGetNutrientGroupsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetNutrientGroupsQuery, GetNutrientGroupsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetNutrientGroupsQuery, GetNutrientGroupsQueryVariables>(GetNutrientGroupsDocument, options);
+        }
+export type GetNutrientGroupsQueryHookResult = ReturnType<typeof useGetNutrientGroupsQuery>;
+export type GetNutrientGroupsLazyQueryHookResult = ReturnType<typeof useGetNutrientGroupsLazyQuery>;
+export type GetNutrientGroupsQueryResult = Apollo.QueryResult<GetNutrientGroupsQuery, GetNutrientGroupsQueryVariables>;
 export const AddIngredientDocument = gql`
     mutation addIngredient($input: AddIngredientInput!) {
   addIngredient(input: $input) {
