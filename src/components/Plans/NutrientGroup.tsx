@@ -10,10 +10,10 @@ interface Props {
     unit: string;
     order?: number | null;
     displayName?: string | null;
-    activeTarget: {
+    activeTarget?: {
       min?: number | null;
       max?: number | null;
-    };
+    } | null;
   }[];
   nutrientAmounts: {
     [key: number]: number;
@@ -35,17 +35,16 @@ export default function NutrientGroup({ name, nutrients, nutrientAmounts }: Prop
           <Disclosure.Panel className="flex flex-col py-4 ">
             {nutrients
               .slice()
-              .sort(({ order }) => order || 1000)
+              .sort((a, b) => (a.order || 0) - (b.order || 0))
               .map((nutrient) => {
                 return (
                   <Nutrient
                     key={nutrient.id}
-                    id={nutrient.id}
                     amount={nutrientAmounts[nutrient.id] || 0}
                     unit={nutrient.unit}
                     name={nutrient.displayName || nutrient.name}
-                    min={nutrient.activeTarget.min}
-                    max={nutrient.activeTarget.max}
+                    min={nutrient.activeTarget?.min}
+                    max={nutrient.activeTarget?.max}
                   />
                 );
               })}

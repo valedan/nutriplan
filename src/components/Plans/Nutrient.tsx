@@ -2,36 +2,37 @@ import classNames from "classnames";
 import { useState } from "react";
 
 interface NutrientAmountProps {
-  id: number;
   amount: number;
   unit: string;
   isHover: boolean;
+  min?: number | null;
 }
 
-// const NutrientAmount = ({ id, amount, isHover, unit }: NutrientAmountProps) => {
-//   const targets = nutrientTargets[id as keyof typeof nutrientTargets];
-//   const percentageOfTarget = targets.min && (amount / targets.min) * 100;
+const NutrientAmount = ({ amount, isHover, unit, min }: NutrientAmountProps) => {
+  const percentageOfTarget = min && (amount / min) * 100;
 
-//   if (typeof percentageOfTarget === "number") {
-//     return isHover ? (
-//       <span className="w-16 text-sm text-gray-700">
-//         {Math.round(amount)}/{Math.round(targets.min)} {unit.toLowerCase()}
-//       </span>
-//     ) : (
-//       <span className="w-16 text-gray-700">{Math.round(percentageOfTarget)}%</span>
-//     );
-//   }
+  const amountWithUnits =
+    typeof min === "number"
+      ? `${Math.round(amount)}/${Math.round(min)} ${unit.toLowerCase()}`
+      : `${Math.round(amount)} ${unit.toLowerCase()}`;
 
-//   return (
-//     <div className="w-16 text-gray-600">
-//       <span>{Math.round(amount)}</span>
-//       <span className="ml-0.5">{unit.toLowerCase()}</span>
-//     </div>
-//   );
-// };
+  if (typeof percentageOfTarget === "number") {
+    return isHover ? (
+      <span className="w-16 text-sm text-gray-700">{amountWithUnits}</span>
+    ) : (
+      <span className="w-16 text-gray-700">{Math.round(percentageOfTarget)}%</span>
+    );
+  }
+
+  return (
+    <div className="w-16 text-gray-600">
+      <span>{Math.round(amount)}</span>
+      <span className="ml-0.5">{unit.toLowerCase()}</span>
+    </div>
+  );
+};
 
 interface NutrientProps {
-  id: number;
   name: string;
   amount?: number;
   unit: string;
@@ -39,7 +40,7 @@ interface NutrientProps {
   max?: number | null;
 }
 
-export default function Nutrient({ id, name, amount = 0, unit, min, max }: NutrientProps) {
+export default function Nutrient({ name, amount = 0, unit, min, max }: NutrientProps) {
   const percentageOfTarget = min && (amount / min) * 100;
   const isAboveMax = max && amount > max;
 
@@ -47,7 +48,6 @@ export default function Nutrient({ id, name, amount = 0, unit, min, max }: Nutri
 
   const nameWithParens = name.match(/(.+)(\(.+\))/);
 
-  // TODO: hover state
   return (
     <div
       className="flex items-center cursor-pointer py-2 px-4 hover:bg-blue-50 hover:shadow-md"
@@ -72,7 +72,7 @@ export default function Nutrient({ id, name, amount = 0, unit, min, max }: Nutri
       ) : (
         <p className="flex flex-grow mx-2 italic text-gray-500 text-sm justify-center">No target</p>
       )}
-      {/* <NutrientAmount amount={amount} isHover={isHover} unit={unit} id={id} /> */}
+      <NutrientAmount amount={amount} isHover={isHover} unit={unit} min={min} />
     </div>
   );
 }

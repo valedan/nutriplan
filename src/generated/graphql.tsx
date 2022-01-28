@@ -36,9 +36,9 @@ export type Food = {
   category?: Maybe<Scalars['String']>;
   dataSource: Scalars['String'];
   description: Scalars['String'];
+  foodNutrients: Array<FoodNutrient>;
   id: Scalars['Int'];
   nutrientCount: Scalars['Int'];
-  nutrients: Array<FoodNutrient>;
   portions: Array<Portion>;
   searchScore?: Maybe<Scalars['Float']>;
 };
@@ -47,8 +47,7 @@ export type FoodNutrient = {
   __typename?: 'FoodNutrient';
   amount: Scalars['Float'];
   id: Scalars['Int'];
-  name: Scalars['String'];
-  unit: Scalars['String'];
+  nutrient: Nutrient;
 };
 
 export type Ingredient = {
@@ -134,7 +133,7 @@ export type MutationUpdateTargetArgs = {
 
 export type Nutrient = {
   __typename?: 'Nutrient';
-  activeTarget: NutrientTarget;
+  activeTarget?: Maybe<NutrientTarget>;
   displayName?: Maybe<Scalars['String']>;
   id: Scalars['Int'];
   name: Scalars['String'];
@@ -286,7 +285,7 @@ export type GetActiveProfileQuery = { __typename?: 'Query', activeNutrientProfil
 export type GetNutrientGroupsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetNutrientGroupsQuery = { __typename?: 'Query', nutrientGroups: Array<{ __typename?: 'NutrientGroup', id: number, name: string, order: number, nutrients: Array<{ __typename?: 'Nutrient', id: number, name: string, unit: string, order?: Maybe<number>, displayName?: Maybe<string>, activeTarget: { __typename?: 'NutrientTarget', id: number, min?: Maybe<number>, max?: Maybe<number> } }> }> };
+export type GetNutrientGroupsQuery = { __typename?: 'Query', nutrientGroups: Array<{ __typename?: 'NutrientGroup', id: number, name: string, order: number, nutrients: Array<{ __typename?: 'Nutrient', id: number, name: string, unit: string, order?: Maybe<number>, displayName?: Maybe<string>, activeTarget?: Maybe<{ __typename?: 'NutrientTarget', id: number, min?: Maybe<number>, max?: Maybe<number> }> }> }> };
 
 export type AddIngredientMutationVariables = Exact<{
   input: AddIngredientInput;
@@ -321,7 +320,7 @@ export type GetFoodsWithNutrientsQueryVariables = Exact<{
 }>;
 
 
-export type GetFoodsWithNutrientsQuery = { __typename?: 'Query', foods: Array<{ __typename?: 'Food', id: number, nutrients: Array<{ __typename?: 'FoodNutrient', id: number, amount: number, name: string, unit: string }> }> };
+export type GetFoodsWithNutrientsQuery = { __typename?: 'Query', foods: Array<{ __typename?: 'Food', id: number, foodNutrients: Array<{ __typename?: 'FoodNutrient', id: number, amount: number, nutrient: { __typename?: 'Nutrient', id: number, name: string, unit: string } }> }> };
 
 export type GetNutrientsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -615,11 +614,14 @@ export const GetFoodsWithNutrientsDocument = gql`
     query getFoodsWithNutrients($foodIds: [Int!]!) {
   foods(ids: $foodIds) {
     id
-    nutrients {
+    foodNutrients {
       id
       amount
-      name
-      unit
+      nutrient {
+        id
+        name
+        unit
+      }
     }
   }
 }

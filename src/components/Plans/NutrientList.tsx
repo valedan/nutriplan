@@ -8,32 +8,37 @@ interface FoodAmount {
 
 interface FoodWithNutrients {
   id: number;
-  nutrients: {
-    id: number;
+  foodNutrients: {
     amount: number;
+    nutrient: {
+      id: number;
+    };
   }[];
 }
 
 // nutrientId => amount
 const aggregateNutrientAmounts = (
-  foods: FoodWithNutrients[],
-  foodAmountsPer100Grams: FoodAmount[],
+  foodsWithNutrientData: FoodWithNutrients[],
+  foodAmounts: FoodAmount[],
   daysInPlan: number
 ) => {
-  const normalizedFoodAmountsPer100Grams: { [key: number]: number } = {};
+  const normalizedFoodAmounts: { [key: number]: number } = {};
 
-  foodAmountsPer100Grams.forEach((foodAmount) => {
-    normalizedFoodAmountsPer100Grams[foodAmount.foodId] = foodAmount.amount;
+  foodAmounts.forEach((foodAmount) => {
+    normalizedFoodAmounts[foodAmount.foodId] = foodAmount.amount;
   });
 
   const nutrientAmounts: { [key: number]: number } = {};
-  foods.forEach(({ id, nutrients }) => {
-    const foodAmountPer100Grams = normalizedFoodAmountsPer100Grams[id];
-    nutrients.forEach((nutrient) => {
-      if (nutrientAmounts[nutrient.id]) {
-        nutrientAmounts[nutrient.id] += (nutrient.amount * foodAmountPer100Grams) / (100 * daysInPlan);
+
+  foodsWithNutrientData.forEach(({ id, foodNutrients }) => {
+    const foodAmount = normalizedFoodAmounts[id];
+    // Nutrient amount is per 100 grams
+    // Food amount is expressed in grams
+    foodNutrients.forEach(({ amount, nutrient: { id: nutrientId } }) => {
+      if (nutrientAmounts[nutrientId]) {
+        nutrientAmounts[nutrientId] += (amount * foodAmount) / (100 * daysInPlan);
       } else {
-        nutrientAmounts[nutrient.id] = (nutrient.amount * foodAmountPer100Grams) / (100 * daysInPlan);
+        nutrientAmounts[nutrientId] = (amount * foodAmount) / (100 * daysInPlan);
       }
     });
   });
@@ -69,7 +74,7 @@ export default function NutrientList({ foodAmounts, daysInPlan }: Props) {
     <div className="min-h-0 flex flex-col overflow-y-auto overflow-x-hidden">
       {data.nutrientGroups
         .slice()
-        .sort((group) => group.order)
+        .sort((a, b) => (a.order || 0) - (b.order || 0))
         .map(({ id, name, nutrients: nutrientsInGroup }) => (
           <NutrientGroup name={name} nutrients={nutrientsInGroup} nutrientAmounts={nutrientAmountsPerDay} key={id} />
         ))}
