@@ -11,10 +11,19 @@ interface Props {
   measure: string;
   foodDescription: string;
   portions: Portion[];
+  isMealIngredient?: boolean;
   refetch: () => void;
 }
 
-export default function Ingredient({ id, amount, measure, foodDescription, portions, refetch }: Props) {
+export default function Ingredient({
+  id,
+  amount,
+  measure,
+  foodDescription,
+  portions,
+  refetch,
+  isMealIngredient = false,
+}: Props) {
   const [localAmount, setLocalAmount] = useState(amount);
   const [localMeasure, setLocalMeasure] = useState(measure);
   const [updateIngredient] = useUpdateIngredientMutation();
@@ -46,11 +55,11 @@ export default function Ingredient({ id, amount, measure, foodDescription, porti
   return (
     <Disclosure key={id}>
       {({ open }) => (
-        <div className="border-b border-gray-200">
+        <div className="">
           <div className="flex flex-col ">
             <div className="flex  items-center flex-grow">
-              <Checkbox />
-              <div className="flex items-center ml-4 px-2 py-2 flex-grow justify-between ">
+              {!isMealIngredient && <Checkbox />}
+              <div className="flex items-center ml-4 mr-2 px-2 py-2 flex-grow justify-between border-b border-gray-200">
                 <div className="flex flex-col">
                   <p className="text-gray-700">{foodDescription}</p>
                   {/* <Disclosure.Button className="mt-2"> */}

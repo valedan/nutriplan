@@ -17,5 +17,28 @@ query getPlan($id: Int!) {
         }
       }
     }
+    meals {
+      id
+      servings
+      order
+      recipe {
+        name
+        id
+      }
+      ingredients {
+        id
+        amount
+        measure
+        order
+        food {
+          id
+          description
+          portions {
+            measure
+            gramWeight
+          }
+        }
+      }
+    }
   }
 }

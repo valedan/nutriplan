@@ -24,10 +24,20 @@ export type AddIngredientInput = {
   recipeId?: Maybe<Scalars['Int']>;
 };
 
+export type AddMealInput = {
+  planId: Scalars['Int'];
+  recipeId: Scalars['Int'];
+};
+
 export type CreatePlanInput = {
   endDate: Scalars['DateTime'];
   name: Scalars['String'];
   startDate: Scalars['DateTime'];
+};
+
+export type CreateRecipeInput = {
+  name: Scalars['String'];
+  servings: Scalars['Int'];
 };
 
 export type Food = {
@@ -73,21 +83,33 @@ export type Meal = {
   __typename?: 'Meal';
   id: Scalars['Int'];
   ingredients: Array<Ingredient>;
-  order?: Maybe<Scalars['Int']>;
+  order: Scalars['Int'];
   plan?: Maybe<Plan>;
   recipe?: Maybe<Recipe>;
   servings: Scalars['Int'];
 };
 
+export type MealReorder = {
+  id: Scalars['Int'];
+  newOrder: Scalars['Int'];
+};
+
 export type Mutation = {
   __typename?: 'Mutation';
   addIngredient?: Maybe<Ingredient>;
+  addMeal?: Maybe<Meal>;
   createPlan?: Maybe<Plan>;
+  createRecipe?: Maybe<Recipe>;
   deletePlan?: Maybe<Plan>;
+  deleteRecipe?: Maybe<Recipe>;
   removeIngredient?: Maybe<Ingredient>;
+  removeMeal?: Maybe<Meal>;
   reorderIngredients?: Maybe<Array<Maybe<Ingredient>>>;
+  reorderMeals?: Maybe<Array<Maybe<Meal>>>;
   updateIngredient?: Maybe<Ingredient>;
+  updateMeal?: Maybe<Meal>;
   updatePlan?: Maybe<Plan>;
+  updateRecipe?: Maybe<Recipe>;
   updateTarget?: Maybe<NutrientTarget>;
 };
 
@@ -97,12 +119,27 @@ export type MutationAddIngredientArgs = {
 };
 
 
+export type MutationAddMealArgs = {
+  input: AddMealInput;
+};
+
+
 export type MutationCreatePlanArgs = {
   input: CreatePlanInput;
 };
 
 
+export type MutationCreateRecipeArgs = {
+  input: CreateRecipeInput;
+};
+
+
 export type MutationDeletePlanArgs = {
+  id: Scalars['Int'];
+};
+
+
+export type MutationDeleteRecipeArgs = {
   id: Scalars['Int'];
 };
 
@@ -112,8 +149,18 @@ export type MutationRemoveIngredientArgs = {
 };
 
 
+export type MutationRemoveMealArgs = {
+  id: Scalars['Int'];
+};
+
+
 export type MutationReorderIngredientsArgs = {
   input: ReorderIngredientsInput;
+};
+
+
+export type MutationReorderMealsArgs = {
+  input: ReorderMealsInput;
 };
 
 
@@ -122,8 +169,18 @@ export type MutationUpdateIngredientArgs = {
 };
 
 
+export type MutationUpdateMealArgs = {
+  input: UpdateMealInput;
+};
+
+
 export type MutationUpdatePlanArgs = {
   input: UpdatePlanInput;
+};
+
+
+export type MutationUpdateRecipeArgs = {
+  input: UpdateRecipeInput;
 };
 
 
@@ -222,28 +279,30 @@ export type QueryRecipeArgs = {
 };
 
 
-export type QueryRecipesArgs = {
-  ids: Array<Scalars['Int']>;
-};
-
-
 export type QuerySearchFoodsArgs = {
   searchTerm: Scalars['String'];
 };
 
 export type Recipe = {
   __typename?: 'Recipe';
+  createdAt: Scalars['DateTime'];
   id: Scalars['Int'];
   ingredients: Array<Ingredient>;
   meals: Array<Meal>;
   name?: Maybe<Scalars['String']>;
   servings?: Maybe<Scalars['Int']>;
+  updatedAt: Scalars['DateTime'];
 };
 
 export type ReorderIngredientsInput = {
   parentId: Scalars['Int'];
   parentType: IngredientParent;
   reorders: Array<IngredientReorder>;
+};
+
+export type ReorderMealsInput = {
+  parentId: Scalars['Int'];
+  reorders: Array<MealReorder>;
 };
 
 export type ServingSize = {
@@ -264,6 +323,11 @@ export type UpdateIngredientInput = {
   measure?: Maybe<Scalars['String']>;
 };
 
+export type UpdateMealInput = {
+  id: Scalars['Int'];
+  servings?: Maybe<Scalars['Int']>;
+};
+
 export type UpdatePlanInput = {
   endDate?: Maybe<Scalars['DateTime']>;
   id: Scalars['Int'];
@@ -271,11 +335,24 @@ export type UpdatePlanInput = {
   startDate?: Maybe<Scalars['DateTime']>;
 };
 
+export type UpdateRecipeInput = {
+  id: Scalars['Int'];
+  name?: Maybe<Scalars['String']>;
+  servings?: Maybe<Scalars['Int']>;
+};
+
 export type UpdateTargetInput = {
   id: Scalars['Int'];
   max?: Maybe<Scalars['Float']>;
   min?: Maybe<Scalars['Float']>;
 };
+
+export type AddMealMutationVariables = Exact<{
+  input: AddMealInput;
+}>;
+
+
+export type AddMealMutation = { __typename?: 'Mutation', addMeal?: Maybe<{ __typename?: 'Meal', id: number, servings: number, order: number, ingredients: Array<{ __typename?: 'Ingredient', id: number, amount: number, measure: string, food?: Maybe<{ __typename?: 'Food', id: number, portions: Array<{ __typename?: 'Portion', measure: string, gramWeight: number }> }> }> }> };
 
 export type GetActiveProfileQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -286,6 +363,46 @@ export type GetNutrientGroupsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type GetNutrientGroupsQuery = { __typename?: 'Query', nutrientGroups: Array<{ __typename?: 'NutrientGroup', id: number, name: string, order: number, nutrients: Array<{ __typename?: 'Nutrient', id: number, name: string, unit: string, order?: Maybe<number>, displayName?: Maybe<string>, activeTarget?: Maybe<{ __typename?: 'NutrientTarget', id: number, min?: Maybe<number>, max?: Maybe<number> }> }> }> };
+
+export type RemoveMealMutationVariables = Exact<{
+  id: Scalars['Int'];
+}>;
+
+
+export type RemoveMealMutation = { __typename?: 'Mutation', removeMeal?: Maybe<{ __typename?: 'Meal', id: number }> };
+
+export type CreateRecipeMutationVariables = Exact<{
+  input: CreateRecipeInput;
+}>;
+
+
+export type CreateRecipeMutation = { __typename?: 'Mutation', createRecipe?: Maybe<{ __typename?: 'Recipe', id: number, name?: Maybe<string>, servings?: Maybe<number> }> };
+
+export type DeleteRecipeMutationVariables = Exact<{
+  recipeId: Scalars['Int'];
+}>;
+
+
+export type DeleteRecipeMutation = { __typename?: 'Mutation', deleteRecipe?: Maybe<{ __typename?: 'Recipe', id: number }> };
+
+export type GetRecipeQueryVariables = Exact<{
+  id: Scalars['Int'];
+}>;
+
+
+export type GetRecipeQuery = { __typename?: 'Query', recipe?: Maybe<{ __typename?: 'Recipe', name?: Maybe<string>, servings?: Maybe<number>, ingredients: Array<{ __typename?: 'Ingredient', id: number, amount: number, measure: string, order: number, food?: Maybe<{ __typename?: 'Food', id: number, description: string, portions: Array<{ __typename?: 'Portion', measure: string, gramWeight: number }> }> }> }> };
+
+export type GetRecipesQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetRecipesQuery = { __typename?: 'Query', recipes: Array<{ __typename?: 'Recipe', id: number, name?: Maybe<string>, servings?: Maybe<number>, createdAt: any, updatedAt: any }> };
+
+export type UpdateRecipeMutationVariables = Exact<{
+  input: UpdateRecipeInput;
+}>;
+
+
+export type UpdateRecipeMutation = { __typename?: 'Mutation', updateRecipe?: Maybe<{ __typename?: 'Recipe', id: number, name?: Maybe<string>, servings?: Maybe<number> }> };
 
 export type AddIngredientMutationVariables = Exact<{
   input: AddIngredientInput;
@@ -332,7 +449,7 @@ export type GetPlanQueryVariables = Exact<{
 }>;
 
 
-export type GetPlanQuery = { __typename?: 'Query', plan?: Maybe<{ __typename?: 'Plan', name?: Maybe<string>, startDate?: Maybe<any>, endDate?: Maybe<any>, ingredients: Array<{ __typename?: 'Ingredient', id: number, amount: number, measure: string, order: number, food?: Maybe<{ __typename?: 'Food', id: number, description: string, portions: Array<{ __typename?: 'Portion', measure: string, gramWeight: number }> }> }> }> };
+export type GetPlanQuery = { __typename?: 'Query', plan?: Maybe<{ __typename?: 'Plan', name?: Maybe<string>, startDate?: Maybe<any>, endDate?: Maybe<any>, ingredients: Array<{ __typename?: 'Ingredient', id: number, amount: number, measure: string, order: number, food?: Maybe<{ __typename?: 'Food', id: number, description: string, portions: Array<{ __typename?: 'Portion', measure: string, gramWeight: number }> }> }>, meals: Array<{ __typename?: 'Meal', id: number, servings: number, order: number, recipe?: Maybe<{ __typename?: 'Recipe', name?: Maybe<string>, id: number }>, ingredients: Array<{ __typename?: 'Ingredient', id: number, amount: number, measure: string, order: number, food?: Maybe<{ __typename?: 'Food', id: number, description: string, portions: Array<{ __typename?: 'Portion', measure: string, gramWeight: number }> }> }> }> }> };
 
 export type GetPlansQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -368,6 +485,53 @@ export type UpdatePlanMutationVariables = Exact<{
 export type UpdatePlanMutation = { __typename?: 'Mutation', updatePlan?: Maybe<{ __typename?: 'Plan', id: number, name?: Maybe<string>, startDate?: Maybe<any>, endDate?: Maybe<any> }> };
 
 
+export const AddMealDocument = gql`
+    mutation addMeal($input: AddMealInput!) {
+  addMeal(input: $input) {
+    id
+    servings
+    order
+    ingredients {
+      id
+      amount
+      measure
+      food {
+        id
+        portions {
+          measure
+          gramWeight
+        }
+      }
+    }
+  }
+}
+    `;
+export type AddMealMutationFn = Apollo.MutationFunction<AddMealMutation, AddMealMutationVariables>;
+
+/**
+ * __useAddMealMutation__
+ *
+ * To run a mutation, you first call `useAddMealMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useAddMealMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [addMealMutation, { data, loading, error }] = useAddMealMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useAddMealMutation(baseOptions?: Apollo.MutationHookOptions<AddMealMutation, AddMealMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<AddMealMutation, AddMealMutationVariables>(AddMealDocument, options);
+      }
+export type AddMealMutationHookResult = ReturnType<typeof useAddMealMutation>;
+export type AddMealMutationResult = Apollo.MutationResult<AddMealMutation>;
+export type AddMealMutationOptions = Apollo.BaseMutationOptions<AddMealMutation, AddMealMutationVariables>;
 export const GetActiveProfileDocument = gql`
     query getActiveProfile {
   activeNutrientProfile {
@@ -461,6 +625,230 @@ export function useGetNutrientGroupsLazyQuery(baseOptions?: Apollo.LazyQueryHook
 export type GetNutrientGroupsQueryHookResult = ReturnType<typeof useGetNutrientGroupsQuery>;
 export type GetNutrientGroupsLazyQueryHookResult = ReturnType<typeof useGetNutrientGroupsLazyQuery>;
 export type GetNutrientGroupsQueryResult = Apollo.QueryResult<GetNutrientGroupsQuery, GetNutrientGroupsQueryVariables>;
+export const RemoveMealDocument = gql`
+    mutation removeMeal($id: Int!) {
+  removeMeal(id: $id) {
+    id
+  }
+}
+    `;
+export type RemoveMealMutationFn = Apollo.MutationFunction<RemoveMealMutation, RemoveMealMutationVariables>;
+
+/**
+ * __useRemoveMealMutation__
+ *
+ * To run a mutation, you first call `useRemoveMealMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useRemoveMealMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [removeMealMutation, { data, loading, error }] = useRemoveMealMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useRemoveMealMutation(baseOptions?: Apollo.MutationHookOptions<RemoveMealMutation, RemoveMealMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<RemoveMealMutation, RemoveMealMutationVariables>(RemoveMealDocument, options);
+      }
+export type RemoveMealMutationHookResult = ReturnType<typeof useRemoveMealMutation>;
+export type RemoveMealMutationResult = Apollo.MutationResult<RemoveMealMutation>;
+export type RemoveMealMutationOptions = Apollo.BaseMutationOptions<RemoveMealMutation, RemoveMealMutationVariables>;
+export const CreateRecipeDocument = gql`
+    mutation createRecipe($input: CreateRecipeInput!) {
+  createRecipe(input: $input) {
+    id
+    name
+    servings
+  }
+}
+    `;
+export type CreateRecipeMutationFn = Apollo.MutationFunction<CreateRecipeMutation, CreateRecipeMutationVariables>;
+
+/**
+ * __useCreateRecipeMutation__
+ *
+ * To run a mutation, you first call `useCreateRecipeMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateRecipeMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createRecipeMutation, { data, loading, error }] = useCreateRecipeMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useCreateRecipeMutation(baseOptions?: Apollo.MutationHookOptions<CreateRecipeMutation, CreateRecipeMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateRecipeMutation, CreateRecipeMutationVariables>(CreateRecipeDocument, options);
+      }
+export type CreateRecipeMutationHookResult = ReturnType<typeof useCreateRecipeMutation>;
+export type CreateRecipeMutationResult = Apollo.MutationResult<CreateRecipeMutation>;
+export type CreateRecipeMutationOptions = Apollo.BaseMutationOptions<CreateRecipeMutation, CreateRecipeMutationVariables>;
+export const DeleteRecipeDocument = gql`
+    mutation deleteRecipe($recipeId: Int!) {
+  deleteRecipe(id: $recipeId) {
+    id
+  }
+}
+    `;
+export type DeleteRecipeMutationFn = Apollo.MutationFunction<DeleteRecipeMutation, DeleteRecipeMutationVariables>;
+
+/**
+ * __useDeleteRecipeMutation__
+ *
+ * To run a mutation, you first call `useDeleteRecipeMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteRecipeMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteRecipeMutation, { data, loading, error }] = useDeleteRecipeMutation({
+ *   variables: {
+ *      recipeId: // value for 'recipeId'
+ *   },
+ * });
+ */
+export function useDeleteRecipeMutation(baseOptions?: Apollo.MutationHookOptions<DeleteRecipeMutation, DeleteRecipeMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<DeleteRecipeMutation, DeleteRecipeMutationVariables>(DeleteRecipeDocument, options);
+      }
+export type DeleteRecipeMutationHookResult = ReturnType<typeof useDeleteRecipeMutation>;
+export type DeleteRecipeMutationResult = Apollo.MutationResult<DeleteRecipeMutation>;
+export type DeleteRecipeMutationOptions = Apollo.BaseMutationOptions<DeleteRecipeMutation, DeleteRecipeMutationVariables>;
+export const GetRecipeDocument = gql`
+    query getRecipe($id: Int!) {
+  recipe(id: $id) {
+    name
+    servings
+    ingredients {
+      id
+      amount
+      measure
+      order
+      food {
+        id
+        description
+        portions {
+          measure
+          gramWeight
+        }
+      }
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetRecipeQuery__
+ *
+ * To run a query within a React component, call `useGetRecipeQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetRecipeQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetRecipeQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useGetRecipeQuery(baseOptions: Apollo.QueryHookOptions<GetRecipeQuery, GetRecipeQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetRecipeQuery, GetRecipeQueryVariables>(GetRecipeDocument, options);
+      }
+export function useGetRecipeLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetRecipeQuery, GetRecipeQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetRecipeQuery, GetRecipeQueryVariables>(GetRecipeDocument, options);
+        }
+export type GetRecipeQueryHookResult = ReturnType<typeof useGetRecipeQuery>;
+export type GetRecipeLazyQueryHookResult = ReturnType<typeof useGetRecipeLazyQuery>;
+export type GetRecipeQueryResult = Apollo.QueryResult<GetRecipeQuery, GetRecipeQueryVariables>;
+export const GetRecipesDocument = gql`
+    query getRecipes {
+  recipes {
+    id
+    name
+    servings
+    createdAt
+    updatedAt
+  }
+}
+    `;
+
+/**
+ * __useGetRecipesQuery__
+ *
+ * To run a query within a React component, call `useGetRecipesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetRecipesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetRecipesQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetRecipesQuery(baseOptions?: Apollo.QueryHookOptions<GetRecipesQuery, GetRecipesQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetRecipesQuery, GetRecipesQueryVariables>(GetRecipesDocument, options);
+      }
+export function useGetRecipesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetRecipesQuery, GetRecipesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetRecipesQuery, GetRecipesQueryVariables>(GetRecipesDocument, options);
+        }
+export type GetRecipesQueryHookResult = ReturnType<typeof useGetRecipesQuery>;
+export type GetRecipesLazyQueryHookResult = ReturnType<typeof useGetRecipesLazyQuery>;
+export type GetRecipesQueryResult = Apollo.QueryResult<GetRecipesQuery, GetRecipesQueryVariables>;
+export const UpdateRecipeDocument = gql`
+    mutation updateRecipe($input: UpdateRecipeInput!) {
+  updateRecipe(input: $input) {
+    id
+    name
+    servings
+  }
+}
+    `;
+export type UpdateRecipeMutationFn = Apollo.MutationFunction<UpdateRecipeMutation, UpdateRecipeMutationVariables>;
+
+/**
+ * __useUpdateRecipeMutation__
+ *
+ * To run a mutation, you first call `useUpdateRecipeMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateRecipeMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateRecipeMutation, { data, loading, error }] = useUpdateRecipeMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useUpdateRecipeMutation(baseOptions?: Apollo.MutationHookOptions<UpdateRecipeMutation, UpdateRecipeMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdateRecipeMutation, UpdateRecipeMutationVariables>(UpdateRecipeDocument, options);
+      }
+export type UpdateRecipeMutationHookResult = ReturnType<typeof useUpdateRecipeMutation>;
+export type UpdateRecipeMutationResult = Apollo.MutationResult<UpdateRecipeMutation>;
+export type UpdateRecipeMutationOptions = Apollo.BaseMutationOptions<UpdateRecipeMutation, UpdateRecipeMutationVariables>;
 export const AddIngredientDocument = gql`
     mutation addIngredient($input: AddIngredientInput!) {
   addIngredient(input: $input) {
@@ -707,6 +1095,29 @@ export const GetPlanDocument = gql`
         portions {
           measure
           gramWeight
+        }
+      }
+    }
+    meals {
+      id
+      servings
+      order
+      recipe {
+        name
+        id
+      }
+      ingredients {
+        id
+        amount
+        measure
+        order
+        food {
+          id
+          description
+          portions {
+            measure
+            gramWeight
+          }
         }
       }
     }
