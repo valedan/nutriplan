@@ -33,14 +33,16 @@ const NutrientAmount = ({ amount, isHover, unit, min }: NutrientAmountProps) => 
 };
 
 interface NutrientProps {
+  id: number;
   name: string;
   amount?: number;
   unit: string;
   min?: number | null;
   max?: number | null;
+  openNutrientModal: (nutrientId: number) => void;
 }
 
-export default function Nutrient({ name, amount = 0, unit, min, max }: NutrientProps) {
+export default function Nutrient({ id, name, amount = 0, unit, min, max, openNutrientModal }: NutrientProps) {
   const percentageOfTarget = min && (amount / min) * 100;
   const isAboveMax = max && amount > max;
 
@@ -49,10 +51,12 @@ export default function Nutrient({ name, amount = 0, unit, min, max }: NutrientP
   const nameWithParens = name.match(/(.+)(\(.+\))/);
 
   return (
-    <div
+    <button
       className="flex items-center cursor-pointer py-2 px-4 hover:bg-blue-50 hover:shadow-md"
       onMouseEnter={() => setIsHover(true)}
       onMouseLeave={() => setIsHover(false)}
+      onClick={() => openNutrientModal(id)}
+      type="button"
     >
       <div className="text-right w-32 text-gray-700">
         <span>{nameWithParens ? nameWithParens[1] : name}</span>
@@ -73,6 +77,6 @@ export default function Nutrient({ name, amount = 0, unit, min, max }: NutrientP
         <p className="flex flex-grow mx-2 italic text-gray-500 text-sm justify-center">No target</p>
       )}
       <NutrientAmount amount={amount} isHover={isHover} unit={unit} min={min} />
-    </div>
+    </button>
   );
 }

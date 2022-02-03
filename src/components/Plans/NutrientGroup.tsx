@@ -18,9 +18,10 @@ interface Props {
   nutrientAmounts: {
     [key: number]: number;
   };
+  openNutrientModal: (nutrientId: number) => void;
 }
 
-export default function NutrientGroup({ name, nutrients, nutrientAmounts }: Props) {
+export default function NutrientGroup({ name, nutrients, nutrientAmounts, openNutrientModal }: Props) {
   return (
     // Add transition to open/close
     // https://headlessui.dev/react/disclosure#transitions
@@ -40,11 +41,13 @@ export default function NutrientGroup({ name, nutrients, nutrientAmounts }: Prop
                 return (
                   <Nutrient
                     key={nutrient.id}
+                    id={nutrient.id}
                     amount={nutrientAmounts[nutrient.id] || 0}
                     unit={nutrient.unit}
                     name={nutrient.displayName || nutrient.name}
                     min={nutrient.activeTarget?.min}
                     max={nutrient.activeTarget?.max}
+                    openNutrientModal={openNutrientModal}
                   />
                 );
               })}

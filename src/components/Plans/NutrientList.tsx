@@ -1,9 +1,13 @@
+import { useState } from "react";
 import { useGetNutrientGroupsQuery, useGetFoodsWithNutrientsQuery } from "../../generated/graphql";
 import NutrientGroup from "./NutrientGroup";
+import NutrientModal from "./NutrientModal";
 
 interface FoodAmount {
   foodId: number;
+  amountInGrams: number;
   amount: number;
+  measure: string;
 }
 
 interface FoodWithNutrients {
@@ -25,7 +29,7 @@ const aggregateNutrientAmounts = (
   const normalizedFoodAmounts: { [key: number]: number } = {};
 
   foodAmounts.forEach((foodAmount) => {
-    normalizedFoodAmounts[foodAmount.foodId] = foodAmount.amount;
+    normalizedFoodAmounts[foodAmount.foodId] = foodAmount.amountInGrams;
   });
 
   const nutrientAmounts: { [key: number]: number } = {};
@@ -50,9 +54,19 @@ interface Props {
   daysInPlan: number;
 }
 
+// TODO: include meals
 export default function NutrientList({ foodAmounts, daysInPlan }: Props) {
   const foodIds = foodAmounts.map((fa) => fa.foodId);
+  const [openNutrientId, setOpenNutrientId] = useState<number | null>(null);
 
+  const closeNutrientModal = () => {
+    // We need the name to remain set for the transition time of the modal
+    setOpenNutrientId(null);
+  };
+
+  const openNutrientModal = (id: number) => {
+    setOpenNutrientId(id);
+  };
   const { data, loading, error } = useGetNutrientGroupsQuery();
   const {
     data: foodData,
@@ -71,13 +85,29 @@ export default function NutrientList({ foodAmounts, daysInPlan }: Props) {
   const nutrientAmountsPerDay = aggregateNutrientAmounts(foodData.foods, foodAmounts, daysInPlan);
 
   return (
-    <div className="min-h-0 flex flex-col overflow-y-auto overflow-x-hidden">
-      {data.nutrientGroups
-        .slice()
-        .sort((a, b) => (a.order || 0) - (b.order || 0))
-        .map(({ id, name, nutrients: nutrientsInGroup }) => (
-          <NutrientGroup name={name} nutrients={nutrientsInGroup} nutrientAmounts={nutrientAmountsPerDay} key={id} />
-        ))}
-    </div>
+    <>
+      <NutrientModal
+        nutrientId={openNutrientId}
+        onClose={closeNutrientModal}
+        foods={foodData.foods}
+        foodAmounts={foodAmounts}
+        daysInPlan={daysInPlan}
+      />
+
+      <div className="min-h-0 flex flex-col overflow-y-auto overflow-x-hidden">
+        {data.nutrientGroups
+          .slice()
+          .sort((a, b) => (a.order || 0) - (b.order || 0))
+          .map(({ id, name, nutrients: nutrientsInGroup }) => (
+            <NutrientGroup
+              name={name}
+              nutrients={nutrientsInGroup}
+              nutrientAmounts={nutrientAmountsPerDay}
+              key={id}
+              openNutrientModal={openNutrientModal}
+            />
+          ))}
+      </div>
+    </>
   );
 }

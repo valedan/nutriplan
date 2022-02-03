@@ -2,6 +2,7 @@
 query getFoodsWithNutrients($foodIds: [Int!]!) {
   foods(ids: $foodIds) {
     id
+    description
     foodNutrients {
       id
       amount

@@ -437,7 +437,7 @@ export type GetFoodsWithNutrientsQueryVariables = Exact<{
 }>;
 
 
-export type GetFoodsWithNutrientsQuery = { __typename?: 'Query', foods: Array<{ __typename?: 'Food', id: number, foodNutrients: Array<{ __typename?: 'FoodNutrient', id: number, amount: number, nutrient: { __typename?: 'Nutrient', id: number, name: string, unit: string } }> }> };
+export type GetFoodsWithNutrientsQuery = { __typename?: 'Query', foods: Array<{ __typename?: 'Food', id: number, description: string, foodNutrients: Array<{ __typename?: 'FoodNutrient', id: number, amount: number, nutrient: { __typename?: 'Nutrient', id: number, name: string, unit: string } }> }> };
 
 export type GetNutrientsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -1002,6 +1002,7 @@ export const GetFoodsWithNutrientsDocument = gql`
     query getFoodsWithNutrients($foodIds: [Int!]!) {
   foods(ids: $foodIds) {
     id
+    description
     foodNutrients {
       id
       amount

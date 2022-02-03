@@ -1,3 +1,4 @@
+import { useState } from "react";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { compact } from "lodash";
@@ -38,11 +39,11 @@ const gramWeightOfIngredient = (ingredient: IngredientWithPortion) => {
 
 const foodAmountsFromIngredients = (ingredients: IngredientWithPortion[]) =>
   ingredients.map((ingredient) => {
-    const amount = gramWeightOfIngredient(ingredient);
-    if (!amount || !ingredient.food?.id) {
+    const amountInGrams = gramWeightOfIngredient(ingredient);
+    if (!amountInGrams || !ingredient.food?.id) {
       return null;
     }
-    return { foodId: ingredient.food.id, amount };
+    return { foodId: ingredient.food.id, amountInGrams, amount: ingredient.amount, measure: ingredient.measure };
   });
 
 export default function PlanEditor() {
@@ -91,7 +92,6 @@ export default function PlanEditor() {
     ...(ingredients?.length ? ingredients : []),
     ...(meals?.length ? meals : []),
   ];
-  console.log(data.plan);
   return (
     <div className="  flex flex-col">
       <Head>
