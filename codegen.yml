@@ -10,3 +10,7 @@ generates:
   ./graphql.schema.json:
     plugins:
       - "introspection"
+config:
+  scalars:
+    DateTime: "Date"
+    Date: "Date"

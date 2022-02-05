@@ -1,0 +1,61 @@
+query getPlanWithNutrients($planId: Int!, $nutrientIds: [Int!]) {
+  plan(id: $planId) {
+    id
+    startDate
+    endDate
+    ingredients {
+      id
+      amount
+      measure
+      food {
+        id
+        description
+        portions {
+          measure
+          gramWeight
+        }
+        foodNutrients(nutrientIds: $nutrientIds) {
+          id
+          amount
+          nutrient {
+            id
+            name
+            unit
+          }
+        }
+      }
+    }
+    meals {
+      id
+      servings
+      order
+      recipe {
+        name
+        id
+      }
+      ingredients {
+        id
+        amount
+        measure
+        order
+        food {
+          id
+          description
+          portions {
+            measure
+            gramWeight
+          }
+          foodNutrients(nutrientIds: $nutrientIds) {
+            id
+            amount
+            nutrient {
+              id
+              name
+              unit
+            }
+          }
+        }
+      }
+    }
+  }
+}

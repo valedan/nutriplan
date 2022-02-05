@@ -13,9 +13,9 @@ export type Scalars = {
   Int: number;
   Float: number;
   /** A date string, such as 2007-12-03, compliant with the `full-date` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar. */
-  Date: any;
+  Date: Date;
   /** A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the `date-time` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar. */
-  DateTime: any;
+  DateTime: Date;
 };
 
 export type AddIngredientInput = {
@@ -53,6 +53,11 @@ export type Food = {
   searchScore?: Maybe<Scalars['Float']>;
 };
 
+
+export type FoodFoodNutrientsArgs = {
+  nutrientIds?: Maybe<Array<Scalars['Int']>>;
+};
+
 export type FoodNutrient = {
   __typename?: 'FoodNutrient';
   amount: Scalars['Float'];
@@ -63,7 +68,7 @@ export type FoodNutrient = {
 export type Ingredient = {
   __typename?: 'Ingredient';
   amount: Scalars['Float'];
-  food?: Maybe<Food>;
+  food: Food;
   id: Scalars['Int'];
   measure: Scalars['String'];
   order: Scalars['Int'];
@@ -229,12 +234,12 @@ export type NutrientTarget = {
 export type Plan = {
   __typename?: 'Plan';
   createdAt: Scalars['DateTime'];
-  endDate?: Maybe<Scalars['DateTime']>;
+  endDate: Scalars['DateTime'];
   id: Scalars['Int'];
   ingredients: Array<Ingredient>;
   meals: Array<Meal>;
   name?: Maybe<Scalars['String']>;
-  startDate?: Maybe<Scalars['DateTime']>;
+  startDate: Scalars['DateTime'];
   updatedAt: Scalars['DateTime'];
 };
 
@@ -249,6 +254,7 @@ export type Query = {
   activeNutrientProfile: NutrientProfile;
   food?: Maybe<Food>;
   foods: Array<Food>;
+  nutrient?: Maybe<Nutrient>;
   nutrientGroups: Array<NutrientGroup>;
   nutrients: Array<Nutrient>;
   plan?: Maybe<Plan>;
@@ -266,6 +272,16 @@ export type QueryFoodArgs = {
 
 export type QueryFoodsArgs = {
   ids: Array<Scalars['Int']>;
+};
+
+
+export type QueryNutrientArgs = {
+  id: Scalars['Int'];
+};
+
+
+export type QueryNutrientsArgs = {
+  ids?: Maybe<Array<Scalars['Int']>>;
 };
 
 
@@ -352,7 +368,7 @@ export type AddMealMutationVariables = Exact<{
 }>;
 
 
-export type AddMealMutation = { __typename?: 'Mutation', addMeal?: Maybe<{ __typename?: 'Meal', id: number, servings: number, order: number, ingredients: Array<{ __typename?: 'Ingredient', id: number, amount: number, measure: string, food?: Maybe<{ __typename?: 'Food', id: number, portions: Array<{ __typename?: 'Portion', measure: string, gramWeight: number }> }> }> }> };
+export type AddMealMutation = { __typename?: 'Mutation', addMeal?: Maybe<{ __typename?: 'Meal', id: number, servings: number, order: number, ingredients: Array<{ __typename?: 'Ingredient', id: number, amount: number, measure: string, food: { __typename?: 'Food', id: number, portions: Array<{ __typename?: 'Portion', measure: string, gramWeight: number }> } }> }> };
 
 export type GetActiveProfileQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -363,6 +379,14 @@ export type GetNutrientGroupsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type GetNutrientGroupsQuery = { __typename?: 'Query', nutrientGroups: Array<{ __typename?: 'NutrientGroup', id: number, name: string, order: number, nutrients: Array<{ __typename?: 'Nutrient', id: number, name: string, unit: string, order?: Maybe<number>, displayName?: Maybe<string>, activeTarget?: Maybe<{ __typename?: 'NutrientTarget', id: number, min?: Maybe<number>, max?: Maybe<number> }> }> }> };
+
+export type GetPlanWithNutrientsQueryVariables = Exact<{
+  planId: Scalars['Int'];
+  nutrientIds?: Maybe<Array<Scalars['Int']> | Scalars['Int']>;
+}>;
+
+
+export type GetPlanWithNutrientsQuery = { __typename?: 'Query', plan?: Maybe<{ __typename?: 'Plan', id: number, startDate: Date, endDate: Date, ingredients: Array<{ __typename?: 'Ingredient', id: number, amount: number, measure: string, food: { __typename?: 'Food', id: number, description: string, portions: Array<{ __typename?: 'Portion', measure: string, gramWeight: number }>, foodNutrients: Array<{ __typename?: 'FoodNutrient', id: number, amount: number, nutrient: { __typename?: 'Nutrient', id: number, name: string, unit: string } }> } }>, meals: Array<{ __typename?: 'Meal', id: number, servings: number, order: number, recipe?: Maybe<{ __typename?: 'Recipe', name?: Maybe<string>, id: number }>, ingredients: Array<{ __typename?: 'Ingredient', id: number, amount: number, measure: string, order: number, food: { __typename?: 'Food', id: number, description: string, portions: Array<{ __typename?: 'Portion', measure: string, gramWeight: number }>, foodNutrients: Array<{ __typename?: 'FoodNutrient', id: number, amount: number, nutrient: { __typename?: 'Nutrient', id: number, name: string, unit: string } }> } }> }> }> };
 
 export type RemoveMealMutationVariables = Exact<{
   id: Scalars['Int'];
@@ -390,12 +414,12 @@ export type GetRecipeQueryVariables = Exact<{
 }>;
 
 
-export type GetRecipeQuery = { __typename?: 'Query', recipe?: Maybe<{ __typename?: 'Recipe', name?: Maybe<string>, servings?: Maybe<number>, ingredients: Array<{ __typename?: 'Ingredient', id: number, amount: number, measure: string, order: number, food?: Maybe<{ __typename?: 'Food', id: number, description: string, portions: Array<{ __typename?: 'Portion', measure: string, gramWeight: number }> }> }> }> };
+export type GetRecipeQuery = { __typename?: 'Query', recipe?: Maybe<{ __typename?: 'Recipe', name?: Maybe<string>, servings?: Maybe<number>, ingredients: Array<{ __typename?: 'Ingredient', id: number, amount: number, measure: string, order: number, food: { __typename?: 'Food', id: number, description: string, portions: Array<{ __typename?: 'Portion', measure: string, gramWeight: number }> } }> }> };
 
 export type GetRecipesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetRecipesQuery = { __typename?: 'Query', recipes: Array<{ __typename?: 'Recipe', id: number, name?: Maybe<string>, servings?: Maybe<number>, createdAt: any, updatedAt: any }> };
+export type GetRecipesQuery = { __typename?: 'Query', recipes: Array<{ __typename?: 'Recipe', id: number, name?: Maybe<string>, servings?: Maybe<number>, createdAt: Date, updatedAt: Date }> };
 
 export type UpdateRecipeMutationVariables = Exact<{
   input: UpdateRecipeInput;
@@ -409,14 +433,14 @@ export type AddIngredientMutationVariables = Exact<{
 }>;
 
 
-export type AddIngredientMutation = { __typename?: 'Mutation', addIngredient?: Maybe<{ __typename?: 'Ingredient', id: number, amount: number, measure: string, order: number, food?: Maybe<{ __typename?: 'Food', id: number, portions: Array<{ __typename?: 'Portion', measure: string, gramWeight: number }> }> }> };
+export type AddIngredientMutation = { __typename?: 'Mutation', addIngredient?: Maybe<{ __typename?: 'Ingredient', id: number, amount: number, measure: string, order: number, food: { __typename?: 'Food', id: number, portions: Array<{ __typename?: 'Portion', measure: string, gramWeight: number }> } }> };
 
 export type CreatePlanMutationVariables = Exact<{
   input: CreatePlanInput;
 }>;
 
 
-export type CreatePlanMutation = { __typename?: 'Mutation', createPlan?: Maybe<{ __typename?: 'Plan', id: number, name?: Maybe<string>, startDate?: Maybe<any>, endDate?: Maybe<any> }> };
+export type CreatePlanMutation = { __typename?: 'Mutation', createPlan?: Maybe<{ __typename?: 'Plan', id: number, name?: Maybe<string>, startDate: Date, endDate: Date }> };
 
 export type DeletePlanMutationVariables = Exact<{
   planId: Scalars['Int'];
@@ -439,6 +463,13 @@ export type GetFoodsWithNutrientsQueryVariables = Exact<{
 
 export type GetFoodsWithNutrientsQuery = { __typename?: 'Query', foods: Array<{ __typename?: 'Food', id: number, description: string, foodNutrients: Array<{ __typename?: 'FoodNutrient', id: number, amount: number, nutrient: { __typename?: 'Nutrient', id: number, name: string, unit: string } }> }> };
 
+export type GetNutrientQueryVariables = Exact<{
+  id: Scalars['Int'];
+}>;
+
+
+export type GetNutrientQuery = { __typename?: 'Query', nutrient?: Maybe<{ __typename?: 'Nutrient', id: number, name: string, unit: string }> };
+
 export type GetNutrientsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -449,12 +480,12 @@ export type GetPlanQueryVariables = Exact<{
 }>;
 
 
-export type GetPlanQuery = { __typename?: 'Query', plan?: Maybe<{ __typename?: 'Plan', name?: Maybe<string>, startDate?: Maybe<any>, endDate?: Maybe<any>, ingredients: Array<{ __typename?: 'Ingredient', id: number, amount: number, measure: string, order: number, food?: Maybe<{ __typename?: 'Food', id: number, description: string, portions: Array<{ __typename?: 'Portion', measure: string, gramWeight: number }> }> }>, meals: Array<{ __typename?: 'Meal', id: number, servings: number, order: number, recipe?: Maybe<{ __typename?: 'Recipe', name?: Maybe<string>, id: number }>, ingredients: Array<{ __typename?: 'Ingredient', id: number, amount: number, measure: string, order: number, food?: Maybe<{ __typename?: 'Food', id: number, description: string, portions: Array<{ __typename?: 'Portion', measure: string, gramWeight: number }> }> }> }> }> };
+export type GetPlanQuery = { __typename?: 'Query', plan?: Maybe<{ __typename?: 'Plan', name?: Maybe<string>, startDate: Date, endDate: Date, ingredients: Array<{ __typename?: 'Ingredient', id: number, amount: number, measure: string, order: number, food: { __typename?: 'Food', id: number, description: string, portions: Array<{ __typename?: 'Portion', measure: string, gramWeight: number }> } }>, meals: Array<{ __typename?: 'Meal', id: number, servings: number, order: number, recipe?: Maybe<{ __typename?: 'Recipe', name?: Maybe<string>, id: number }>, ingredients: Array<{ __typename?: 'Ingredient', id: number, amount: number, measure: string, order: number, food: { __typename?: 'Food', id: number, description: string, portions: Array<{ __typename?: 'Portion', measure: string, gramWeight: number }> } }> }> }> };
 
 export type GetPlansQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetPlansQuery = { __typename?: 'Query', plans: Array<{ __typename?: 'Plan', id: number, name?: Maybe<string>, startDate?: Maybe<any>, endDate?: Maybe<any>, createdAt: any, updatedAt: any }> };
+export type GetPlansQuery = { __typename?: 'Query', plans: Array<{ __typename?: 'Plan', id: number, name?: Maybe<string>, startDate: Date, endDate: Date, createdAt: Date, updatedAt: Date }> };
 
 export type RemoveIngredientMutationVariables = Exact<{
   id: Scalars['Int'];
@@ -482,7 +513,7 @@ export type UpdatePlanMutationVariables = Exact<{
 }>;
 
 
-export type UpdatePlanMutation = { __typename?: 'Mutation', updatePlan?: Maybe<{ __typename?: 'Plan', id: number, name?: Maybe<string>, startDate?: Maybe<any>, endDate?: Maybe<any> }> };
+export type UpdatePlanMutation = { __typename?: 'Mutation', updatePlan?: Maybe<{ __typename?: 'Plan', id: number, name?: Maybe<string>, startDate: Date, endDate: Date }> };
 
 
 export const AddMealDocument = gql`
@@ -625,6 +656,98 @@ export function useGetNutrientGroupsLazyQuery(baseOptions?: Apollo.LazyQueryHook
 export type GetNutrientGroupsQueryHookResult = ReturnType<typeof useGetNutrientGroupsQuery>;
 export type GetNutrientGroupsLazyQueryHookResult = ReturnType<typeof useGetNutrientGroupsLazyQuery>;
 export type GetNutrientGroupsQueryResult = Apollo.QueryResult<GetNutrientGroupsQuery, GetNutrientGroupsQueryVariables>;
+export const GetPlanWithNutrientsDocument = gql`
+    query getPlanWithNutrients($planId: Int!, $nutrientIds: [Int!]) {
+  plan(id: $planId) {
+    id
+    startDate
+    endDate
+    ingredients {
+      id
+      amount
+      measure
+      food {
+        id
+        description
+        portions {
+          measure
+          gramWeight
+        }
+        foodNutrients(nutrientIds: $nutrientIds) {
+          id
+          amount
+          nutrient {
+            id
+            name
+            unit
+          }
+        }
+      }
+    }
+    meals {
+      id
+      servings
+      order
+      recipe {
+        name
+        id
+      }
+      ingredients {
+        id
+        amount
+        measure
+        order
+        food {
+          id
+          description
+          portions {
+            measure
+            gramWeight
+          }
+          foodNutrients(nutrientIds: $nutrientIds) {
+            id
+            amount
+            nutrient {
+              id
+              name
+              unit
+            }
+          }
+        }
+      }
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetPlanWithNutrientsQuery__
+ *
+ * To run a query within a React component, call `useGetPlanWithNutrientsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetPlanWithNutrientsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetPlanWithNutrientsQuery({
+ *   variables: {
+ *      planId: // value for 'planId'
+ *      nutrientIds: // value for 'nutrientIds'
+ *   },
+ * });
+ */
+export function useGetPlanWithNutrientsQuery(baseOptions: Apollo.QueryHookOptions<GetPlanWithNutrientsQuery, GetPlanWithNutrientsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetPlanWithNutrientsQuery, GetPlanWithNutrientsQueryVariables>(GetPlanWithNutrientsDocument, options);
+      }
+export function useGetPlanWithNutrientsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetPlanWithNutrientsQuery, GetPlanWithNutrientsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetPlanWithNutrientsQuery, GetPlanWithNutrientsQueryVariables>(GetPlanWithNutrientsDocument, options);
+        }
+export type GetPlanWithNutrientsQueryHookResult = ReturnType<typeof useGetPlanWithNutrientsQuery>;
+export type GetPlanWithNutrientsLazyQueryHookResult = ReturnType<typeof useGetPlanWithNutrientsLazyQuery>;
+export type GetPlanWithNutrientsQueryResult = Apollo.QueryResult<GetPlanWithNutrientsQuery, GetPlanWithNutrientsQueryVariables>;
 export const RemoveMealDocument = gql`
     mutation removeMeal($id: Int!) {
   removeMeal(id: $id) {
@@ -1043,6 +1166,43 @@ export function useGetFoodsWithNutrientsLazyQuery(baseOptions?: Apollo.LazyQuery
 export type GetFoodsWithNutrientsQueryHookResult = ReturnType<typeof useGetFoodsWithNutrientsQuery>;
 export type GetFoodsWithNutrientsLazyQueryHookResult = ReturnType<typeof useGetFoodsWithNutrientsLazyQuery>;
 export type GetFoodsWithNutrientsQueryResult = Apollo.QueryResult<GetFoodsWithNutrientsQuery, GetFoodsWithNutrientsQueryVariables>;
+export const GetNutrientDocument = gql`
+    query getNutrient($id: Int!) {
+  nutrient(id: $id) {
+    id
+    name
+    unit
+  }
+}
+    `;
+
+/**
+ * __useGetNutrientQuery__
+ *
+ * To run a query within a React component, call `useGetNutrientQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetNutrientQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetNutrientQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useGetNutrientQuery(baseOptions: Apollo.QueryHookOptions<GetNutrientQuery, GetNutrientQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetNutrientQuery, GetNutrientQueryVariables>(GetNutrientDocument, options);
+      }
+export function useGetNutrientLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetNutrientQuery, GetNutrientQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetNutrientQuery, GetNutrientQueryVariables>(GetNutrientDocument, options);
+        }
+export type GetNutrientQueryHookResult = ReturnType<typeof useGetNutrientQuery>;
+export type GetNutrientLazyQueryHookResult = ReturnType<typeof useGetNutrientLazyQuery>;
+export type GetNutrientQueryResult = Apollo.QueryResult<GetNutrientQuery, GetNutrientQueryVariables>;
 export const GetNutrientsDocument = gql`
     query getNutrients {
   nutrients {

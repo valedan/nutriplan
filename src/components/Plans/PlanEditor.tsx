@@ -154,6 +154,7 @@ export default function PlanEditor() {
           </div>
           {data?.plan?.ingredients && (
             <NutrientList
+              planId={Number(planId)}
               daysInPlan={differenceInCalendarDays(parseISO(data.plan.endDate), parseISO(data.plan.startDate))}
               foodAmounts={compact(foodAmountsFromIngredients(data?.plan?.ingredients))}
             />

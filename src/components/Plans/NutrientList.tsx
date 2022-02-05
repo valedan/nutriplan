@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useGetNutrientGroupsQuery, useGetFoodsWithNutrientsQuery } from "../../generated/graphql";
 import NutrientGroup from "./NutrientGroup";
-import NutrientModal from "./NutrientModal";
+import NutrientModal from "./NutrientModal/NutrientModal";
 
 interface FoodAmount {
   foodId: number;
@@ -55,7 +55,7 @@ interface Props {
 }
 
 // TODO: include meals
-export default function NutrientList({ foodAmounts, daysInPlan }: Props) {
+export default function NutrientList({ planId, foodAmounts, daysInPlan }: Props) {
   const foodIds = foodAmounts.map((fa) => fa.foodId);
   const [openNutrientId, setOpenNutrientId] = useState<number | null>(null);
 
@@ -86,13 +86,7 @@ export default function NutrientList({ foodAmounts, daysInPlan }: Props) {
 
   return (
     <>
-      <NutrientModal
-        nutrientId={openNutrientId}
-        onClose={closeNutrientModal}
-        foods={foodData.foods}
-        foodAmounts={foodAmounts}
-        daysInPlan={daysInPlan}
-      />
+      {openNutrientId && <NutrientModal nutrientId={openNutrientId} onClose={closeNutrientModal} planId={planId} />}
 
       <div className="min-h-0 flex flex-col overflow-y-auto overflow-x-hidden">
         {data.nutrientGroups
