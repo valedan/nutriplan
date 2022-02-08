@@ -4,7 +4,7 @@ import { useCombobox } from "downshift";
 import { useCallback } from "react";
 import classNames from "classnames";
 import FoodSuggestion from "./FoodSuggestion";
-import { useSearchFoodsLazyQuery } from "../../../generated/graphql";
+import { useSearchFoodsLazyQuery } from "../../../generated/graphql/hooks";
 import Input from "../Forms/Input/Input";
 import Spinner from "../Spinner";
 

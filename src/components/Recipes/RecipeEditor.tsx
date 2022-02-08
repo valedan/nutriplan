@@ -1,12 +1,12 @@
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { compact } from "lodash";
-import { useAddIngredientMutation, useGetRecipeQuery } from "../../generated/graphql";
+import { useAddIngredientMutation, useGetRecipeQuery } from "../../generated/graphql/hooks";
 import { FoodSearch, LoadingScreen } from "../shared";
 import RecipeNameInput from "./RecipeNameInput";
 import RecipeServingsInput from "./RecipeServingsInput";
 import Ingredient from "../Plans/Ingredient";
-import NutrientList from "../Plans/NutrientList";
+import NutrientList from "../NutrientList/NutrientList";
 
 interface IngredientWithPortion {
   food?: { id: number; portions: { measure: string; gramWeight: number }[] } | null;

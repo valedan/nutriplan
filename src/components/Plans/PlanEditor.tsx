@@ -1,55 +1,26 @@
-import { useState } from "react";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import { compact } from "lodash";
-import { differenceInCalendarDays, parseISO } from "date-fns";
 import {
   useAddIngredientMutation,
-  useGetPlanQuery,
+  useGetPlanWithNutrientsQuery,
   useAddMealMutation,
-  GetPlanQueryResult,
   Ingredient as TIngredient,
   Meal as TMeal,
-} from "../../generated/graphql";
+} from "../../generated/graphql/hooks";
 import { FoodSearch, LoadingScreen } from "../shared";
 import PlanNameInput from "./PlanNameInput";
 import PlanDateInput from "./PlanDateInput";
 import Ingredient from "./Ingredient";
 import RecipeLibraryDropdown from "./RecipeLibraryDropdown";
-import NutrientList from "./NutrientList";
+import NutrientList from "../NutrientList/NutrientList";
 import Meal from "./Meal";
-
-interface IngredientWithPortion {
-  food?: { id: number; portions: { measure: string; gramWeight: number }[] } | null;
-  amount: number;
-  measure: string;
-}
-const gramWeightOfIngredient = (ingredient: IngredientWithPortion) => {
-  if (!ingredient?.food?.portions || !ingredient?.amount) {
-    return null;
-  }
-  const matchingPortion = ingredient.food.portions.find((p) => p.measure === ingredient.measure);
-
-  if (!matchingPortion) {
-    return null;
-  }
-
-  return ingredient.amount * matchingPortion.gramWeight;
-};
-
-const foodAmountsFromIngredients = (ingredients: IngredientWithPortion[]) =>
-  ingredients.map((ingredient) => {
-    const amountInGrams = gramWeightOfIngredient(ingredient);
-    if (!amountInGrams || !ingredient.food?.id) {
-      return null;
-    }
-    return { foodId: ingredient.food.id, amountInGrams, amount: ingredient.amount, measure: ingredient.measure };
-  });
 
 export default function PlanEditor() {
   const router = useRouter();
   const { id: planId } = router.query;
-  const { data, loading, error, refetch } = useGetPlanQuery({ variables: { id: Number(planId) } });
+  const { data, loading, error, refetch } = useGetPlanWithNutrientsQuery({
+    variables: { planId: Number(planId) },
+  });
   const [addIngredient] = useAddIngredientMutation();
   const [addMeal] = useAddMealMutation();
 
@@ -152,13 +123,7 @@ export default function PlanEditor() {
           <div className="py-4 px-8 shadow bg-grey-50 z-10">
             <h3 className="text-center text-gray-500 text-lg leading-6 ">Average daily nutrients</h3>
           </div>
-          {data?.plan?.ingredients && (
-            <NutrientList
-              planId={Number(planId)}
-              daysInPlan={differenceInCalendarDays(parseISO(data.plan.endDate), parseISO(data.plan.startDate))}
-              foodAmounts={compact(foodAmountsFromIngredients(data?.plan?.ingredients))}
-            />
-          )}
+          <NutrientList planId={Number(planId)} />
         </div>
       </div>
     </div>

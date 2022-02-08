@@ -3,5 +3,12 @@ query getNutrient($id: Int!) {
     id
     name
     unit
+    order
+    displayName
+    activeTarget {
+      id
+      min
+      max
+    }
   }
 }

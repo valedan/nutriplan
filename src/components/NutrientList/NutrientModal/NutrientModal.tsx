@@ -1,11 +1,10 @@
 import ContentModal from "../../shared/Modal/ContentModal";
-import { useGetNutrientQuery, useGetPlanWithNutrientsQuery } from "../../../generated/graphql";
+import { useGetNutrientQuery, useGetPlanWithNutrientsQuery } from "../../../generated/graphql/hooks";
 import {
-  numberOfDaysInRange,
   readTotalNutrientAmount,
   readNutrientAmountFromIngredient,
   readNutrientAmountFromMeal,
-} from "../shared/utils";
+} from "../../Plans/shared/utils";
 
 interface Props {
   nutrientId: number;
@@ -13,18 +12,12 @@ interface Props {
   planId: number;
 }
 
-// TODO: somehow this is triggering 4 queries! Should only be 1 at max because Nutrient is cached already
-
 export default function NutrientModal({ planId, nutrientId, onClose }: Props) {
-  const { data, loading, error } = useGetPlanWithNutrientsQuery({
-    variables: { planId, nutrientIds: [nutrientId] },
+  const { data } = useGetPlanWithNutrientsQuery({
+    variables: { planId },
   });
 
-  const {
-    data: nutrientData,
-    loading: nutrientLoading,
-    error: nutrientError,
-  } = useGetNutrientQuery({ variables: { id: nutrientId } });
+  const { data: nutrientData } = useGetNutrientQuery({ variables: { id: nutrientId } });
 
   if (!data?.plan || !nutrientData?.nutrient) {
     return null;

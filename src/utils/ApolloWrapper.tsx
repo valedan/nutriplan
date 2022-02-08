@@ -33,6 +33,19 @@ const ApolloWrapper = ({ children }: { children: React.ReactNode }) => {
   const client = new ApolloClient({
     cache: new InMemoryCache({
       typePolicies: {
+        Query: {
+          fields: {
+            nutrient: {
+              read(_, { args, toReference }) {
+                return toReference({
+                  __typename: "Nutrient",
+                  id: args?.id as number,
+                });
+              },
+            },
+          },
+        },
+
         Portion: {
           keyFields: ["measure", "gramWeight"],
         },

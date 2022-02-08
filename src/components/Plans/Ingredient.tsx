@@ -2,7 +2,7 @@ import { debounce } from "lodash";
 import { Disclosure } from "@headlessui/react";
 import { useState } from "react";
 import { XIcon } from "@heroicons/react/solid";
-import { Portion, useRemoveIngredientMutation, useUpdateIngredientMutation } from "../../generated/graphql";
+import { Portion, useRemoveIngredientMutation, useUpdateIngredientMutation } from "../../generated/graphql/hooks";
 import { Input, Select, Checkbox } from "../shared";
 
 interface Props {

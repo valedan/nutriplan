@@ -1,5 +1,7 @@
 import classNames from "classnames";
 import { useState } from "react";
+import useGetNutrientAmountInPlan from "./useGetNutrientAmountInPlan";
+import { useGetNutrientQuery } from "../../generated/graphql/hooks";
 
 interface NutrientAmountProps {
   amount: number;
@@ -34,19 +36,34 @@ const NutrientAmount = ({ amount, isHover, unit, min }: NutrientAmountProps) => 
 
 interface NutrientProps {
   id: number;
-  name: string;
-  amount?: number;
-  unit: string;
-  min?: number | null;
-  max?: number | null;
+  planId: number;
   openNutrientModal: (nutrientId: number) => void;
 }
 
-export default function Nutrient({ id, name, amount = 0, unit, min, max, openNutrientModal }: NutrientProps) {
+export default function Nutrient({ id, planId, openNutrientModal }: NutrientProps) {
+  const [isHover, setIsHover] = useState(false);
+  const { data } = useGetNutrientQuery({
+    variables: {
+      id,
+    },
+  });
+
+  const { amount } = useGetNutrientAmountInPlan({
+    nutrientId: id,
+    planId,
+  });
+
+  if (!data?.nutrient || !amount) {
+    return null;
+  }
+
+  const min = data.nutrient.activeTarget?.min;
+  const max = data.nutrient.activeTarget?.max;
+  const name = data.nutrient.displayName || data.nutrient.name;
+  const { unit } = data.nutrient;
+
   const percentageOfTarget = min && (amount / min) * 100;
   const isAboveMax = max && amount > max;
-
-  const [isHover, setIsHover] = useState(false);
 
   const nameWithParens = name.match(/(.+)(\(.+\))/);
 

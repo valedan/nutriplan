@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { debounce } from "lodash";
-import { useGetRecipeQuery, useUpdateRecipeMutation } from "../../generated/graphql";
+import { useGetRecipeQuery, useUpdateRecipeMutation } from "../../generated/graphql/hooks";
 import { Input } from "../shared";
 
 interface Props {

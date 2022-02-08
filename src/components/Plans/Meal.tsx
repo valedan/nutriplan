@@ -2,7 +2,7 @@ import classNames from "classnames";
 import { Fragment, useState } from "react";
 import { Disclosure, Transition, Menu } from "@headlessui/react";
 import { ChevronUpIcon, DotsHorizontalIcon } from "@heroicons/react/solid";
-import { Ingredient as IIngredient, useRemoveMealMutation } from "../../generated/graphql";
+import { Ingredient as IIngredient, useRemoveMealMutation } from "../../generated/graphql/hooks";
 import { Input } from "../shared";
 import Ingredient from "./Ingredient";
 

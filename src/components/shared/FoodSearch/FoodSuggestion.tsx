@@ -1,6 +1,6 @@
 import React, { forwardRef } from "react";
 import { capitalize } from "lodash";
-import { Food } from "../../../generated/graphql";
+import { Food } from "../../../generated/graphql/hooks";
 
 interface Props extends React.HTMLAttributes<HTMLElement> {
   selected: boolean;

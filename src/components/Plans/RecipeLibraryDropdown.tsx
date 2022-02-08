@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Dropdown, DropdownItem } from "../shared";
-import { useGetRecipesQuery } from "../../generated/graphql";
+import { useGetRecipesQuery } from "../../generated/graphql/hooks";
 
 interface Props {
   onSelect: (recipeId: number) => void;

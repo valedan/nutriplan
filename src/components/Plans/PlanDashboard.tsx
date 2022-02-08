@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import { ChevronRightIcon } from "@heroicons/react/solid";
 import { TrashIcon } from "@heroicons/react/outline";
 import { formatDistanceToNow, addDays } from "date-fns";
-import { Plan, useCreatePlanMutation, useDeletePlanMutation, useGetPlansQuery } from "../../generated/graphql";
+import { Plan, useCreatePlanMutation, useDeletePlanMutation, useGetPlansQuery } from "../../generated/graphql/hooks";
 import { Button, LoadingScreen } from "../shared";
 import AlertModal from "../shared/Modal/AlertModal";
 
