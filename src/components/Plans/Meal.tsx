@@ -1,7 +1,7 @@
 import classNames from "classnames";
 import { Fragment, useState } from "react";
 import { Disclosure, Transition, Menu } from "@headlessui/react";
-import { ChevronUpIcon, DotsHorizontalIcon } from "@heroicons/react/solid";
+import { ChevronRightIcon, DotsHorizontalIcon } from "@heroicons/react/solid";
 import { Ingredient as IIngredient, useRemoveMealMutation } from "../../generated/graphql/hooks";
 import { Input } from "../shared";
 import Ingredient from "./Ingredient";
@@ -40,7 +40,7 @@ export default function Meal({ id, recipeName, recipeId, servings, ingredients, 
               <div className="flex items-center ml-2 px-2  flex-grow justify-between ">
                 <div className="flex items-center">
                   <Disclosure.Button className="mr-2">
-                    <ChevronUpIcon className={`${open ? "transform rotate-180" : ""} w-5 h-5 text-gray-500`} />
+                    <ChevronRightIcon className={`${open ? "transform rotate-90" : ""} w-5 h-5 text-gray-500`} />
                   </Disclosure.Button>
                   <p className="text-gray-700">{recipeName}</p>
                 </div>

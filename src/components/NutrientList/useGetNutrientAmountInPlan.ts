@@ -1,6 +1,6 @@
 import * as Apollo from "@apollo/client";
 import { useGetPlanWithNutrientsQuery } from "../../generated/graphql/hooks";
-import { readTotalNutrientAmount, numberOfDaysInRange } from "../Plans/shared/utils";
+import { readDailyNutrientAmount } from "../Plans/shared/utils";
 
 interface Props {
   nutrientId: number;
@@ -20,8 +20,7 @@ const useGetNutrientAmountInPlan = ({ nutrientId, planId, options }: Props) => {
   let amount: number | null = null;
 
   if (data?.plan) {
-    const daysInPlan = numberOfDaysInRange(data.plan.startDate, data.plan.endDate);
-    amount = readTotalNutrientAmount(data?.plan, nutrientId) / daysInPlan;
+    amount = readDailyNutrientAmount(data?.plan, nutrientId);
   }
 
   return {

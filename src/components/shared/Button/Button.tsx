@@ -22,7 +22,7 @@ const Button = React.forwardRef<Ref, Props>(
             "text-white bg-red-600 hover:bg-red-700 focus:ring-red-400": variant === "danger",
           },
           {
-            "px-3 py-2 text-sm leading-4": size === "small",
+            "px-3 py-1 text-sm leading-4 h-8": size === "small",
             "px-4 py-2 text-sm": size === "medium",
           },
           className
