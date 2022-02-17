@@ -68,12 +68,13 @@ export default function NutrientModal({ planId, nutrientId, onClose }: Props) {
     const isAboveMax = max && dailyNutrientAmount > max;
     const isBelowMin = min && dailyNutrientAmount < min;
 
-    if (isAboveMax) {
+    // I shouldn't need to have the && max here - tsc correctly recognizes that it's always defind. But for some reason next build struggles. Is it using an old typescript version? Not sure.
+    if (isAboveMax && max) {
       const percentageAboveMax = ((dailyNutrientAmount - max) / max) * 100;
       return `${Math.round(percentageAboveMax)}% above target`;
     }
 
-    if (isBelowMin) {
+    if (isBelowMin && min) {
       const percentageBelowMin = ((min - dailyNutrientAmount) / min) * 100;
       return `${Math.round(percentageBelowMin)}% below target`;
     }
