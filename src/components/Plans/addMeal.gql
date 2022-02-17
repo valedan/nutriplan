@@ -1,0 +1,19 @@
+mutation addMeal($input: AddMealInput!) {
+  addMeal(input: $input) {
+    id
+    servings
+    order
+    ingredients {
+      id
+      amount
+      measure
+      food {
+        id
+        portions {
+          measure
+          gramWeight
+        }
+      }
+    }
+  }
+}

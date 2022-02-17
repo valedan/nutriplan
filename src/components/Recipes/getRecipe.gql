@@ -1,0 +1,20 @@
+query getRecipe($id: Int!) {
+  recipe(id: $id) {
+    name
+    servings
+    ingredients {
+      id
+      amount
+      measure
+      order
+      food {
+        id
+        description
+        portions {
+          measure
+          gramWeight
+        }
+      }
+    }
+  }
+}

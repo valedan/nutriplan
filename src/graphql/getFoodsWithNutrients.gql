@@ -1,11 +1,16 @@
+# TODO: Add optional nutrientIds param to avoid sending all nutrients
 query getFoodsWithNutrients($foodIds: [Int!]!) {
   foods(ids: $foodIds) {
     id
-    nutrients {
+    description
+    foodNutrients {
       id
       amount
-      name
-      unit
+      nutrient {
+        id
+        name
+        unit
+      }
     }
   }
 }

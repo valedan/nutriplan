@@ -1,0 +1,16 @@
+query getActiveProfile {
+  activeNutrientProfile {
+    id
+    name
+    isActive
+    nutrientTargets {
+      id
+      min
+      max
+      nutrient {
+        id
+        name
+      }
+    }
+  }
+}

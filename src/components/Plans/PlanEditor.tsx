@@ -1,46 +1,27 @@
 import Head from "next/head";
 import { useRouter } from "next/router";
-import { compact } from "lodash";
-import { differenceInCalendarDays } from "date-fns";
-import { useAddIngredientMutation, useGetPlanQuery } from "../../generated/graphql";
-import { FoodSearch } from "../shared";
+import {
+  useAddIngredientMutation,
+  useGetPlanWithNutrientsQuery,
+  useAddMealMutation,
+  Portion,
+} from "../../generated/graphql/hooks";
+import { FoodSearch, LoadingScreen } from "../shared";
 import PlanNameInput from "./PlanNameInput";
 import PlanDateInput from "./PlanDateInput";
 import Ingredient from "./Ingredient";
-import NutrientList from "./NutrientList";
-
-interface IngredientWithPortion {
-  food?: { id: number; portions: { measure: string; gramWeight: number }[] } | null;
-  amount: number;
-  measure: string;
-}
-const gramWeightOfIngredient = (ingredient: IngredientWithPortion) => {
-  if (!ingredient?.food?.portions || !ingredient?.amount) {
-    return null;
-  }
-  const matchingPortion = ingredient.food.portions.find((p) => p.measure === ingredient.measure);
-
-  if (!matchingPortion) {
-    return null;
-  }
-
-  return ingredient.amount * matchingPortion.gramWeight;
-};
-
-const foodAmountsFromIngredients = (ingredients: IngredientWithPortion[]) =>
-  ingredients.map((ingredient) => {
-    const amount = gramWeightOfIngredient(ingredient);
-    if (!amount || !ingredient.food?.id) {
-      return null;
-    }
-    return { foodId: ingredient.food.id, amount };
-  });
+import RecipeLibraryDropdown from "./RecipeLibraryDropdown";
+import NutrientList from "../NutrientList/NutrientList";
+import Meal from "./Meal";
 
 export default function PlanEditor() {
   const router = useRouter();
   const { id: planId } = router.query;
-  const { data, loading, error, refetch } = useGetPlanQuery({ variables: { id: Number(planId) } });
+  const { data, loading, error, refetch } = useGetPlanWithNutrientsQuery({
+    variables: { planId: Number(planId) },
+  });
   const [addIngredient] = useAddIngredientMutation();
+  const [addMeal] = useAddMealMutation();
 
   const handleSelectFood = async (foodId: number) => {
     await addIngredient({
@@ -56,56 +37,117 @@ export default function PlanEditor() {
     void refetch();
   };
 
-  if (loading) return <p>Loading...</p>;
+  const handleSelectRecipe = async (recipeId: number) => {
+    await addMeal({
+      variables: {
+        input: {
+          planId: Number(planId),
+          recipeId,
+        },
+      },
+    });
+
+    void refetch();
+  };
+
+  if (loading) {
+    return <LoadingScreen />;
+  }
   if (error || !planId) return <p>Error :(</p>;
 
+  interface IngredientItem {
+    __typename?: "Ingredient";
+    id: number;
+    amount: number;
+    measure: string;
+    order: number;
+    food: {
+      description: string;
+      portions: Portion[];
+    };
+  }
+
+  interface MealItem {
+    __typename?: "Meal";
+    id: number;
+    servings: number;
+    order: number;
+    recipe?: {
+      name?: string | null;
+      id: number;
+    } | null;
+    ingredients: IngredientItem[];
+  }
+
+  // TODO: look into a better pattern here.
+  const ingredients = data?.plan?.ingredients;
+  const meals = data?.plan?.meals;
+  const planItems: (IngredientItem | MealItem)[] = [
+    ...(ingredients?.length ? ingredients : []),
+    ...(meals?.length ? meals : []),
+  ];
   return (
-    <div className="p-2 h-full flex flex-col overflow-hidden relative">
+    <div className="  flex flex-col">
       <Head>
         {/* TODO: This is stale after updating */}
         <title key="title">Edit {data?.plan?.name || "plan"}</title>
       </Head>
-      <h1 className="text-gray-500 text-lg leading-6 mb-4">Edit meal plan</h1>
-      <div className="shadow sm:rounded-md bg-white py-4 px-8 flex justify-between mb-4 z-10">
+      <h1 className="text-gray-500 text-lg leading-6 mb-4 ">Edit meal plan</h1>
+      <div className="shadow sm:rounded-md bg-white py-4 px-8 flex justify-between mb-4 z-10 mx-1">
         <PlanNameInput planId={Number(planId)} className="w-2/3" />
         <PlanDateInput planId={Number(planId)} />
       </div>
-      <div className="flex relative overflow-hidden">
-        <div className="flex flex-col w-2/3 mr-4 shadow overflow-hidden sm:rounded-md bg-white h-full">
+      <div className="flex  p-1 ">
+        <div className="flex flex-col  h-full w-2/3 mr-4 shadow sm:rounded-md bg-white " style={{ minHeight: "30rem" }}>
           <div className="py-4 px-8 shadow bg-grey-50 z-10">
-            <h3 className="text-center mb-2 text-gray-500 text-lg leading-6 ">Foods</h3>
+            <div className="flex justify-between mb-2">
+              <h3 className=" flex-grow text-center mb-2 text-gray-500 text-lg leading-loose">Foods</h3>
+              <RecipeLibraryDropdown onSelect={handleSelectRecipe} />
+            </div>
             <FoodSearch onSelectFood={handleSelectFood} />
           </div>
-          <div className="px-8 overflow-y-auto">
+          <div className="px-8">
             <ul className="mt-4">
-              {data?.plan?.ingredients?.map(
-                (ingredient) =>
-                  ingredient.food && (
+              {planItems.map((planItem) => {
+                // eslint-disable-next-line no-underscore-dangle
+                if (planItem.__typename === "Ingredient" && planItem.food) {
+                  return (
                     <Ingredient
-                      id={ingredient.id}
-                      amount={ingredient.amount}
-                      measure={ingredient.measure}
-                      foodDescription={ingredient.food?.description}
-                      portions={ingredient.food?.portions}
+                      id={planItem.id}
+                      amount={planItem.amount}
+                      measure={planItem.measure}
+                      foodDescription={planItem.food?.description}
+                      portions={planItem.food?.portions}
                       refetch={refetch}
-                      key={ingredient.id}
+                      key={planItem.id}
                     />
-                  )
-              )}
+                  );
+                }
+                // eslint-disable-next-line no-underscore-dangle
+                if (planItem.__typename === "Meal" && planItem.recipe?.name) {
+                  return (
+                    <Meal
+                      key={planItem.id}
+                      id={planItem.id}
+                      recipeName={planItem.recipe.name}
+                      recipeId={planItem.recipe.id}
+                      servings={planItem.servings}
+                      ingredients={planItem.ingredients}
+                      refetch={refetch}
+                    />
+                  );
+                }
+                return null;
+              })}
             </ul>
           </div>
         </div>
 
-        <div className="flex flex-col w-1/3 shadow  bg-white h-full relative rounded-md">
+        <div className="flex flex-col w-1/3 shadow  bg-white  rounded-md">
           <div className="py-4 px-8 shadow bg-grey-50 z-10">
             <h3 className="text-center text-gray-500 text-lg leading-6 ">Average daily nutrients</h3>
           </div>
-          {data?.plan?.ingredients && (
-            <NutrientList
-              daysInPlan={differenceInCalendarDays(data.plan.endDate, data.plan.startDate)}
-              foodAmounts={compact(foodAmountsFromIngredients(data?.plan?.ingredients))}
-            />
-          )}
+          <NutrientList planId={Number(planId)} />
         </div>
       </div>
     </div>

@@ -1,0 +1,5 @@
+mutation deleteRecipe($recipeId: Int!) {
+  deleteRecipe(id: $recipeId) {
+    id
+  }
+}

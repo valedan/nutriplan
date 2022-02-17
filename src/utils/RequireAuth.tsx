@@ -6,7 +6,7 @@ const RequireAuth = ({ children }: { children: React.ReactNode }) => {
   const { isAuthenticated, isLoading, loginWithRedirect } = useAuth0();
 
   if (isLoading) {
-    return <LoadingScreen />;
+    return <LoadingScreen message="Logging you in..." />;
   }
 
   if (!isAuthenticated) {

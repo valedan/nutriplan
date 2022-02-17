@@ -31,8 +31,28 @@ const ApolloWrapper = ({ children }: { children: React.ReactNode }) => {
   const httpLink = new HttpLink({ uri: process.env.NEXT_PUBLIC_API_URL });
 
   const client = new ApolloClient({
-    cache: new InMemoryCache(),
+    cache: new InMemoryCache({
+      typePolicies: {
+        Query: {
+          fields: {
+            nutrient: {
+              read(_, { args, toReference }) {
+                return toReference({
+                  __typename: "Nutrient",
+                  id: args?.id as number,
+                });
+              },
+            },
+          },
+        },
+
+        Portion: {
+          keyFields: ["measure", "gramWeight"],
+        },
+      },
+    }),
     link: from([authLink, httpLink]),
+    connectToDevTools: true,
 
     defaultOptions: {
       watchQuery: {

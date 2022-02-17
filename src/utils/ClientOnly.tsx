@@ -4,7 +4,7 @@ interface Props {
   children: ReactNode;
 }
 
-const ClientOnly = ({ children, ...delegated }: Props) => {
+const ClientOnly = ({ children }: Props) => {
   const [hasMounted, setHasMounted] = useState(false);
 
   useEffect(() => {
@@ -15,11 +15,7 @@ const ClientOnly = ({ children, ...delegated }: Props) => {
     return null;
   }
 
-  return (
-    <div className="h-full" {...delegated}>
-      {children}
-    </div>
-  );
+  return <>{children}</>;
 };
 
 export default ClientOnly;

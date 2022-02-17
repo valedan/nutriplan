@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { debounce } from "lodash";
-import { useGetPlanQuery, useUpdatePlanMutation } from "../../generated/graphql";
+import { useGetPlanQuery, useUpdatePlanMutation } from "../../generated/graphql/hooks";
 import { Input } from "../shared";
 
 interface Props {

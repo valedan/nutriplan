@@ -1,0 +1,19 @@
+query getNutrientGroups {
+  nutrientGroups {
+    id
+    name
+    order
+    nutrients {
+      id
+      name
+      unit
+      order
+      displayName
+      activeTarget {
+        id
+        min
+        max
+      }
+    }
+  }
+}

@@ -1,0 +1,14 @@
+query getNutrient($id: Int!) {
+  nutrient(id: $id) {
+    id
+    name
+    unit
+    order
+    displayName
+    activeTarget {
+      id
+      min
+      max
+    }
+  }
+}

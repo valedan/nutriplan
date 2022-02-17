@@ -1,0 +1,5 @@
+mutation removeMeal($id: Int!) {
+  removeMeal(id: $id) {
+    id
+  }
+}
