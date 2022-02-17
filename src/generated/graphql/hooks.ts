@@ -213,34 +213,34 @@ export type NutrientGroup = {
 
 export type NutrientProfile = {
   __typename?: 'NutrientProfile';
-  createdAt: Scalars['DateTime'];
+  createdAt: Scalars['String'];
   id: Scalars['Int'];
   isActive: Scalars['Boolean'];
   name: Scalars['String'];
   nutrientTargets: Array<NutrientTarget>;
-  updatedAt: Scalars['DateTime'];
+  updatedAt: Scalars['String'];
 };
 
 export type NutrientTarget = {
   __typename?: 'NutrientTarget';
-  createdAt: Scalars['DateTime'];
+  createdAt: Scalars['String'];
   id: Scalars['Int'];
   max?: Maybe<Scalars['Float']>;
   min?: Maybe<Scalars['Float']>;
   nutrient: Nutrient;
-  updatedAt: Scalars['DateTime'];
+  updatedAt: Scalars['String'];
 };
 
 export type Plan = {
   __typename?: 'Plan';
-  createdAt: Scalars['DateTime'];
-  endDate: Scalars['DateTime'];
+  createdAt: Scalars['String'];
+  endDate: Scalars['String'];
   id: Scalars['Int'];
   ingredients: Array<Ingredient>;
   meals: Array<Meal>;
   name?: Maybe<Scalars['String']>;
-  startDate: Scalars['DateTime'];
-  updatedAt: Scalars['DateTime'];
+  startDate: Scalars['String'];
+  updatedAt: Scalars['String'];
 };
 
 export type Portion = {
@@ -301,13 +301,13 @@ export type QuerySearchFoodsArgs = {
 
 export type Recipe = {
   __typename?: 'Recipe';
-  createdAt: Scalars['DateTime'];
+  createdAt: Scalars['String'];
   id: Scalars['Int'];
   ingredients: Array<Ingredient>;
   meals: Array<Meal>;
   name?: Maybe<Scalars['String']>;
   servings?: Maybe<Scalars['Int']>;
-  updatedAt: Scalars['DateTime'];
+  updatedAt: Scalars['String'];
 };
 
 export type ReorderIngredientsInput = {
@@ -393,7 +393,7 @@ export type GetPlanWithNutrientsQueryVariables = Exact<{
 }>;
 
 
-export type GetPlanWithNutrientsQuery = { __typename?: 'Query', plan?: Maybe<{ __typename?: 'Plan', id: number, startDate: Date, endDate: Date, ingredients: Array<{ __typename?: 'Ingredient', id: number, amount: number, measure: string, food: { __typename?: 'Food', id: number, description: string, portions: Array<{ __typename?: 'Portion', measure: string, gramWeight: number }>, foodNutrients: Array<{ __typename?: 'FoodNutrient', id: number, amount: number, nutrient: { __typename?: 'Nutrient', id: number, name: string, unit: string } }> } }>, meals: Array<{ __typename?: 'Meal', id: number, servings: number, order: number, recipe?: Maybe<{ __typename?: 'Recipe', name?: Maybe<string>, id: number }>, ingredients: Array<{ __typename?: 'Ingredient', id: number, amount: number, measure: string, order: number, food: { __typename?: 'Food', id: number, description: string, portions: Array<{ __typename?: 'Portion', measure: string, gramWeight: number }>, foodNutrients: Array<{ __typename?: 'FoodNutrient', id: number, amount: number, nutrient: { __typename?: 'Nutrient', id: number, name: string, unit: string } }> } }> }> }> };
+export type GetPlanWithNutrientsQuery = { __typename?: 'Query', plan?: Maybe<{ __typename?: 'Plan', id: number, startDate: string, endDate: string, name?: Maybe<string>, ingredients: Array<{ __typename?: 'Ingredient', id: number, amount: number, measure: string, order: number, food: { __typename?: 'Food', id: number, description: string, portions: Array<{ __typename?: 'Portion', measure: string, gramWeight: number }>, foodNutrients: Array<{ __typename?: 'FoodNutrient', id: number, amount: number, nutrient: { __typename?: 'Nutrient', id: number, name: string, unit: string } }> } }>, meals: Array<{ __typename?: 'Meal', id: number, servings: number, order: number, recipe?: Maybe<{ __typename?: 'Recipe', name?: Maybe<string>, id: number }>, ingredients: Array<{ __typename?: 'Ingredient', id: number, amount: number, measure: string, order: number, food: { __typename?: 'Food', id: number, description: string, portions: Array<{ __typename?: 'Portion', measure: string, gramWeight: number }>, foodNutrients: Array<{ __typename?: 'FoodNutrient', id: number, amount: number, nutrient: { __typename?: 'Nutrient', id: number, name: string, unit: string } }> } }> }> }> };
 
 export type RemoveMealMutationVariables = Exact<{
   id: Scalars['Int'];
@@ -426,7 +426,7 @@ export type GetRecipeQuery = { __typename?: 'Query', recipe?: Maybe<{ __typename
 export type GetRecipesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetRecipesQuery = { __typename?: 'Query', recipes: Array<{ __typename?: 'Recipe', id: number, name?: Maybe<string>, servings?: Maybe<number>, createdAt: Date, updatedAt: Date }> };
+export type GetRecipesQuery = { __typename?: 'Query', recipes: Array<{ __typename?: 'Recipe', id: number, name?: Maybe<string>, servings?: Maybe<number>, createdAt: string, updatedAt: string }> };
 
 export type UpdateRecipeMutationVariables = Exact<{
   input: UpdateRecipeInput;
@@ -447,7 +447,7 @@ export type CreatePlanMutationVariables = Exact<{
 }>;
 
 
-export type CreatePlanMutation = { __typename?: 'Mutation', createPlan?: Maybe<{ __typename?: 'Plan', id: number, name?: Maybe<string>, startDate: Date, endDate: Date }> };
+export type CreatePlanMutation = { __typename?: 'Mutation', createPlan?: Maybe<{ __typename?: 'Plan', id: number, name?: Maybe<string>, startDate: string, endDate: string }> };
 
 export type DeletePlanMutationVariables = Exact<{
   planId: Scalars['Int'];
@@ -480,12 +480,12 @@ export type GetPlanQueryVariables = Exact<{
 }>;
 
 
-export type GetPlanQuery = { __typename?: 'Query', plan?: Maybe<{ __typename?: 'Plan', name?: Maybe<string>, startDate: Date, endDate: Date, ingredients: Array<{ __typename?: 'Ingredient', id: number, amount: number, measure: string, order: number, food: { __typename?: 'Food', id: number, description: string, portions: Array<{ __typename?: 'Portion', measure: string, gramWeight: number }> } }>, meals: Array<{ __typename?: 'Meal', id: number, servings: number, order: number, recipe?: Maybe<{ __typename?: 'Recipe', name?: Maybe<string>, id: number }>, ingredients: Array<{ __typename?: 'Ingredient', id: number, amount: number, measure: string, order: number, food: { __typename?: 'Food', id: number, description: string, portions: Array<{ __typename?: 'Portion', measure: string, gramWeight: number }> } }> }> }> };
+export type GetPlanQuery = { __typename?: 'Query', plan?: Maybe<{ __typename?: 'Plan', name?: Maybe<string>, startDate: string, endDate: string, ingredients: Array<{ __typename?: 'Ingredient', id: number, amount: number, measure: string, order: number, food: { __typename?: 'Food', id: number, description: string, portions: Array<{ __typename?: 'Portion', measure: string, gramWeight: number }> } }>, meals: Array<{ __typename?: 'Meal', id: number, servings: number, order: number, recipe?: Maybe<{ __typename?: 'Recipe', name?: Maybe<string>, id: number }>, ingredients: Array<{ __typename?: 'Ingredient', id: number, amount: number, measure: string, order: number, food: { __typename?: 'Food', id: number, description: string, portions: Array<{ __typename?: 'Portion', measure: string, gramWeight: number }> } }> }> }> };
 
 export type GetPlansQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetPlansQuery = { __typename?: 'Query', plans: Array<{ __typename?: 'Plan', id: number, name?: Maybe<string>, startDate: Date, endDate: Date, createdAt: Date, updatedAt: Date }> };
+export type GetPlansQuery = { __typename?: 'Query', plans: Array<{ __typename?: 'Plan', id: number, name?: Maybe<string>, startDate: string, endDate: string, createdAt: string, updatedAt: string }> };
 
 export type RemoveIngredientMutationVariables = Exact<{
   id: Scalars['Int'];
@@ -513,7 +513,7 @@ export type UpdatePlanMutationVariables = Exact<{
 }>;
 
 
-export type UpdatePlanMutation = { __typename?: 'Mutation', updatePlan?: Maybe<{ __typename?: 'Plan', id: number, name?: Maybe<string>, startDate: Date, endDate: Date }> };
+export type UpdatePlanMutation = { __typename?: 'Mutation', updatePlan?: Maybe<{ __typename?: 'Plan', id: number, name?: Maybe<string>, startDate: string, endDate: string }> };
 
 
 export const GetNutrientDocument = gql`
@@ -706,10 +706,12 @@ export const GetPlanWithNutrientsDocument = gql`
     id
     startDate
     endDate
+    name
     ingredients {
       id
       amount
       measure
+      order
       food {
         id
         description

@@ -28,7 +28,7 @@ export const Basic: ComponentStory<typeof AlertModal> = () => {
       <AlertModal
         open={isOpen}
         title="Payment successful"
-        onConfirm={() => console.log("confirmed")}
+        onConfirm={() => {}}
         confirmText="Deactivate"
         onClose={closeModal}
       >

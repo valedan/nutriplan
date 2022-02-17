@@ -3,10 +3,12 @@ query getPlanWithNutrients($planId: Int!, $nutrientIds: [Int!]) {
     id
     startDate
     endDate
+    name
     ingredients {
       id
       amount
       measure
+      order
       food {
         id
         description

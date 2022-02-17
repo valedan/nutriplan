@@ -22,7 +22,7 @@ const FoodSearch = ({ onSelectFood }: Props) => {
   const debouncedSearch = useCallback(
     debounce(({ inputValue }: { inputValue?: string }) => {
       if (inputValue) {
-        searchFoods({ variables: { searchTerm: inputValue } });
+        void searchFoods({ variables: { searchTerm: inputValue } });
       }
     }, 500),
     []

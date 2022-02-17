@@ -1,8 +1,5 @@
 import { differenceInDays } from "date-fns";
 
-export const numberOfDaysInRange = (startDate: Date, endDate: Date): number =>
-  differenceInDays(new Date(endDate), new Date(startDate));
-
 export interface WeighableIngredientWithNutrients {
   amount: number;
   measure: string;
@@ -75,11 +72,12 @@ export const readDailyNutrientAmount = (
   plan: {
     ingredients: WeighableIngredientWithNutrients[];
     meals: { ingredients: WeighableIngredientWithNutrients[] }[];
-    startDate: Date;
-    endDate: Date;
+    startDate: string;
+    endDate: string;
   },
   nutrientId: number
-): number => readTotalNutrientAmount(plan, nutrientId) / numberOfDaysInRange(plan.startDate, plan.endDate);
+): number =>
+  readTotalNutrientAmount(plan, nutrientId) / differenceInDays(new Date(plan.startDate), new Date(plan.endDate));
 
 interface Orderable {
   order?: number | null;

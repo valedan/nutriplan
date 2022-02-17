@@ -1,5 +1,6 @@
 import { Tab } from "@headlessui/react";
 import classNames from "classnames";
+import { differenceInDays } from "date-fns";
 import ContentModal from "../../shared/Modal/ContentModal";
 import {
   Meal as IMeal,
@@ -8,7 +9,6 @@ import {
   useGetPlanWithNutrientsQuery,
 } from "../../../generated/graphql/hooks";
 import {
-  numberOfDaysInRange,
   readDailyNutrientAmount,
   readNutrientAmountFromIngredient,
   readNutrientAmountFromMeal,
@@ -85,7 +85,7 @@ export default function NutrientModal({ planId, nutrientId, onClose }: Props) {
     return null;
   };
 
-  const daysInPlan = numberOfDaysInRange(data.plan.startDate, data.plan.endDate);
+  const daysInPlan = differenceInDays(new Date(data.plan.startDate), new Date(data.plan.endDate));
 
   const convertIngredientToContributor = (
     ingredient: WeighableIngredientWithNutrients & { id: number; food: { description: string } }

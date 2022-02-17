@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { Dropdown, DropdownItem } from "../shared";
 import { useGetRecipesQuery } from "../../generated/graphql/hooks";
 
@@ -17,6 +17,7 @@ export default function RecipeLibraryDropdown({ onSelect }: Props) {
     <Dropdown title="Recipes">
       {data.recipes.map((recipe) => (
         // TODO: Enforce on backend that recipes have a name (plans too!)
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         <DropdownItem key={recipe.id} onClick={() => onSelect(recipe.id)} title={recipe.name!} />
       ))}
     </Dropdown>

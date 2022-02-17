@@ -2,7 +2,7 @@ import classNames from "classnames";
 import { Fragment, useState } from "react";
 import { Disclosure, Transition, Menu } from "@headlessui/react";
 import { ChevronRightIcon, DotsHorizontalIcon } from "@heroicons/react/solid";
-import { Ingredient as IIngredient, useRemoveMealMutation } from "../../generated/graphql/hooks";
+import { Portion, useRemoveMealMutation } from "../../generated/graphql/hooks";
 import { Input } from "../shared";
 import Ingredient from "./Ingredient";
 
@@ -11,7 +11,16 @@ interface Props {
   recipeName: string;
   recipeId: number;
   servings: number;
-  ingredients: IIngredient[];
+  ingredients: {
+    id: number;
+    amount: number;
+    measure: string;
+    order: number;
+    food: {
+      description: string;
+      portions: Portion[];
+    };
+  }[];
   refetch: () => void;
 }
 
@@ -120,7 +129,7 @@ export default function Meal({ id, recipeName, recipeId, servings, ingredients, 
                   .slice()
                   .sort((a, b) => (a.order || 0) - (b.order || 0))
                   .map(
-                    (ingredient: IIngredient) =>
+                    (ingredient) =>
                       ingredient.food && (
                         <Ingredient
                           key={ingredient.id}

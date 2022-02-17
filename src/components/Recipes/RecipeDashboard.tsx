@@ -27,7 +27,7 @@ export default function RecipeDashboard() {
   const [recipeToDelete, setRecipeToDelete] = useState<number | null>(null);
   const { loading, error, data, refetch } = useGetRecipesQuery();
   const [deleteRecipe] = useDeleteRecipeMutation();
-  const [createRecipe, { loading: createLoading, error: createError }] = useCreateRecipeMutation();
+  const [createRecipe] = useCreateRecipeMutation();
   const router = useRouter();
 
   function closeDeleteModal() {

@@ -5,7 +5,7 @@ import { XIcon } from "@heroicons/react/solid";
 import { Portion, useRemoveIngredientMutation, useUpdateIngredientMutation } from "../../generated/graphql/hooks";
 import { Input, Select, Checkbox } from "../shared";
 
-interface Props {
+export interface IngredientProps {
   id: number;
   amount: number;
   measure: string;
@@ -23,7 +23,7 @@ export default function Ingredient({
   portions,
   refetch,
   isMealIngredient = false,
-}: Props) {
+}: IngredientProps) {
   const [localAmount, setLocalAmount] = useState(amount);
   const [localMeasure, setLocalMeasure] = useState(measure);
   const [updateIngredient] = useUpdateIngredientMutation();
@@ -54,7 +54,7 @@ export default function Ingredient({
 
   return (
     <Disclosure key={id}>
-      {({ open }) => (
+      {() => (
         <div className="">
           <div className="flex flex-col ">
             <div className="flex  items-center flex-grow">

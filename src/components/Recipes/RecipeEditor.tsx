@@ -1,39 +1,11 @@
 import Head from "next/head";
 import { useRouter } from "next/router";
-import { compact } from "lodash";
 import { useAddIngredientMutation, useGetRecipeQuery } from "../../generated/graphql/hooks";
 import { FoodSearch, LoadingScreen } from "../shared";
 import RecipeNameInput from "./RecipeNameInput";
 import RecipeServingsInput from "./RecipeServingsInput";
 import Ingredient from "../Plans/Ingredient";
-import NutrientList from "../NutrientList/NutrientList";
-
-interface IngredientWithPortion {
-  food?: { id: number; portions: { measure: string; gramWeight: number }[] } | null;
-  amount: number;
-  measure: string;
-}
-const gramWeightOfIngredient = (ingredient: IngredientWithPortion) => {
-  if (!ingredient?.food?.portions || !ingredient?.amount) {
-    return null;
-  }
-  const matchingPortion = ingredient.food.portions.find((p) => p.measure === ingredient.measure);
-
-  if (!matchingPortion) {
-    return null;
-  }
-
-  return ingredient.amount * matchingPortion.gramWeight;
-};
-
-const foodAmountsFromIngredients = (ingredients: IngredientWithPortion[]) =>
-  ingredients.map((ingredient) => {
-    const amount = gramWeightOfIngredient(ingredient);
-    if (!amount || !ingredient.food?.id) {
-      return null;
-    }
-    return { foodId: ingredient.food.id, amount };
-  });
+// import NutrientList from "../NutrientList/NutrientList";
 
 export default function RecipeEditor() {
   const router = useRouter();
@@ -100,12 +72,8 @@ export default function RecipeEditor() {
           <div className="py-4 px-8 shadow bg-grey-50 z-10">
             <h3 className="text-center text-gray-500 text-lg leading-6 ">Average daily nutrients</h3>
           </div>
-          {data?.recipe?.ingredients && (
-            <NutrientList
-              daysInPlan={data?.recipe?.servings || 1} // TODO - decouple this from Plan
-              foodAmounts={compact(foodAmountsFromIngredients(data?.recipe?.ingredients))}
-            />
-          )}
+          {/* TODO: Make NutrientList work for recipes */}
+          {/* {data?.recipe?.ingredients && <NutrientList />} */}
         </div>
       </div>
     </div>

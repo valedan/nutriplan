@@ -22,7 +22,7 @@ export default function PlanDashboard() {
   const [planToDelete, setPlanToDelete] = useState<number | null>(null);
   const { loading, error, data, refetch } = useGetPlansQuery();
   const [deletePlan] = useDeletePlanMutation();
-  const [createPlan, { loading: createLoading, error: createError }] = useCreatePlanMutation();
+  const [createPlan] = useCreatePlanMutation();
   const router = useRouter();
 
   function closeDeleteModal() {

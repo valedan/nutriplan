@@ -1,6 +1,6 @@
 import { Fragment, ReactNode, useRef } from "react";
 import { Dialog, Transition } from "@headlessui/react";
-import { ExclamationIcon, XIcon } from "@heroicons/react/outline";
+import { XIcon } from "@heroicons/react/outline";
 import Button from "../Button/Button";
 
 interface Props {

@@ -11,6 +11,7 @@ interface Props {
 export default function PlanDateInput({ planId }: Props) {
   const { data, loading, error } = useGetPlanQuery({ variables: { id: Number(planId) } });
   const [days, setDays] = useState(7);
+  console.log(data?.plan?.startDate);
   useEffect(() => {
     if (data?.plan?.startDate && data?.plan?.endDate) {
       setDays(differenceInCalendarDays(parseISO(data.plan.endDate), parseISO(data.plan.startDate)));

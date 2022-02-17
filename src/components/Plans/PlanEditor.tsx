@@ -4,8 +4,7 @@ import {
   useAddIngredientMutation,
   useGetPlanWithNutrientsQuery,
   useAddMealMutation,
-  Ingredient as TIngredient,
-  Meal as TMeal,
+  Portion,
 } from "../../generated/graphql/hooks";
 import { FoodSearch, LoadingScreen } from "../shared";
 import PlanNameInput from "./PlanNameInput";
@@ -56,10 +55,34 @@ export default function PlanEditor() {
   }
   if (error || !planId) return <p>Error :(</p>;
 
+  interface IngredientItem {
+    __typename?: "Ingredient";
+    id: number;
+    amount: number;
+    measure: string;
+    order: number;
+    food: {
+      description: string;
+      portions: Portion[];
+    };
+  }
+
+  interface MealItem {
+    __typename?: "Meal";
+    id: number;
+    servings: number;
+    order: number;
+    recipe?: {
+      name?: string | null;
+      id: number;
+    } | null;
+    ingredients: IngredientItem[];
+  }
+
   // TODO: look into a better pattern here.
   const ingredients = data?.plan?.ingredients;
   const meals = data?.plan?.meals;
-  const planItems: (TIngredient | TMeal)[] = [
+  const planItems: (IngredientItem | MealItem)[] = [
     ...(ingredients?.length ? ingredients : []),
     ...(meals?.length ? meals : []),
   ];
@@ -101,7 +124,7 @@ export default function PlanEditor() {
                   );
                 }
                 // eslint-disable-next-line no-underscore-dangle
-                if (planItem.__typename === "Meal") {
+                if (planItem.__typename === "Meal" && planItem.recipe?.name) {
                   return (
                     <Meal
                       key={planItem.id}
@@ -114,6 +137,7 @@ export default function PlanEditor() {
                     />
                   );
                 }
+                return null;
               })}
             </ul>
           </div>
