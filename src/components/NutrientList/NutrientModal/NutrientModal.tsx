@@ -86,7 +86,7 @@ export default function NutrientModal({ planId, nutrientId, onClose }: Props) {
     return null;
   };
 
-  const daysInPlan = differenceInDays(new Date(data.plan.startDate), new Date(data.plan.endDate));
+  const daysInPlan = differenceInDays(new Date(data.plan.endDate), new Date(data.plan.startDate));
 
   const convertIngredientToContributor = (
     ingredient: WeighableIngredientWithNutrients & { id: number; food: { description: string } }

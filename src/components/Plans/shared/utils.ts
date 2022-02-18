@@ -77,7 +77,7 @@ export const readDailyNutrientAmount = (
   },
   nutrientId: number
 ): number =>
-  readTotalNutrientAmount(plan, nutrientId) / differenceInDays(new Date(plan.startDate), new Date(plan.endDate));
+  readTotalNutrientAmount(plan, nutrientId) / differenceInDays(new Date(plan.endDate), new Date(plan.startDate));
 
 interface Orderable {
   order?: number | null;

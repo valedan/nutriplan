@@ -2,8 +2,7 @@ const forms = require("@tailwindcss/forms");
 const colors = require("tailwindcss/colors");
 
 module.exports = {
-  purge: ["./src/**/*.{js,ts,jsx,tsx}"],
-  darkMode: false, // or 'media' or 'class'
+  content: ["./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
     colors: {
       transparent: "transparent",
@@ -11,11 +10,11 @@ module.exports = {
       black: colors.black,
       white: colors.white,
 
-      gray: colors.coolGray,
+      gray: colors.gray,
       blue: colors.sky,
       red: colors.red,
-      yellow: colors.yellow,
-      green: colors.green,
+      yellow: colors.amber,
+      green: colors.emerald,
     },
     minHeight: {
       0: "0",
@@ -31,9 +30,6 @@ module.exports = {
       "3/4": "75vh",
       full: "100vh",
     },
-    extend: {},
-  },
-  variants: {
     extend: {},
   },
   plugins: [forms],
