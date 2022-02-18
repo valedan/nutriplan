@@ -1,7 +1,7 @@
 import { Tab } from "@headlessui/react";
 import classNames from "classnames";
 import { differenceInDays } from "date-fns";
-import ContentModal from "../../shared/Modal/ContentModal";
+import ContentModal from "components/shared/Modal/ContentModal";
 import {
   Meal as IMeal,
   Recipe,
