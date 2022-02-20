@@ -30,7 +30,7 @@ export default function NutrientList({ planId }: Props) {
     <>
       {openNutrientId && <NutrientModal nutrientId={openNutrientId} onClose={closeNutrientModal} planId={planId} />}
 
-      <div className="min-h-0 flex flex-col overflow-y-auto overflow-x-hidden">
+      <div className="min-h-0 flex flex-col overflow-y-auto overflow-x-hidden w-full">
         {sortByOrder(data.nutrientGroups).map(({ id, name, nutrients: nutrientsInGroup }) => (
           <NutrientGroup name={name} key={id}>
             {sortByOrder(nutrientsInGroup).map((nutrient) => {

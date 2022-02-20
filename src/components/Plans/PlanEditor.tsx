@@ -15,6 +15,7 @@ import NutrientList from "../NutrientList/NutrientList";
 import Meal from "./Meal";
 import NavHeading from "components/shared/Text/NavHeading";
 import Card from "components/shared/Card/Card";
+import Heading from "components/shared/Text/Heading";
 
 export default function PlanEditor() {
   const router = useRouter();
@@ -98,20 +99,20 @@ export default function PlanEditor() {
       <div className="flex my-2 px-4">
         <NavHeading to="/">Edit meal plan</NavHeading>
       </div>
-      <Card className="py-4 px-8 flex justify-between mb-4 rounded-none">
-        <PlanNameInput planId={Number(planId)} className="w-2/3" />
-        <PlanDateInput planId={Number(planId)} />
+      <Card className="py-4 px-8 justify-between mb-4 rounded-none">
+        <Card.Content className="justify-between py-2">
+          <PlanNameInput planId={Number(planId)} className="w-2/3" />
+          <PlanDateInput planId={Number(planId)} />
+        </Card.Content>
       </Card>
-      <div className="flex">
-        <div className="flex flex-col  h-full w-2/3  bg-white mr-2  rounded-sm" style={{ minHeight: "30rem" }}>
-          <div className="mx-8 py-4  border-b">
-            <div className="flex justify-between px-2">
-              <h3 className=" text-gray-500 text-lg self-end">Foods</h3>
-              <Button>Add Food</Button>
-            </div>
-          </div>
-          <div className="px-4">
-            <ul className="mt-2">
+      <div className="flex px-2">
+        <Card className="flex-col w-2/3 mr-4 h-full">
+          <Card.Header className="justify-between mt-2">
+            <Heading>Foods</Heading>
+            <Button>Add Food</Button>
+          </Card.Header>
+          <Card.Content>
+            <ul className="mt-2 w-full">
               {planItems.map((planItem) => {
                 // eslint-disable-next-line no-underscore-dangle
                 if (planItem.__typename === "Ingredient" && planItem.food) {
@@ -144,15 +145,17 @@ export default function PlanEditor() {
                 return null;
               })}
             </ul>
-          </div>
-        </div>
+          </Card.Content>
+        </Card>
 
-        <div className="flex flex-col w-1/3   bg-white rounded-sm ">
-          <div className="py-2 bg-grey-50 z-10">
-            <h3 className="text-center text-gray-500 text-lg leading-6 ">Average daily nutrients</h3>
-          </div>
-          <NutrientList planId={Number(planId)} />
-        </div>
+        <Card className="flex-col w-1/3">
+          <Card.Header>
+            <Heading>Average daily nutrients</Heading>
+          </Card.Header>
+          <Card.Content>
+            <NutrientList planId={Number(planId)} />
+          </Card.Content>
+        </Card>
       </div>
     </div>
   );

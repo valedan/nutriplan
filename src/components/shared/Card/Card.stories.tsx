@@ -10,8 +10,23 @@ export default {
 
 const Template: ComponentStory<typeof Card> = (args) => <Card {...args} />;
 
-export const Regular = Template.bind({});
+export const Content = Template.bind({});
 
-Regular.args = {
-  children: "Card",
+export const WithHeader = Template.bind({});
+
+Content.args = {
+  children: (
+    <>
+      <Card.Content>Card Content</Card.Content>
+    </>
+  ),
+};
+
+WithHeader.args = {
+  children: (
+    <>
+      <Card.Header>Card Header</Card.Header>
+      <Card.Content>Card Content</Card.Content>
+    </>
+  ),
 };
