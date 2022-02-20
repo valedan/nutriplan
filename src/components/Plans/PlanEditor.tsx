@@ -14,6 +14,7 @@ import RecipeLibraryDropdown from "./RecipeLibraryDropdown";
 import NutrientList from "../NutrientList/NutrientList";
 import Meal from "./Meal";
 import NavHeading from "components/shared/Text/NavHeading";
+import Card from "components/shared/Card/Card";
 
 export default function PlanEditor() {
   const router = useRouter();
@@ -97,10 +98,10 @@ export default function PlanEditor() {
       <div className="flex my-2 px-4">
         <NavHeading to="/">Edit meal plan</NavHeading>
       </div>
-      <div className=" bg-white py-4 px-8 flex justify-between z-10 mb-4">
+      <Card className="py-4 px-8 flex justify-between mb-4 rounded-none">
         <PlanNameInput planId={Number(planId)} className="w-2/3" />
         <PlanDateInput planId={Number(planId)} />
-      </div>
+      </Card>
       <div className="flex">
         <div className="flex flex-col  h-full w-2/3  bg-white mr-2  rounded-sm" style={{ minHeight: "30rem" }}>
           <div className="mx-8 py-4  border-b">
