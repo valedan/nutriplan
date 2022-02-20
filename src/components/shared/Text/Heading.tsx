@@ -1,24 +1,30 @@
 import classNames from "classnames";
 
-const componentVariants = {
+const componentSizeVariants = {
   medium: "h3",
 };
 
 interface Props {
   children: React.ReactNode;
   className?: string;
-  variant?: "medium";
+  size?: "medium";
+  weight?: "heavy" | "normal" | "light";
 }
 
-export default function Heading({ children, className = "", variant = "medium", ...props }: Props) {
-  const Component = componentVariants[variant] as keyof JSX.IntrinsicElements;
+export default function Heading({ children, className = "", size = "medium", weight = "normal", ...props }: Props) {
+  const Component = componentSizeVariants[size] as keyof JSX.IntrinsicElements;
 
   return (
     <Component
       className={classNames(
-        "text-gray-500 leading-loose",
+        "leading-loose",
         {
-          "text-lg": variant === "medium",
+          "text-lg": size === "medium",
+        },
+        {
+          "text-gray-500": weight === "light",
+          "text-gray-700": weight === "normal",
+          "text-gray-900": weight === "heavy",
         },
         className
       )}

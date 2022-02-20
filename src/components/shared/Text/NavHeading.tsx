@@ -10,7 +10,7 @@ interface Props {
 
 export default function NavHeading({ children, to, className = "", ...props }: Props) {
   return (
-    <Heading className={`${className}`} {...props}>
+    <Heading weight="light" className={`${className}`} {...props}>
       <div className="flex items-center">
         <Link href={to}>
           <a className="mr-2 inline-flex justify-center ">
