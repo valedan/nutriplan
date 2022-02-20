@@ -13,6 +13,7 @@ import Ingredient from "./Ingredient";
 import RecipeLibraryDropdown from "./RecipeLibraryDropdown";
 import NutrientList from "../NutrientList/NutrientList";
 import Meal from "./Meal";
+import NavHeading from "components/shared/Text/NavHeading";
 
 export default function PlanEditor() {
   const router = useRouter();
@@ -93,13 +94,15 @@ export default function PlanEditor() {
         <title key="title">Edit {data?.plan?.name || "plan"}</title>
       </Head>
 
-      <h1 className="text-gray-500 text-lg leading-6 mb-4 mt-4 ml-4 ">Edit meal plan</h1>
+      <div className="flex my-2 px-4">
+        <NavHeading to="/">Edit meal plan</NavHeading>
+      </div>
       <div className=" bg-white py-4 px-8 flex justify-between z-10 mb-4">
         <PlanNameInput planId={Number(planId)} className="w-2/3" />
         <PlanDateInput planId={Number(planId)} />
       </div>
       <div className="flex">
-        <div className="flex flex-col  h-full w-2/3  bg-white mr-2  rounded-lg" style={{ minHeight: "30rem" }}>
+        <div className="flex flex-col  h-full w-2/3  bg-white mr-2  rounded-sm" style={{ minHeight: "30rem" }}>
           <div className="mx-8 py-4  border-b">
             <div className="flex justify-between px-2">
               <h3 className=" text-gray-500 text-lg self-end">Foods</h3>
@@ -143,7 +146,7 @@ export default function PlanEditor() {
           </div>
         </div>
 
-        <div className="flex flex-col w-1/3   bg-white rounded-lg ">
+        <div className="flex flex-col w-1/3   bg-white rounded-sm ">
           <div className="py-2 bg-grey-50 z-10">
             <h3 className="text-center text-gray-500 text-lg leading-6 ">Average daily nutrients</h3>
           </div>
