@@ -58,8 +58,8 @@ export default function Ingredient({
         <div className="">
           <div className="flex flex-col ">
             <div className="flex  items-center flex-grow">
-              {!isMealIngredient && <Checkbox />}
-              <div className="flex items-center ml-4 mr-2 px-2 py-2 flex-grow justify-between border-b border-gray-200">
+              {/* {!isMealIngredient && <Checkbox />} */}
+              <div className="flex items-center ml-4 mr-2 px-2 py-2 flex-grow justify-between ">
                 <div className="flex flex-col">
                   <p className="text-gray-700">{foodDescription}</p>
                   {/* <Disclosure.Button className="mt-2"> */}

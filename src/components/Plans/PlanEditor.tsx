@@ -6,7 +6,7 @@ import {
   useAddMealMutation,
   Portion,
 } from "../../generated/graphql/hooks";
-import { FoodSearch, LoadingScreen } from "../shared";
+import { Button, FoodSearch, LoadingScreen } from "../shared";
 import PlanNameInput from "./PlanNameInput";
 import PlanDateInput from "./PlanDateInput";
 import Ingredient from "./Ingredient";
@@ -92,22 +92,22 @@ export default function PlanEditor() {
         {/* TODO: This is stale after updating */}
         <title key="title">Edit {data?.plan?.name || "plan"}</title>
       </Head>
-      <h1 className="text-gray-500 text-lg leading-6 mb-4 ">Edit meal plan</h1>
-      <div className="shadow sm:rounded-md bg-white py-4 px-8 flex justify-between mb-4 z-10 mx-1">
+
+      <h1 className="text-gray-500 text-lg leading-6 mb-4 mt-4 ml-4 ">Edit meal plan</h1>
+      <div className=" bg-white py-4 px-8 flex justify-between z-10 mb-4">
         <PlanNameInput planId={Number(planId)} className="w-2/3" />
         <PlanDateInput planId={Number(planId)} />
       </div>
-      <div className="flex  p-1 ">
-        <div className="flex flex-col  h-full w-2/3 mr-4 shadow sm:rounded-md bg-white " style={{ minHeight: "30rem" }}>
-          <div className="py-4 px-8 shadow bg-grey-50 z-10">
-            <div className="flex justify-between mb-2">
-              <h3 className=" flex-grow text-center mb-2 text-gray-500 text-lg leading-loose">Foods</h3>
-              <RecipeLibraryDropdown onSelect={handleSelectRecipe} />
+      <div className="flex">
+        <div className="flex flex-col  h-full w-2/3  bg-white mr-2  rounded-lg" style={{ minHeight: "30rem" }}>
+          <div className="mx-8 py-4  border-b">
+            <div className="flex justify-between px-2">
+              <h3 className=" text-gray-500 text-lg self-end">Foods</h3>
+              <Button>Add Food</Button>
             </div>
-            <FoodSearch onSelectFood={handleSelectFood} />
           </div>
-          <div className="px-8">
-            <ul className="mt-4">
+          <div className="px-4">
+            <ul className="mt-2">
               {planItems.map((planItem) => {
                 // eslint-disable-next-line no-underscore-dangle
                 if (planItem.__typename === "Ingredient" && planItem.food) {
@@ -143,8 +143,8 @@ export default function PlanEditor() {
           </div>
         </div>
 
-        <div className="flex flex-col w-1/3 shadow  bg-white  rounded-md">
-          <div className="py-4 px-8 shadow bg-grey-50 z-10">
+        <div className="flex flex-col w-1/3   bg-white rounded-lg ">
+          <div className="py-2 bg-grey-50 z-10">
             <h3 className="text-center text-gray-500 text-lg leading-6 ">Average daily nutrients</h3>
           </div>
           <NutrientList planId={Number(planId)} />
