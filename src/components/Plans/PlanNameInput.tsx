@@ -2,14 +2,15 @@ import React, { useState, useEffect } from "react";
 import { debounce } from "lodash";
 import { useGetPlanQuery, useUpdatePlanMutation } from "../../generated/graphql/hooks";
 import { Input } from "../shared";
+import { useCurrentPlan } from "./PlanContext";
 
 interface Props {
-  planId: number;
-  className: string;
+  className?: string;
 }
 
-export default function PlanNameInput({ planId, className }: Props) {
-  const { data, loading, error } = useGetPlanQuery({ variables: { id: Number(planId) } });
+export default function PlanNameInput({ className }: Props) {
+  const { id } = useCurrentPlan();
+  const { data, loading, error } = useGetPlanQuery({ variables: { id } });
   const [name, setName] = useState("");
 
   useEffect(() => {
@@ -21,7 +22,7 @@ export default function PlanNameInput({ planId, className }: Props) {
   const [updatePlan] = useUpdatePlanMutation();
 
   const updateName = debounce((newName: string) => {
-    void updatePlan({ variables: { input: { id: Number(planId), name: newName } } });
+    void updatePlan({ variables: { input: { id, name: newName } } });
   }, 500);
 
   const handleChangeName = (newName: string) => {

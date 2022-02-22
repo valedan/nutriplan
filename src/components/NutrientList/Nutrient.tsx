@@ -2,6 +2,7 @@ import classNames from "classnames";
 import { useState } from "react";
 import useGetNutrientAmountInPlan from "./useGetNutrientAmountInPlan";
 import { useGetNutrientQuery } from "../../generated/graphql/hooks";
+import { useCurrentPlan } from "components/Plans/PlanContext";
 
 interface NutrientAmountProps {
   amount: number;
@@ -36,11 +37,12 @@ const NutrientAmount = ({ amount, isHover, unit, min }: NutrientAmountProps) => 
 
 interface NutrientProps {
   id: number;
-  planId: number;
   openNutrientModal: (nutrientId: number) => void;
 }
 
-export default function Nutrient({ id, planId, openNutrientModal }: NutrientProps) {
+export default function Nutrient({ id, openNutrientModal }: NutrientProps) {
+  const { id: planId } = useCurrentPlan();
+
   const [isHover, setIsHover] = useState(false);
   const { data } = useGetNutrientQuery({
     variables: {

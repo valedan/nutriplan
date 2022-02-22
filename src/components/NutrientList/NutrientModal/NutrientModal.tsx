@@ -17,16 +17,17 @@ import {
 import { Button } from "../../shared";
 import Ingredient from "./Ingredient";
 import Meal from "./Meal";
+import { useCurrentPlan } from "components/Plans/PlanContext";
 
 interface Props {
   nutrientId: number;
   onClose: () => void;
-  planId: number;
 }
 
-export default function NutrientModal({ planId, nutrientId, onClose }: Props) {
+export default function NutrientModal({ nutrientId, onClose }: Props) {
+  const { id } = useCurrentPlan();
   const { data } = useGetPlanWithNutrientsQuery({
-    variables: { planId },
+    variables: { planId: id },
   });
 
   const { data: nutrientData } = useGetNutrientQuery({ variables: { id: nutrientId } });

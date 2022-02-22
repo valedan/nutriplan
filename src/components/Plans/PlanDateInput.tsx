@@ -3,15 +3,12 @@ import { addDays, differenceInCalendarDays, parseISO } from "date-fns";
 import { debounce } from "lodash";
 import { useGetPlanQuery, useUpdatePlanMutation } from "../../generated/graphql/hooks";
 import { Input } from "../shared";
+import { useCurrentPlan } from "./PlanContext";
 
-interface Props {
-  planId: number;
-}
-
-export default function PlanDateInput({ planId }: Props) {
-  const { data, loading, error } = useGetPlanQuery({ variables: { id: Number(planId) } });
+export default function PlanDateInput() {
+  const { id } = useCurrentPlan();
+  const { data, loading, error } = useGetPlanQuery({ variables: { id } });
   const [days, setDays] = useState(7);
-  console.log(data?.plan?.startDate);
   useEffect(() => {
     if (data?.plan?.startDate && data?.plan?.endDate) {
       setDays(differenceInCalendarDays(parseISO(data.plan.endDate), parseISO(data.plan.startDate)));
@@ -22,7 +19,7 @@ export default function PlanDateInput({ planId }: Props) {
 
   const updateDates = debounce((newDays: number) => {
     void updatePlan({
-      variables: { input: { id: Number(planId), startDate: new Date(), endDate: addDays(Date.now(), newDays) } },
+      variables: { input: { id, startDate: new Date(), endDate: addDays(Date.now(), newDays) } },
     });
   }, 500);
 
