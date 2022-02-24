@@ -1,9 +1,9 @@
 import { Portion, useGetPlanQuery } from "generated/graphql/hooks";
 import { useState } from "react";
-import { sortByOrder } from "../shared/utils";
+import { sortByOrder } from "../../../shared/utils";
 import Ingredient from "./Ingredient";
 import Meal from "./Meal";
-import { useCurrentPlan } from "./PlanContext";
+import { useCurrentPlan } from "../../PlanContext";
 
 export default function IngredientList() {
   const { id, refetch } = useCurrentPlan();

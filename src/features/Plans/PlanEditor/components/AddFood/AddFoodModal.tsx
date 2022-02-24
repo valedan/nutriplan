@@ -1,6 +1,6 @@
 import { FoodSearch, ContentModal, Heading } from "components";
 import { useAddIngredientMutation, useAddMealMutation } from "generated/graphql/hooks";
-import { useCurrentPlan } from "./PlanContext";
+import { useCurrentPlan } from "../../PlanContext";
 import RecipeLibraryDropdown from "./RecipeLibraryDropdown";
 
 interface Props {

@@ -3,11 +3,11 @@ import Head from "next/head";
 import { useRouter } from "next/router";
 import { Button, LoadingScreen, Card, Heading, NavHeading } from "components";
 import { useGetPlanWithNutrientsQuery } from "generated/graphql/hooks";
-import PlanNameInput from "./PlanNameInput";
-import PlanDateInput from "./PlanDateInput";
+import PlanNameInput from "./components/PlanNameInput";
+import PlanDateInput from "./components/PlanDateInput";
 import NutrientList from "../../NutrientList/NutrientList";
-import AddFoodModal from "./AddFoodModal";
-import IngredientList from "./IngredientList";
+import AddFoodModal from "./components/AddFood/AddFoodModal";
+import IngredientList from "./components/IngredientList/IngredientList";
 import { PlanContext } from "./PlanContext";
 
 export default function PlanEditor() {

@@ -4,7 +4,7 @@ import { FoodSearch, LoadingScreen } from "components";
 import { useAddIngredientMutation, useGetRecipeQuery } from "generated/graphql/hooks";
 import RecipeNameInput from "./RecipeNameInput";
 import RecipeServingsInput from "./RecipeServingsInput";
-import Ingredient from "../../Plans/PlanEditor/Ingredient";
+import Ingredient from "../../Plans/PlanEditor/components/IngredientList/Ingredient";
 // import NutrientList from "../NutrientList/NutrientList";
 
 export default function RecipeEditor() {

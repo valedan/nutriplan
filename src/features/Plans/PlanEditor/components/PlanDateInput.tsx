@@ -3,7 +3,7 @@ import { addDays, differenceInCalendarDays, parseISO } from "date-fns";
 import { debounce } from "lodash";
 import { Input } from "components";
 import { useGetPlanQuery, useUpdatePlanMutation } from "generated/graphql/hooks";
-import { useCurrentPlan } from "./PlanContext";
+import { useCurrentPlan } from "../PlanContext";
 
 export default function PlanDateInput() {
   const { id } = useCurrentPlan();

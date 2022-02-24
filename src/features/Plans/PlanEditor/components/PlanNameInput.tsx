@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { debounce } from "lodash";
 import { Input } from "components";
 import { useGetPlanQuery, useUpdatePlanMutation } from "generated/graphql/hooks";
-import { useCurrentPlan } from "./PlanContext";
+import { useCurrentPlan } from "../PlanContext";
 
 interface Props {
   className?: string;
