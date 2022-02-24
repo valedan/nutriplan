@@ -1,6 +1,5 @@
-import ClientOnly from "../utils/ClientOnly";
-import RequireAuth from "../utils/RequireAuth";
-import PlanDashboard from "../components/Plans/PlanDashboard";
+import { ClientOnly, RequireAuth } from "providers";
+import { PlanDashboard } from "features/Plans";
 
 export default function Home() {
   return (

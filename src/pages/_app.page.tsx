@@ -1,11 +1,11 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import "./styles.css";
-import "./loading.css";
+import "config/styles.css";
+import "config/loading.css";
 import Head from "next/head";
 import { Auth0Provider } from "@auth0/auth0-react";
 import type { AppProps } from "next/app";
-import ApolloWrapper from "../utils/ApolloWrapper";
-import { Layout } from "../components/shared";
+import { Layout } from "components";
+import { ApolloWrapper } from "providers";
 
 const MyApp = ({ Component, pageProps }: AppProps) => {
   return (

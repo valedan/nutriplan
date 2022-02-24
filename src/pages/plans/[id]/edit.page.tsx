@@ -1,6 +1,5 @@
-import ClientOnly from "../../../utils/ClientOnly";
-import RequireAuth from "../../../utils/RequireAuth";
-import PlanEditor from "../../../components/Plans/PlanEditor";
+import { ClientOnly, RequireAuth } from "providers";
+import { PlanEditor } from "features/Plans";
 
 export default function EditPlan() {
   return (
