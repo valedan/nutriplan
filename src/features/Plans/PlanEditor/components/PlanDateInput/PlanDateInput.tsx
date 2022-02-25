@@ -2,20 +2,21 @@ import React, { useState, useEffect } from "react";
 import { addDays, differenceInCalendarDays, parseISO } from "date-fns";
 import { debounce } from "lodash";
 import { Input } from "components";
-import { useGetPlanQuery, useUpdatePlanMutation } from "generated/graphql/hooks";
-import { useCurrentPlan } from "../PlanContext";
+import { useUpdatePlanMutation } from "generated/graphql/hooks";
+import { useCurrentPlan } from "../../PlanContext";
+import { useReadPlanDates } from "./useReadPlanDates";
 
 export default function PlanDateInput() {
   const { id } = useCurrentPlan();
-  const { data, loading, error } = useGetPlanQuery({ variables: { id } });
   const [days, setDays] = useState(7);
-  useEffect(() => {
-    if (data?.plan?.startDate && data?.plan?.endDate) {
-      setDays(differenceInCalendarDays(parseISO(data.plan.endDate), parseISO(data.plan.startDate)));
-    }
-  }, [data]);
-
+  const planDates = useReadPlanDates(id);
   const [updatePlan] = useUpdatePlanMutation();
+
+  useEffect(() => {
+    if (planDates) {
+      setDays(differenceInCalendarDays(parseISO(planDates.endDate), parseISO(planDates.startDate)));
+    }
+  }, [planDates]);
 
   const updateDates = debounce((newDays: number) => {
     void updatePlan({
@@ -27,8 +28,6 @@ export default function PlanDateInput() {
     setDays(newDays);
     updateDates(newDays);
   };
-
-  if (loading || error || !data?.plan) return null;
 
   return (
     <div className="w-32 flex items-end">
