@@ -6,7 +6,7 @@ export const useReadContributors = () => {
   const client = useApolloClient();
 
   interface Contributor {
-    __typename: string;
+    __typename: "Ingredient" | "Meal";
     id: number;
     order: number;
   }
@@ -14,7 +14,7 @@ export const useReadContributors = () => {
   return client.readFragment<{ id: number; ingredients: Contributor[]; meals: Contributor[] }>({
     id: `Plan:${id}`,
     fragment: gql`
-      fragment CurrentPlanInfo on Plan {
+      fragment Contributors on Plan {
         id
         ingredients {
           id

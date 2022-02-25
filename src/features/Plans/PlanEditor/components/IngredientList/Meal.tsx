@@ -4,29 +4,23 @@ import { Disclosure, Transition, Menu } from "@headlessui/react";
 import { ChevronRightIcon, DotsHorizontalIcon } from "@heroicons/react/solid";
 import { Input } from "components";
 import { Portion, useRemoveMealMutation } from "generated/graphql/hooks";
+import { sortByOrder } from "utils";
 import Ingredient from "./Ingredient";
+import { useReadMeal } from "./hooks/useReadMeal";
 
 interface Props {
   id: number;
-  recipeName: string;
-  recipeId: number;
-  servings: number;
-  ingredients: {
-    id: number;
-    amount: number;
-    measure: string;
-    order: number;
-    food: {
-      description: string;
-      portions: Portion[];
-    };
-  }[];
   refetch: () => void;
 }
 
-export default function Meal({ id, recipeName, recipeId, servings, ingredients, refetch }: Props) {
-  const [localServings, setLocalServings] = useState(servings);
+export default function Meal({ id, refetch }: Props) {
+  const meal = useReadMeal(id);
+  const [localServings, setLocalServings] = useState(meal?.servings);
   const [removeMeal] = useRemoveMealMutation();
+
+  if (!meal) {
+    return null;
+  }
 
   const handleChangeServings = (newServings: number) => {
     // TODO
@@ -42,8 +36,6 @@ export default function Meal({ id, recipeName, recipeId, servings, ingredients, 
     <Disclosure key={id} defaultOpen>
       {({ open }) => (
         <div className="flex my-4   ">
-          {/* Not sure there's a use case for selecting meals (can go to recipe to see nutrient details) */}
-          {/* <Checkbox className="mt-4" /> */}
           <div className="flex flex-col shadow w-full ml-4 rounded-lg border-gray-200 border">
             <div className="flex  items-center flex-grow bg-gray-100 shadow">
               <div className="flex items-center ml-2 px-2  flex-grow justify-between ">
@@ -51,7 +43,7 @@ export default function Meal({ id, recipeName, recipeId, servings, ingredients, 
                   <Disclosure.Button className="mr-2">
                     <ChevronRightIcon className={`${open ? "transform rotate-90" : ""} w-5 h-5 text-gray-500`} />
                   </Disclosure.Button>
-                  <p className="text-gray-700">{recipeName}</p>
+                  <p className="text-gray-700">{meal.recipe.name}</p>
                 </div>
                 <div className="flex my-2 items-center">
                   <Input
@@ -84,7 +76,7 @@ export default function Meal({ id, recipeName, recipeId, servings, ingredients, 
                           <Menu.Item>
                             {({ active }) => (
                               <a
-                                href={`/recipes/${recipeId}/edit`}
+                                href={`/recipes/${meal.recipe.id}/edit`}
                                 className={classNames(
                                   active ? "bg-gray-100" : "",
                                   "block px-4 py-2 text-sm text-gray-700"
@@ -125,24 +117,9 @@ export default function Meal({ id, recipeName, recipeId, servings, ingredients, 
               leaveTo="transform scale-95 opacity-0"
             >
               <Disclosure.Panel className="px-4   text-sm">
-                {ingredients
-                  .slice()
-                  .sort((a, b) => (a.order || 0) - (b.order || 0))
-                  .map(
-                    (ingredient) =>
-                      ingredient.food && (
-                        <Ingredient
-                          key={ingredient.id}
-                          id={ingredient.id}
-                          amount={ingredient.amount}
-                          measure={ingredient.measure}
-                          foodDescription={ingredient.food.description}
-                          portions={ingredient.food.portions}
-                          refetch={refetch}
-                          isMealIngredient
-                        />
-                      )
-                  )}
+                {sortByOrder(meal.ingredients).map((ingredient) => (
+                  <Ingredient key={ingredient.id} id={ingredient.id} refetch={refetch} isMealIngredient />
+                ))}
               </Disclosure.Panel>
             </Transition>
           </div>

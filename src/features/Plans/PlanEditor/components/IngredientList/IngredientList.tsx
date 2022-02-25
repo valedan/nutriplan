@@ -1,4 +1,4 @@
-import { sortByOrder } from "../../../shared/utils";
+import { sortByOrder } from "utils";
 import Ingredient from "./Ingredient";
 import Meal from "./Meal";
 import { useReadContributors } from "./hooks/useReadContributors";
