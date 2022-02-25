@@ -32,6 +32,7 @@ module.exports = {
     "@typescript-eslint/explicit-module-boundary-types": "off",
     "@typescript-eslint/prefer-regexp-exec": "off",
     "arrow-body-style": "off",
+    "no-underscore-dangle": "off",
     "jsx-a11y/anchor-is-valid": [
       "error",
       {
