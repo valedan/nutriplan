@@ -4,19 +4,19 @@ import { debounce } from "lodash";
 import { Input } from "components";
 import { useUpdatePlanMutation } from "generated/graphql/hooks";
 import { useCurrentPlan } from "../../PlanContext";
-import { useReadPlanDates } from "./useReadPlanDates";
+import { useReadPlanInfo } from "../../hooks/useReadPlanInfo";
 
 export default function PlanDateInput() {
   const { id } = useCurrentPlan();
   const [days, setDays] = useState(7);
-  const planDates = useReadPlanDates(id);
+  const plan = useReadPlanInfo(id);
   const [updatePlan] = useUpdatePlanMutation();
 
   useEffect(() => {
-    if (planDates) {
-      setDays(differenceInCalendarDays(parseISO(planDates.endDate), parseISO(planDates.startDate)));
+    if (plan) {
+      setDays(differenceInCalendarDays(parseISO(plan.endDate), parseISO(plan.startDate)));
     }
-  }, [planDates]);
+  }, [plan]);
 
   const updateDates = debounce((newDays: number) => {
     void updatePlan({

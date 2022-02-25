@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { debounce } from "lodash";
 import { Input } from "components";
-import { useGetPlanQuery, useUpdatePlanMutation } from "generated/graphql/hooks";
-import { useCurrentPlan } from "../PlanContext";
+import { useUpdatePlanMutation } from "generated/graphql/hooks";
+import { useCurrentPlan } from "../../PlanContext";
+import { useReadPlanInfo } from "../../hooks/useReadPlanInfo";
 
 interface Props {
   className?: string;
@@ -10,16 +11,15 @@ interface Props {
 
 export default function PlanNameInput({ className }: Props) {
   const { id } = useCurrentPlan();
-  const { data, loading, error } = useGetPlanQuery({ variables: { id } });
+  const plan = useReadPlanInfo(id);
   const [name, setName] = useState("");
+  const [updatePlan] = useUpdatePlanMutation();
 
   useEffect(() => {
-    if (data?.plan?.name) {
-      setName(data.plan.name);
+    if (plan) {
+      setName(plan.name);
     }
-  }, [data]);
-
-  const [updatePlan] = useUpdatePlanMutation();
+  }, [plan]);
 
   const updateName = debounce((newName: string) => {
     void updatePlan({ variables: { input: { id, name: newName } } });
@@ -29,8 +29,6 @@ export default function PlanNameInput({ className }: Props) {
     setName(newName);
     updateName(newName);
   };
-
-  if (loading || error || !data?.plan) return null;
 
   return (
     <Input
