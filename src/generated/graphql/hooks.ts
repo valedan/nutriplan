@@ -409,26 +409,6 @@ export type AddMealMutationVariables = Exact<{
 
 export type AddMealMutation = { __typename?: 'Mutation', addMeal?: Maybe<{ __typename?: 'Meal', id: number, servings: number, order: number, ingredients: Array<{ __typename?: 'Ingredient', id: number, amount: number, measure: string, food: { __typename?: 'Food', id: number, portions: Array<{ __typename?: 'Portion', measure: string, gramWeight: number }> } }> }> };
 
-export type GetActiveProfileQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type GetActiveProfileQuery = { __typename?: 'Query', activeNutrientProfile: { __typename?: 'NutrientProfile', id: number, name: string, isActive: boolean, nutrientTargets: Array<{ __typename?: 'NutrientTarget', id: number, min?: Maybe<number>, max?: Maybe<number>, nutrient: { __typename?: 'Nutrient', id: number, name: string } }> } };
-
-export type GetPlanQueryVariables = Exact<{
-  id: Scalars['Int'];
-}>;
-
-
-export type GetPlanQuery = { __typename?: 'Query', plan?: Maybe<{ __typename?: 'Plan', name?: Maybe<string>, startDate: Date, endDate: Date, ingredients: Array<{ __typename?: 'Ingredient', id: number, amount: number, measure: string, order: number, food: { __typename?: 'Food', id: number, description: string, portions: Array<{ __typename?: 'Portion', measure: string, gramWeight: number }> } }>, meals: Array<{ __typename?: 'Meal', id: number, servings: number, order: number, recipe?: Maybe<{ __typename?: 'Recipe', name?: Maybe<string>, id: number }>, ingredients: Array<{ __typename?: 'Ingredient', id: number, amount: number, measure: string, order: number, food: { __typename?: 'Food', id: number, description: string, portions: Array<{ __typename?: 'Portion', measure: string, gramWeight: number }> } }> }> }> };
-
-export type GetPlanWithNutrientsQueryVariables = Exact<{
-  planId: Scalars['Int'];
-  nutrientIds?: Maybe<Array<Scalars['Int']> | Scalars['Int']>;
-}>;
-
-
-export type GetPlanWithNutrientsQuery = { __typename?: 'Query', plan?: Maybe<{ __typename?: 'Plan', id: number, startDate: Date, endDate: Date, name?: Maybe<string>, ingredients: Array<{ __typename?: 'Ingredient', id: number, amount: number, measure: string, order: number, food: { __typename?: 'Food', id: number, description: string, portions: Array<{ __typename?: 'Portion', measure: string, gramWeight: number }>, foodNutrients: Array<{ __typename?: 'FoodNutrient', id: number, amount: number, nutrient: { __typename?: 'Nutrient', id: number, name: string, unit: string } }> } }>, meals: Array<{ __typename?: 'Meal', id: number, servings: number, order: number, recipe?: Maybe<{ __typename?: 'Recipe', name?: Maybe<string>, id: number }>, ingredients: Array<{ __typename?: 'Ingredient', id: number, amount: number, measure: string, order: number, food: { __typename?: 'Food', id: number, description: string, portions: Array<{ __typename?: 'Portion', measure: string, gramWeight: number }>, foodNutrients: Array<{ __typename?: 'FoodNutrient', id: number, amount: number, nutrient: { __typename?: 'Nutrient', id: number, name: string, unit: string } }> } }> }> }> };
-
 export type RemoveIngredientMutationVariables = Exact<{
   id: Scalars['Int'];
 }>;
@@ -449,6 +429,26 @@ export type UpdateIngredientMutationVariables = Exact<{
 
 
 export type UpdateIngredientMutation = { __typename?: 'Mutation', updateIngredient?: Maybe<{ __typename?: 'Ingredient', id: number, amount: number, measure: string }> };
+
+export type UpdateMealMutationVariables = Exact<{
+  input: UpdateMealInput;
+}>;
+
+
+export type UpdateMealMutation = { __typename?: 'Mutation', updateMeal?: Maybe<{ __typename?: 'Meal', id: number, servings: number }> };
+
+export type GetActiveProfileQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetActiveProfileQuery = { __typename?: 'Query', activeNutrientProfile: { __typename?: 'NutrientProfile', id: number, name: string, isActive: boolean, nutrientTargets: Array<{ __typename?: 'NutrientTarget', id: number, min?: Maybe<number>, max?: Maybe<number>, nutrient: { __typename?: 'Nutrient', id: number, name: string } }> } };
+
+export type GetPlanWithNutrientsQueryVariables = Exact<{
+  planId: Scalars['Int'];
+  nutrientIds?: Maybe<Array<Scalars['Int']> | Scalars['Int']>;
+}>;
+
+
+export type GetPlanWithNutrientsQuery = { __typename?: 'Query', plan?: Maybe<{ __typename?: 'Plan', id: number, startDate: Date, endDate: Date, name?: Maybe<string>, ingredients: Array<{ __typename?: 'Ingredient', id: number, amount: number, measure: string, order: number, food: { __typename?: 'Food', id: number, description: string, portions: Array<{ __typename?: 'Portion', measure: string, gramWeight: number }>, foodNutrients: Array<{ __typename?: 'FoodNutrient', id: number, amount: number, nutrient: { __typename?: 'Nutrient', id: number, name: string, unit: string } }> } }>, meals: Array<{ __typename?: 'Meal', id: number, servings: number, order: number, recipe?: Maybe<{ __typename?: 'Recipe', name?: Maybe<string>, id: number }>, ingredients: Array<{ __typename?: 'Ingredient', id: number, amount: number, measure: string, order: number, food: { __typename?: 'Food', id: number, description: string, portions: Array<{ __typename?: 'Portion', measure: string, gramWeight: number }>, foodNutrients: Array<{ __typename?: 'FoodNutrient', id: number, amount: number, nutrient: { __typename?: 'Nutrient', id: number, name: string, unit: string } }> } }> }> }> };
 
 export type UpdatePlanMutationVariables = Exact<{
   input: UpdatePlanInput;
@@ -822,219 +822,6 @@ export function useAddMealMutation(baseOptions?: Apollo.MutationHookOptions<AddM
 export type AddMealMutationHookResult = ReturnType<typeof useAddMealMutation>;
 export type AddMealMutationResult = Apollo.MutationResult<AddMealMutation>;
 export type AddMealMutationOptions = Apollo.BaseMutationOptions<AddMealMutation, AddMealMutationVariables>;
-export const GetActiveProfileDocument = gql`
-    query getActiveProfile {
-  activeNutrientProfile {
-    id
-    name
-    isActive
-    nutrientTargets {
-      id
-      min
-      max
-      nutrient {
-        id
-        name
-      }
-    }
-  }
-}
-    `;
-
-/**
- * __useGetActiveProfileQuery__
- *
- * To run a query within a React component, call `useGetActiveProfileQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetActiveProfileQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useGetActiveProfileQuery({
- *   variables: {
- *   },
- * });
- */
-export function useGetActiveProfileQuery(baseOptions?: Apollo.QueryHookOptions<GetActiveProfileQuery, GetActiveProfileQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetActiveProfileQuery, GetActiveProfileQueryVariables>(GetActiveProfileDocument, options);
-      }
-export function useGetActiveProfileLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetActiveProfileQuery, GetActiveProfileQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetActiveProfileQuery, GetActiveProfileQueryVariables>(GetActiveProfileDocument, options);
-        }
-export type GetActiveProfileQueryHookResult = ReturnType<typeof useGetActiveProfileQuery>;
-export type GetActiveProfileLazyQueryHookResult = ReturnType<typeof useGetActiveProfileLazyQuery>;
-export type GetActiveProfileQueryResult = Apollo.QueryResult<GetActiveProfileQuery, GetActiveProfileQueryVariables>;
-export const GetPlanDocument = gql`
-    query getPlan($id: Int!) {
-  plan(id: $id) {
-    name
-    startDate
-    endDate
-    ingredients {
-      id
-      amount
-      measure
-      order
-      food {
-        id
-        description
-        portions {
-          measure
-          gramWeight
-        }
-      }
-    }
-    meals {
-      id
-      servings
-      order
-      recipe {
-        name
-        id
-      }
-      ingredients {
-        id
-        amount
-        measure
-        order
-        food {
-          id
-          description
-          portions {
-            measure
-            gramWeight
-          }
-        }
-      }
-    }
-  }
-}
-    `;
-
-/**
- * __useGetPlanQuery__
- *
- * To run a query within a React component, call `useGetPlanQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetPlanQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useGetPlanQuery({
- *   variables: {
- *      id: // value for 'id'
- *   },
- * });
- */
-export function useGetPlanQuery(baseOptions: Apollo.QueryHookOptions<GetPlanQuery, GetPlanQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetPlanQuery, GetPlanQueryVariables>(GetPlanDocument, options);
-      }
-export function useGetPlanLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetPlanQuery, GetPlanQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetPlanQuery, GetPlanQueryVariables>(GetPlanDocument, options);
-        }
-export type GetPlanQueryHookResult = ReturnType<typeof useGetPlanQuery>;
-export type GetPlanLazyQueryHookResult = ReturnType<typeof useGetPlanLazyQuery>;
-export type GetPlanQueryResult = Apollo.QueryResult<GetPlanQuery, GetPlanQueryVariables>;
-export const GetPlanWithNutrientsDocument = gql`
-    query getPlanWithNutrients($planId: Int!, $nutrientIds: [Int!]) {
-  plan(id: $planId) {
-    id
-    startDate
-    endDate
-    name
-    ingredients {
-      id
-      amount
-      measure
-      order
-      food {
-        id
-        description
-        portions {
-          measure
-          gramWeight
-        }
-        foodNutrients(nutrientIds: $nutrientIds) {
-          id
-          amount
-          nutrient {
-            id
-            name
-            unit
-          }
-        }
-      }
-    }
-    meals {
-      id
-      servings
-      order
-      recipe {
-        name
-        id
-      }
-      ingredients {
-        id
-        amount
-        measure
-        order
-        food {
-          id
-          description
-          portions {
-            measure
-            gramWeight
-          }
-          foodNutrients(nutrientIds: $nutrientIds) {
-            id
-            amount
-            nutrient {
-              id
-              name
-              unit
-            }
-          }
-        }
-      }
-    }
-  }
-}
-    `;
-
-/**
- * __useGetPlanWithNutrientsQuery__
- *
- * To run a query within a React component, call `useGetPlanWithNutrientsQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetPlanWithNutrientsQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useGetPlanWithNutrientsQuery({
- *   variables: {
- *      planId: // value for 'planId'
- *      nutrientIds: // value for 'nutrientIds'
- *   },
- * });
- */
-export function useGetPlanWithNutrientsQuery(baseOptions: Apollo.QueryHookOptions<GetPlanWithNutrientsQuery, GetPlanWithNutrientsQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetPlanWithNutrientsQuery, GetPlanWithNutrientsQueryVariables>(GetPlanWithNutrientsDocument, options);
-      }
-export function useGetPlanWithNutrientsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetPlanWithNutrientsQuery, GetPlanWithNutrientsQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetPlanWithNutrientsQuery, GetPlanWithNutrientsQueryVariables>(GetPlanWithNutrientsDocument, options);
-        }
-export type GetPlanWithNutrientsQueryHookResult = ReturnType<typeof useGetPlanWithNutrientsQuery>;
-export type GetPlanWithNutrientsLazyQueryHookResult = ReturnType<typeof useGetPlanWithNutrientsLazyQuery>;
-export type GetPlanWithNutrientsQueryResult = Apollo.QueryResult<GetPlanWithNutrientsQuery, GetPlanWithNutrientsQueryVariables>;
 export const RemoveIngredientDocument = gql`
     mutation removeIngredient($id: Int!) {
   removeIngredient(id: $id) {
@@ -1136,6 +923,179 @@ export function useUpdateIngredientMutation(baseOptions?: Apollo.MutationHookOpt
 export type UpdateIngredientMutationHookResult = ReturnType<typeof useUpdateIngredientMutation>;
 export type UpdateIngredientMutationResult = Apollo.MutationResult<UpdateIngredientMutation>;
 export type UpdateIngredientMutationOptions = Apollo.BaseMutationOptions<UpdateIngredientMutation, UpdateIngredientMutationVariables>;
+export const UpdateMealDocument = gql`
+    mutation updateMeal($input: UpdateMealInput!) {
+  updateMeal(input: $input) {
+    id
+    servings
+  }
+}
+    `;
+export type UpdateMealMutationFn = Apollo.MutationFunction<UpdateMealMutation, UpdateMealMutationVariables>;
+
+/**
+ * __useUpdateMealMutation__
+ *
+ * To run a mutation, you first call `useUpdateMealMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateMealMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateMealMutation, { data, loading, error }] = useUpdateMealMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useUpdateMealMutation(baseOptions?: Apollo.MutationHookOptions<UpdateMealMutation, UpdateMealMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdateMealMutation, UpdateMealMutationVariables>(UpdateMealDocument, options);
+      }
+export type UpdateMealMutationHookResult = ReturnType<typeof useUpdateMealMutation>;
+export type UpdateMealMutationResult = Apollo.MutationResult<UpdateMealMutation>;
+export type UpdateMealMutationOptions = Apollo.BaseMutationOptions<UpdateMealMutation, UpdateMealMutationVariables>;
+export const GetActiveProfileDocument = gql`
+    query getActiveProfile {
+  activeNutrientProfile {
+    id
+    name
+    isActive
+    nutrientTargets {
+      id
+      min
+      max
+      nutrient {
+        id
+        name
+      }
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetActiveProfileQuery__
+ *
+ * To run a query within a React component, call `useGetActiveProfileQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetActiveProfileQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetActiveProfileQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetActiveProfileQuery(baseOptions?: Apollo.QueryHookOptions<GetActiveProfileQuery, GetActiveProfileQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetActiveProfileQuery, GetActiveProfileQueryVariables>(GetActiveProfileDocument, options);
+      }
+export function useGetActiveProfileLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetActiveProfileQuery, GetActiveProfileQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetActiveProfileQuery, GetActiveProfileQueryVariables>(GetActiveProfileDocument, options);
+        }
+export type GetActiveProfileQueryHookResult = ReturnType<typeof useGetActiveProfileQuery>;
+export type GetActiveProfileLazyQueryHookResult = ReturnType<typeof useGetActiveProfileLazyQuery>;
+export type GetActiveProfileQueryResult = Apollo.QueryResult<GetActiveProfileQuery, GetActiveProfileQueryVariables>;
+export const GetPlanWithNutrientsDocument = gql`
+    query getPlanWithNutrients($planId: Int!, $nutrientIds: [Int!]) {
+  plan(id: $planId) {
+    id
+    startDate
+    endDate
+    name
+    ingredients {
+      id
+      amount
+      measure
+      order
+      food {
+        id
+        description
+        portions {
+          measure
+          gramWeight
+        }
+        foodNutrients(nutrientIds: $nutrientIds) {
+          id
+          amount
+          nutrient {
+            id
+            name
+            unit
+          }
+        }
+      }
+    }
+    meals {
+      id
+      servings
+      order
+      recipe {
+        name
+        id
+      }
+      ingredients {
+        id
+        amount
+        measure
+        order
+        food {
+          id
+          description
+          portions {
+            measure
+            gramWeight
+          }
+          foodNutrients(nutrientIds: $nutrientIds) {
+            id
+            amount
+            nutrient {
+              id
+              name
+              unit
+            }
+          }
+        }
+      }
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetPlanWithNutrientsQuery__
+ *
+ * To run a query within a React component, call `useGetPlanWithNutrientsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetPlanWithNutrientsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetPlanWithNutrientsQuery({
+ *   variables: {
+ *      planId: // value for 'planId'
+ *      nutrientIds: // value for 'nutrientIds'
+ *   },
+ * });
+ */
+export function useGetPlanWithNutrientsQuery(baseOptions: Apollo.QueryHookOptions<GetPlanWithNutrientsQuery, GetPlanWithNutrientsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetPlanWithNutrientsQuery, GetPlanWithNutrientsQueryVariables>(GetPlanWithNutrientsDocument, options);
+      }
+export function useGetPlanWithNutrientsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetPlanWithNutrientsQuery, GetPlanWithNutrientsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetPlanWithNutrientsQuery, GetPlanWithNutrientsQueryVariables>(GetPlanWithNutrientsDocument, options);
+        }
+export type GetPlanWithNutrientsQueryHookResult = ReturnType<typeof useGetPlanWithNutrientsQuery>;
+export type GetPlanWithNutrientsLazyQueryHookResult = ReturnType<typeof useGetPlanWithNutrientsLazyQuery>;
+export type GetPlanWithNutrientsQueryResult = Apollo.QueryResult<GetPlanWithNutrientsQuery, GetPlanWithNutrientsQueryVariables>;
 export const UpdatePlanDocument = gql`
     mutation updatePlan($input: UpdatePlanInput!) {
   updatePlan(input: $input) {

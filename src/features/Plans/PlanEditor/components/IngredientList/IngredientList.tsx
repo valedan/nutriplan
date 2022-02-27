@@ -4,13 +4,11 @@ import Meal from "./Meal";
 import { useReadContributors } from "./hooks/useReadContributors";
 
 export default function IngredientList() {
-  const plan = useReadContributors();
+  const { contributors } = useReadContributors();
 
-  if (!plan) {
+  if (!contributors) {
     return null;
   }
-
-  const contributors = [...plan.meals, ...plan.ingredients];
 
   return (
     <ul className="mt-2 w-full">

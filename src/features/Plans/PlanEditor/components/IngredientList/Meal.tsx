@@ -1,36 +1,22 @@
 import classNames from "classnames";
-import { Fragment, useState } from "react";
+import { Fragment } from "react";
 import { Disclosure, Transition, Menu } from "@headlessui/react";
 import { ChevronRightIcon, DotsHorizontalIcon } from "@heroicons/react/solid";
 import { Input } from "components";
-import { Portion, useRemoveMealMutation } from "generated/graphql/hooks";
 import { sortByOrder } from "utils";
 import Ingredient from "./Ingredient";
-import { useReadMeal } from "./hooks/useReadMeal";
+import { useLocalMeal } from "./hooks/useLocalMeal";
 
 interface Props {
   id: number;
-  refetch: () => void;
 }
 
-export default function Meal({ id, refetch }: Props) {
-  const meal = useReadMeal(id);
-  const [localServings, setLocalServings] = useState(meal?.servings);
-  const [removeMeal] = useRemoveMealMutation();
+export default function Meal({ id }: Props) {
+  const { meal, removeMeal, updateMeal } = useLocalMeal(id);
 
   if (!meal) {
     return null;
   }
-
-  const handleChangeServings = (newServings: number) => {
-    // TODO
-    setLocalServings(newServings);
-  };
-
-  const handleRemoveMeal = async () => {
-    await removeMeal({ variables: { id: Number(id) } });
-    void refetch();
-  };
 
   return (
     <Disclosure key={id} defaultOpen>
@@ -48,8 +34,8 @@ export default function Meal({ id, refetch }: Props) {
                 <div className="flex my-2 items-center">
                   <Input
                     type="number"
-                    value={localServings}
-                    onChange={(e) => handleChangeServings(Number(e.target.value))}
+                    value={meal.servings}
+                    onChange={(e) => updateMeal({ servings: Number(e.target.value) })}
                     name="amount"
                     className="w-24"
                     sizing="small"
@@ -90,7 +76,7 @@ export default function Meal({ id, refetch }: Props) {
                             {({ active }) => (
                               <button
                                 type="button"
-                                onClick={handleRemoveMeal}
+                                onClick={() => removeMeal()}
                                 className={classNames(
                                   active ? "bg-gray-100 text-gray-900" : "text-gray-700",
                                   "flex px-4 py-2 text-sm w-full"
@@ -118,7 +104,7 @@ export default function Meal({ id, refetch }: Props) {
             >
               <Disclosure.Panel className="px-4   text-sm">
                 {sortByOrder(meal.ingredients).map((ingredient) => (
-                  <Ingredient key={ingredient.id} id={ingredient.id} refetch={refetch} isMealIngredient />
+                  <Ingredient key={ingredient.id} id={ingredient.id} />
                 ))}
               </Disclosure.Panel>
             </Transition>

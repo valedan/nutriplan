@@ -86,7 +86,8 @@ export const useLocalIngredient = (id: number) => {
             },
           },
         });
-      }, 500),
+        // Not sure we actually need this debounce... and UI is faster without it because nutrients can update immediately
+      }, 0),
     [updateIngredientMutation, id]
   );
 
