@@ -3,6 +3,5 @@ mutation updateIngredient($input: UpdateIngredientInput!) {
     id
     amount
     measure
-    order
   }
 }

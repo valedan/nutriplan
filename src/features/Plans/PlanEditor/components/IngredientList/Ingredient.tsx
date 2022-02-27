@@ -1,54 +1,42 @@
 import { debounce } from "lodash";
-import { useState } from "react";
+import { useState, useCallback, useMemo } from "react";
 import { XIcon } from "@heroicons/react/solid";
-import { Input, Select, Checkbox } from "components";
-import { useRemoveIngredientMutation, useUpdateIngredientMutation } from "generated/graphql/hooks";
-import { useReadIngredient } from "./hooks/useReadIngredient";
+import { Input, Select } from "components";
+import { useLocalIngredient } from "./hooks/useLocalIngredient";
 
 export interface IngredientProps {
   id: number;
-  isMealIngredient?: boolean;
-  refetch: () => void;
 }
 
-export default function Ingredient({ id, refetch, isMealIngredient = false }: IngredientProps) {
-  const ingredient = useReadIngredient(id);
+export default function Ingredient({ id }: IngredientProps) {
+  const { ingredient, removeIngredient, updateIngredient } = useLocalIngredient(id);
   const [localAmount, setLocalAmount] = useState(ingredient?.amount);
-  const [localMeasure, setLocalMeasure] = useState(ingredient?.measure);
-  const [updateIngredient] = useUpdateIngredientMutation();
-  const [removeIngredient] = useRemoveIngredientMutation();
+
+  // https://kyleshevlin.com/debounce-and-throttle-callbacks-with-react-hooks
+  const updateAmount = useMemo(
+    () =>
+      debounce((amount: number) => {
+        void updateIngredient({ amount });
+      }, 500),
+    [updateIngredient]
+  );
+
+  const handleChangeAmount = useCallback(
+    (newAmount: number) => {
+      // We need to set local here due to the debounce
+      setLocalAmount(newAmount);
+      updateAmount(newAmount);
+    },
+    [updateAmount]
+  );
 
   if (!ingredient) {
     return null;
   }
 
-  const updateAmount = debounce((newAmount: number) => {
-    void updateIngredient({ variables: { input: { id: Number(id), amount: Number(newAmount) } } });
-  }, 500);
-
-  const updateMeasure = debounce((newMeasure: string) => {
-    void updateIngredient({ variables: { input: { id: Number(id), measure: newMeasure } } });
-  }, 500);
-
-  const handleChangeAmount = (newAmount: number) => {
-    setLocalAmount(newAmount);
-    updateAmount(newAmount);
-  };
-
-  const handleChangeMeasure = (newMeasure: string) => {
-    setLocalMeasure(newMeasure);
-    updateMeasure(newMeasure);
-  };
-
-  const handleRemoveIngredient = async () => {
-    await removeIngredient({ variables: { id: Number(id) } });
-    void refetch();
-  };
-
   return (
     <div className="flex flex-col ">
       <div className="flex  items-center flex-grow">
-        {/* {!isMealIngredient && <Checkbox />} */}
         <div className="flex items-center ml-4 mr-2 px-2 py-2 flex-grow justify-between ">
           <div className="flex flex-col">
             <p className="text-gray-700">{ingredient.food.description}</p>
@@ -66,10 +54,10 @@ export default function Ingredient({ id, refetch, isMealIngredient = false }: In
             <Select
               id="portion"
               name="portion"
-              onChange={(e) => handleChangeMeasure(e.target.value)}
+              onChange={(e) => updateIngredient({ measure: e.target.value })}
               className="w-24 ml-4"
               sizing="small"
-              defaultValue={localMeasure}
+              defaultValue={ingredient.measure}
             >
               {ingredient.food.portions.map((portion) => (
                 <option key={portion.measure} value={portion.measure}>
@@ -80,7 +68,7 @@ export default function Ingredient({ id, refetch, isMealIngredient = false }: In
 
             <button
               type="button"
-              onClick={handleRemoveIngredient}
+              onClick={() => removeIngredient()}
               className="inline-flex items-center p-1 border border-transparent rounded-full shadow-sm text-gray-500  hover:bg-red-100 focus:outline-none ml-4"
             >
               <XIcon className="h-5 w-5" />

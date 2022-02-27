@@ -448,7 +448,7 @@ export type UpdateIngredientMutationVariables = Exact<{
 }>;
 
 
-export type UpdateIngredientMutation = { __typename?: 'Mutation', updateIngredient?: Maybe<{ __typename?: 'Ingredient', id: number, amount: number, measure: string, order: number }> };
+export type UpdateIngredientMutation = { __typename?: 'Mutation', updateIngredient?: Maybe<{ __typename?: 'Ingredient', id: number, amount: number, measure: string }> };
 
 export type UpdatePlanMutationVariables = Exact<{
   input: UpdatePlanInput;
@@ -1107,7 +1107,6 @@ export const UpdateIngredientDocument = gql`
     id
     amount
     measure
-    order
   }
 }
     `;
