@@ -1,8 +1,6 @@
 import classNames from "classnames";
 import { useState } from "react";
-import { useCurrentPlan } from "features/Plans/PlanEditor/PlanContext";
-import { useGetNutrientQuery } from "generated/graphql/hooks";
-import useGetNutrientAmountInPlan from "./useGetNutrientAmountInPlan";
+import useLocalNutrient from "./useLocalNutrient";
 
 interface NutrientAmountProps {
   amount: number;
@@ -41,28 +39,17 @@ interface NutrientProps {
 }
 
 export default function Nutrient({ id, openNutrientModal }: NutrientProps) {
-  const { id: planId } = useCurrentPlan();
-
   const [isHover, setIsHover] = useState(false);
-  const { data } = useGetNutrientQuery({
-    variables: {
-      id,
-    },
-  });
+  const { nutrient, amount } = useLocalNutrient(id);
 
-  const { amount } = useGetNutrientAmountInPlan({
-    nutrientId: id,
-    planId,
-  });
-
-  if (!data?.nutrient || !amount) {
+  if (!nutrient || !amount) {
     return null;
   }
 
-  const min = data.nutrient.activeTarget?.min;
-  const max = data.nutrient.activeTarget?.max;
-  const name = data.nutrient.displayName || data.nutrient.name;
-  const { unit } = data.nutrient;
+  const min = nutrient.activeTarget?.min;
+  const max = nutrient.activeTarget?.max;
+  const name = nutrient.displayName || nutrient.name;
+  const { unit } = nutrient;
 
   const percentageOfTarget = min && (amount / min) * 100;
   const isAboveMax = max && amount > max;

@@ -1,4 +1,4 @@
-query getPlanWithNutrients($planId: Int!, $nutrientIds: [Int!]) {
+query getPlanWithNutrients($planId: Int!) {
   plan(id: $planId) {
     id
     startDate
@@ -16,7 +16,7 @@ query getPlanWithNutrients($planId: Int!, $nutrientIds: [Int!]) {
           measure
           gramWeight
         }
-        foodNutrients(nutrientIds: $nutrientIds) {
+        foodNutrients {
           id
           amount
           nutrient {
@@ -47,7 +47,7 @@ query getPlanWithNutrients($planId: Int!, $nutrientIds: [Int!]) {
             measure
             gramWeight
           }
-          foodNutrients(nutrientIds: $nutrientIds) {
+          foodNutrients {
             id
             amount
             nutrient {

@@ -8,7 +8,7 @@ interface Props {
 
 export default function NutrientGroup({ name, children }: Props) {
   return (
-    // Add transition to open/close
+    // TODO: Add transition to open/close
     // https://headlessui.dev/react/disclosure#transitions
     <Disclosure defaultOpen>
       {({ open }) => (

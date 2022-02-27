@@ -39,7 +39,6 @@ export default function PlanDateInput() {
         id="planDays"
         name="planDays"
         min={1}
-        className=""
       />
       <p className="ml-1 italic text-gray-700">days</p>
     </div>

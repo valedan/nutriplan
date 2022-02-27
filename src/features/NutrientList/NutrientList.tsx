@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useGetNutrientGroupsQuery } from "generated/graphql/hooks";
 import { sortByOrder } from "utils";
 import NutrientGroup from "./NutrientGroup";
-import Nutrient from "./Nutrient";
+import Nutrient from "./Nutrient/Nutrient";
 import NutrientModal from "./NutrientModal/NutrientModal";
 
 export default function NutrientList() {
