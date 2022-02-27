@@ -1,5 +1,3 @@
-import { debounce } from "lodash";
-import { useState, useCallback, useMemo } from "react";
 import { XIcon } from "@heroicons/react/solid";
 import { Input, Select } from "components";
 import { useLocalIngredient } from "./hooks/useLocalIngredient";
@@ -10,25 +8,6 @@ export interface IngredientProps {
 
 export default function Ingredient({ id }: IngredientProps) {
   const { ingredient, removeIngredient, updateIngredient } = useLocalIngredient(id);
-  const [localAmount, setLocalAmount] = useState(ingredient?.amount);
-
-  // https://kyleshevlin.com/debounce-and-throttle-callbacks-with-react-hooks
-  const updateAmount = useMemo(
-    () =>
-      debounce((amount: number) => {
-        void updateIngredient({ amount });
-      }, 500),
-    [updateIngredient]
-  );
-
-  const handleChangeAmount = useCallback(
-    (newAmount: number) => {
-      // We need to set local here due to the debounce
-      setLocalAmount(newAmount);
-      updateAmount(newAmount);
-    },
-    [updateAmount]
-  );
 
   if (!ingredient) {
     return null;
@@ -44,8 +23,8 @@ export default function Ingredient({ id }: IngredientProps) {
           <div className="flex my-2">
             <Input
               type="number"
-              value={localAmount}
-              onChange={(e) => handleChangeAmount(Number(e.target.value))}
+              value={ingredient.amount}
+              onChange={(e) => updateIngredient({ amount: Number(e.target.value) })}
               name="amount"
               className="w-24"
               sizing="small"

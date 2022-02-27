@@ -1,6 +1,7 @@
 import { useApolloClient, gql } from "@apollo/client";
 import { useRemoveIngredientMutation, useUpdateIngredientMutation } from "generated/graphql/hooks";
-import { useCallback } from "react";
+import { debounce } from "lodash";
+import { useMemo, useState } from "react";
 
 interface Ingredient {
   __typename: "Ingredient";
@@ -42,6 +43,7 @@ export const useLocalIngredient = (id: number) => {
     // use optimistic results
     true
   );
+  const [localAmount, setLocalAmount] = useState<number>(ingredient?.amount || 0);
 
   const [removeIngredient] = useRemoveIngredientMutation({
     update: (cache) => {
@@ -72,20 +74,48 @@ export const useLocalIngredient = (id: number) => {
     }),
   });
 
-  const updateIngredient = useCallback(
-    ({ amount, measure }: { amount?: number; measure?: string }) => {
-      void updateIngredientMutation({
-        variables: {
-          input: {
-            id,
-            amount,
-            measure,
+  // Need the debounce function to not change (otherwise the internal debounce queue will be cleared)
+  const debouncedUpdateAmount = useMemo(
+    () =>
+      debounce((amount: number) => {
+        void updateIngredientMutation({
+          variables: {
+            input: {
+              id,
+              amount,
+            },
           },
-        },
-      });
-    },
-    [id, updateIngredientMutation]
+        });
+      }, 500),
+    [updateIngredientMutation, id]
   );
 
-  return { ingredient, removeIngredient, updateIngredient };
+  const updateAmount = (amount: number) => {
+    setLocalAmount(amount);
+    debouncedUpdateAmount(amount);
+  };
+
+  const updateMeasure = (measure: string) => {
+    void updateIngredientMutation({
+      variables: {
+        input: {
+          id,
+          measure,
+        },
+      },
+    });
+  };
+
+  const updateIngredient = ({ amount, measure }: { amount?: number; measure?: string }) => {
+    if (amount !== undefined) {
+      updateAmount(amount);
+    }
+    if (measure !== undefined) {
+      updateMeasure(measure);
+    }
+  };
+
+  const ingredientWithLocalAmount = ingredient ? { ...ingredient, amount: localAmount } : undefined;
+
+  return { ingredient: ingredientWithLocalAmount, removeIngredient, updateIngredient };
 };
