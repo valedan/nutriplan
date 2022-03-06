@@ -1,7 +1,7 @@
 import { Tab } from "@headlessui/react";
 import classNames from "classnames";
 import { ContentModal, Button } from "components";
-import { useReadPlanInfo } from "features/Plans/PlanEditor/hooks/useReadPlanInfo";
+import { useLocalPlan } from "features/Plans/PlanEditor/hooks/useLocalPlan";
 import Ingredient from "./Ingredient";
 import Meal from "./Meal";
 import useLocalNutrient from "../Nutrient/useLocalNutrient";
@@ -15,7 +15,7 @@ interface Props {
 export default function NutrientModal({ nutrientId, onClose }: Props) {
   const { nutrient } = useLocalNutrient(nutrientId);
   const { contributors, totalNutrientAmount } = useLocalContributors({ nutrientId });
-  const { plan } = useReadPlanInfo();
+  const { plan } = useLocalPlan();
 
   if (!nutrient || !totalNutrientAmount || !plan) {
     return null;

@@ -1,6 +1,6 @@
 import classNames from "classnames";
 import { useLocalContributors } from "features/Plans/PlanEditor/components/IngredientList/hooks/useLocalContributors";
-import { useReadPlanInfo } from "features/Plans/PlanEditor/hooks/useReadPlanInfo";
+import { useLocalPlan } from "features/Plans/PlanEditor/hooks/useLocalPlan";
 import { useState } from "react";
 import useLocalNutrient from "./useLocalNutrient";
 
@@ -44,7 +44,7 @@ export default function Nutrient({ id, openNutrientModal }: NutrientProps) {
   const [isHover, setIsHover] = useState(false);
   const { nutrient } = useLocalNutrient(id);
   const { totalNutrientAmount } = useLocalContributors({ nutrientId: id });
-  const { plan } = useReadPlanInfo();
+  const { plan } = useLocalPlan();
 
   if (!nutrient || !totalNutrientAmount || !plan) {
     return null;

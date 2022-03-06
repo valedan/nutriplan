@@ -1,6 +1,6 @@
 import { useLocalContributors } from "features/Plans/PlanEditor/components/IngredientList/hooks/useLocalContributors";
 import { useLocalIngredient } from "features/Plans/PlanEditor/components/IngredientList/hooks/useLocalIngredient";
-import { useReadPlanInfo } from "features/Plans/PlanEditor/hooks/useReadPlanInfo";
+import { useLocalPlan } from "features/Plans/PlanEditor/hooks/useLocalPlan";
 import { readNutrientAmountFromIngredient } from "features/Plans/shared/utils";
 import useLocalNutrient from "../Nutrient/useLocalNutrient";
 
@@ -14,7 +14,7 @@ export default function Ingredient({ id, nutrientId }: Props) {
   const { ingredient } = useLocalIngredient(id);
   const { nutrient } = useLocalNutrient(nutrientId);
   const { totalNutrientAmount } = useLocalContributors({ nutrientId });
-  const { plan } = useReadPlanInfo();
+  const { plan } = useLocalPlan();
 
   if (!ingredient || !nutrient || !totalNutrientAmount || !plan) {
     return null;

@@ -2,7 +2,7 @@ import { Disclosure, Transition } from "@headlessui/react";
 import { ChevronRightIcon } from "@heroicons/react/solid";
 import { useLocalContributors } from "features/Plans/PlanEditor/components/IngredientList/hooks/useLocalContributors";
 import { useLocalMeal } from "features/Plans/PlanEditor/components/IngredientList/hooks/useLocalMeal";
-import { useReadPlanInfo } from "features/Plans/PlanEditor/hooks/useReadPlanInfo";
+import { useLocalPlan } from "features/Plans/PlanEditor/hooks/useLocalPlan";
 import { readNutrientAmountFromIngredient, readNutrientAmountFromMeal } from "features/Plans/shared/utils";
 import useLocalNutrient from "../Nutrient/useLocalNutrient";
 import Ingredient from "./Ingredient";
@@ -17,7 +17,7 @@ export default function Meal({ id, nutrientId }: Props) {
   const { meal } = useLocalMeal(id);
   const { nutrient } = useLocalNutrient(nutrientId);
   const { totalNutrientAmount } = useLocalContributors({ nutrientId });
-  const { plan } = useReadPlanInfo();
+  const { plan } = useLocalPlan();
 
   if (!meal || !nutrient || !totalNutrientAmount || !plan) {
     return null;

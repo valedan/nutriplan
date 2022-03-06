@@ -1,40 +1,26 @@
-import React, { useState, useEffect } from "react";
-import { addDays, differenceInCalendarDays, parseISO } from "date-fns";
-import { debounce } from "lodash";
+import React from "react";
+import { addDays } from "date-fns";
 import { Input } from "components";
-import { useUpdatePlanMutation } from "generated/graphql/hooks";
-import { useCurrentPlan } from "../../PlanContext";
-import { useReadPlanInfo } from "../../hooks/useReadPlanInfo";
+import { useLocalPlan } from "../../hooks/useLocalPlan";
 
+// TODO: use a date range picker instead of a date input
 export default function PlanDateInput() {
-  const { id } = useCurrentPlan();
-  const [days, setDays] = useState(7);
-  const { plan } = useReadPlanInfo();
-  const [updatePlan] = useUpdatePlanMutation();
+  const { plan, updatePlan } = useLocalPlan();
 
-  useEffect(() => {
-    if (plan) {
-      setDays(differenceInCalendarDays(parseISO(plan.endDate), parseISO(plan.startDate)));
-    }
-  }, [plan]);
+  if (!plan || !updatePlan) {
+    return null;
+  }
 
-  const updateDates = debounce((newDays: number) => {
-    void updatePlan({
-      variables: { input: { id, startDate: new Date(), endDate: addDays(Date.now(), newDays) } },
-    });
-  }, 500);
-
-  const handleChangeDates = (newDays: number) => {
-    setDays(newDays);
-    updateDates(newDays);
+  const updateDates = (newDays: number) => {
+    void updatePlan({ startDate: new Date(), endDate: addDays(new Date(), newDays) });
   };
 
   return (
     <div className="w-32 flex items-end">
       <Input
-        value={days}
+        value={plan?.daysInPlan}
         type="number"
-        onChange={(e) => handleChangeDates(Number(e.target.value))}
+        onChange={(e) => updateDates(Number(e.target.value))}
         label="Plan length"
         id="planDays"
         name="planDays"
