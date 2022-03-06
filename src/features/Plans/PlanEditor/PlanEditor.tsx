@@ -33,10 +33,7 @@ export default function PlanEditor() {
           {/* TODO: This is stale after updating */}
           <title key="title">Edit {data?.plan?.name || "plan"}</title>
         </Head>
-        {isAddFoodOpen && (
-          // TODO: stop using refetch everywhere and start using cache
-          <AddFoodModal onClose={() => setIsAddFoodOpen(false)} />
-        )}
+        {isAddFoodOpen && <AddFoodModal onClose={() => setIsAddFoodOpen(false)} />}
 
         <div className="flex my-2 px-4">
           <NavHeading to="/">Edit meal plan</NavHeading>

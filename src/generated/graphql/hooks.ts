@@ -432,6 +432,7 @@ export type UpdateMealMutation = { __typename?: 'Mutation', updateMeal?: Maybe<{
 
 export type GetPlanWithNutrientsQueryVariables = Exact<{
   planId: Scalars['Int'];
+  nutrientIds?: Maybe<Array<Scalars['Int']> | Scalars['Int']>;
 }>;
 
 
@@ -901,7 +902,7 @@ export type UpdateMealMutationHookResult = ReturnType<typeof useUpdateMealMutati
 export type UpdateMealMutationResult = Apollo.MutationResult<UpdateMealMutation>;
 export type UpdateMealMutationOptions = Apollo.BaseMutationOptions<UpdateMealMutation, UpdateMealMutationVariables>;
 export const GetPlanWithNutrientsDocument = gql`
-    query getPlanWithNutrients($planId: Int!) {
+    query getPlanWithNutrients($planId: Int!, $nutrientIds: [Int!]) {
   plan(id: $planId) {
     id
     startDate
@@ -919,7 +920,7 @@ export const GetPlanWithNutrientsDocument = gql`
           measure
           gramWeight
         }
-        foodNutrients {
+        foodNutrients(nutrientIds: $nutrientIds) {
           id
           amount
           nutrient {
@@ -950,7 +951,7 @@ export const GetPlanWithNutrientsDocument = gql`
             measure
             gramWeight
           }
-          foodNutrients {
+          foodNutrients(nutrientIds: $nutrientIds) {
             id
             amount
             nutrient {
@@ -979,6 +980,7 @@ export const GetPlanWithNutrientsDocument = gql`
  * const { data, loading, error } = useGetPlanWithNutrientsQuery({
  *   variables: {
  *      planId: // value for 'planId'
+ *      nutrientIds: // value for 'nutrientIds'
  *   },
  * });
  */

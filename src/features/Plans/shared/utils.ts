@@ -1,8 +1,10 @@
 import { differenceInDays } from "date-fns";
 
 export interface WeighableIngredientWithNutrients {
+  id: number;
   amount: number;
   measure: string;
+  order: number;
   food: {
     portions: {
       measure: string;

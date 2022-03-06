@@ -12,8 +12,28 @@ interface Meal {
     name: string;
   };
   ingredients: {
+    __typename: "Ingredient";
     id: number;
+    amount: number;
+    measure: string;
     order: number;
+    food: {
+      id: number;
+      description: string;
+      portions: {
+        measure: string;
+        gramWeight: number;
+      }[];
+      foodNutrients: {
+        id: number;
+        amount: number;
+        nutrient: {
+          id: number;
+          name: string;
+          unit: string;
+        };
+      }[];
+    };
   }[];
 }
 
@@ -32,7 +52,26 @@ export const useLocalMeal = (id: number) => {
           }
           ingredients {
             id
+            amount
+            measure
             order
+            food {
+              id
+              description
+              portions {
+                measure
+                gramWeight
+              }
+              foodNutrients {
+                id
+                amount
+                nutrient {
+                  id
+                  name
+                  unit
+                }
+              }
+            }
           }
         }
       `,

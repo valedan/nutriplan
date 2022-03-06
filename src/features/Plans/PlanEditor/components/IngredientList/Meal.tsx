@@ -18,6 +18,7 @@ export default function Meal({ id }: Props) {
     return null;
   }
 
+  // TODO: clean up JSX here
   return (
     <Disclosure key={id} defaultOpen>
       {({ open }) => (

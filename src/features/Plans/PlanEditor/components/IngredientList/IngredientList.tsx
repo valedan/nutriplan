@@ -1,10 +1,10 @@
 import { sortByOrder } from "utils";
 import Ingredient from "./Ingredient";
 import Meal from "./Meal";
-import { useReadContributors } from "./hooks/useReadContributors";
+import { useLocalContributors } from "./hooks/useLocalContributors";
 
 export default function IngredientList() {
-  const { contributors } = useReadContributors();
+  const { contributors } = useLocalContributors();
 
   if (!contributors) {
     return null;

@@ -1,11 +1,8 @@
 import { gql, useApolloClient } from "@apollo/client";
-import { useCurrentPlan } from "features/Plans/PlanEditor/PlanContext";
-import { Nutrient, GetPlanWithNutrientsDocument, GetPlanWithNutrientsQuery } from "generated/graphql/hooks";
-import { readDailyNutrientAmount } from "../../Plans/shared/utils";
+import { Nutrient } from "generated/graphql/hooks";
 
 const useLocalNutrient = (id: number) => {
   const client = useApolloClient();
-  const { id: planId } = useCurrentPlan();
 
   const nutrient = client.readFragment<Nutrient>(
     {
@@ -29,26 +26,12 @@ const useLocalNutrient = (id: number) => {
     true
   );
 
-  // TODO: This will use a TON of memory because we're grabbing the entire plan, including ALL foodNutrients, for every individual nutrient.
-  // Benchmark this with a larger plan.
-  const planData = client.readQuery<GetPlanWithNutrientsQuery>({
-    query: GetPlanWithNutrientsDocument,
-    variables: {
-      planId,
-    },
-  });
-
-  if (!nutrient || !planData?.plan) {
+  if (!nutrient) {
     return {};
   }
 
-  const { plan } = planData;
-
-  const amount = readDailyNutrientAmount(plan, nutrient.id);
-
   return {
     nutrient,
-    amount,
   };
 };
 

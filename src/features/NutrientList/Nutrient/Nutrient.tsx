@@ -1,4 +1,6 @@
 import classNames from "classnames";
+import { useLocalContributors } from "features/Plans/PlanEditor/components/IngredientList/hooks/useLocalContributors";
+import { useReadPlanInfo } from "features/Plans/PlanEditor/hooks/useReadPlanInfo";
 import { useState } from "react";
 import useLocalNutrient from "./useLocalNutrient";
 
@@ -40,19 +42,23 @@ interface NutrientProps {
 
 export default function Nutrient({ id, openNutrientModal }: NutrientProps) {
   const [isHover, setIsHover] = useState(false);
-  const { nutrient, amount } = useLocalNutrient(id);
+  const { nutrient } = useLocalNutrient(id);
+  const { totalNutrientAmount } = useLocalContributors({ nutrientId: id });
+  const { plan } = useReadPlanInfo();
 
-  if (!nutrient || !amount) {
+  if (!nutrient || !totalNutrientAmount || !plan) {
     return null;
   }
+
+  const dailyAmount = totalNutrientAmount / plan.daysInPlan;
 
   const min = nutrient.activeTarget?.min;
   const max = nutrient.activeTarget?.max;
   const name = nutrient.displayName || nutrient.name;
   const { unit } = nutrient;
 
-  const percentageOfTarget = min && (amount / min) * 100;
-  const isAboveMax = max && amount > max;
+  const percentageOfTarget = min && (dailyAmount / min) * 100;
+  const isAboveMax = max && dailyAmount > max;
 
   const nameWithParens = name.match(/(.+)(\(.+\))/);
 
@@ -82,7 +88,7 @@ export default function Nutrient({ id, openNutrientModal }: NutrientProps) {
       ) : (
         <p className="flex flex-grow mx-2 italic text-gray-500 text-sm justify-center">No target</p>
       )}
-      <NutrientAmount amount={amount} isHover={isHover} unit={unit} min={min} />
+      <NutrientAmount amount={dailyAmount} isHover={isHover} unit={unit} min={min} />
     </button>
   );
 }

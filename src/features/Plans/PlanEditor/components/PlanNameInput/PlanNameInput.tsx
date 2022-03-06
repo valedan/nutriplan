@@ -11,7 +11,7 @@ interface Props {
 
 export default function PlanNameInput({ className }: Props) {
   const { id } = useCurrentPlan();
-  const plan = useReadPlanInfo();
+  const { plan } = useReadPlanInfo();
   const [name, setName] = useState("");
   const [updatePlan] = useUpdatePlanMutation();
 

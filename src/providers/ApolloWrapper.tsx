@@ -1,5 +1,6 @@
 import { ApolloClient, InMemoryCache, ApolloProvider, ApolloLink, from, HttpLink } from "@apollo/client";
 import { useAuth0 } from "@auth0/auth0-react";
+import { includes } from "lodash";
 import React, { useEffect, useState } from "react";
 
 const ApolloWrapper = ({ children }: { children: React.ReactNode }) => {
@@ -41,6 +42,25 @@ const ApolloWrapper = ({ children }: { children: React.ReactNode }) => {
                   __typename: "Nutrient",
                   id: args?.id as number,
                 });
+              },
+            },
+          },
+        },
+        Food: {
+          fields: {
+            foodNutrients: {
+              // do not store separate cache entries for different nutrientId args
+              keyArgs: false,
+              read(foodNutrients: { __ref: string }[], { args, readField }) {
+                if (args?.nutrientIds) {
+                  const start = new Date();
+                  // seems to be faster to never use this
+                  return foodNutrients.filter((foodNutrient) =>
+                    includes(args.nutrientIds, readField("id", readField("nutrient", foodNutrient)))
+                  );
+                }
+
+                return foodNutrients;
               },
             },
           },

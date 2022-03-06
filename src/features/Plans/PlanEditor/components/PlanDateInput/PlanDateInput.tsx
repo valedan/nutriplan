@@ -9,7 +9,7 @@ import { useReadPlanInfo } from "../../hooks/useReadPlanInfo";
 export default function PlanDateInput() {
   const { id } = useCurrentPlan();
   const [days, setDays] = useState(7);
-  const plan = useReadPlanInfo();
+  const { plan } = useReadPlanInfo();
   const [updatePlan] = useUpdatePlanMutation();
 
   useEffect(() => {

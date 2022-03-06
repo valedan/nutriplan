@@ -1,24 +1,32 @@
 import { Disclosure, Transition } from "@headlessui/react";
 import { ChevronRightIcon } from "@heroicons/react/solid";
-import Ingredient, { IIngredient } from "./Ingredient";
-
-interface IMeal {
-  id: number;
-  name: string;
-  amount: number;
-  measure: string;
-  dailyNutrientAmount: number;
-  dailyNutrientPercentage: number;
-  ingredients: IIngredient[];
-}
+import { useLocalContributors } from "features/Plans/PlanEditor/components/IngredientList/hooks/useLocalContributors";
+import { useLocalMeal } from "features/Plans/PlanEditor/components/IngredientList/hooks/useLocalMeal";
+import { useReadPlanInfo } from "features/Plans/PlanEditor/hooks/useReadPlanInfo";
+import { readNutrientAmountFromIngredient, readNutrientAmountFromMeal } from "features/Plans/shared/utils";
+import useLocalNutrient from "../Nutrient/useLocalNutrient";
+import Ingredient from "./Ingredient";
 
 interface Props {
-  meal: IMeal;
-  unit: string;
+  id: number;
+  nutrientId: number;
 }
 
 // TODO: You should be able to adjust servings or remove meals from here
-export default function Meal({ meal, unit }: Props) {
+export default function Meal({ id, nutrientId }: Props) {
+  const { meal } = useLocalMeal(id);
+  const { nutrient } = useLocalNutrient(nutrientId);
+  const { totalNutrientAmount } = useLocalContributors({ nutrientId });
+  const { plan } = useReadPlanInfo();
+
+  if (!meal || !nutrient || !totalNutrientAmount || !plan) {
+    return null;
+  }
+
+  const nutrientAmountOfMeal = readNutrientAmountFromMeal(meal, nutrientId);
+  const dailyNutrientAmountOfMeal = nutrientAmountOfMeal / plan.daysInPlan;
+
+  const dailyAmountInPlan = totalNutrientAmount / plan.daysInPlan;
   return (
     <Disclosure key={meal.id}>
       {({ open }) => (
@@ -30,18 +38,20 @@ export default function Meal({ meal, unit }: Props) {
                   <div className="flex items-center w-full flex-grow my-2 ">
                     <div className="flex w-2/5 items-center">
                       <ChevronRightIcon className={`${open ? "transform rotate-90" : ""} w-5 h-5 text-gray-500 mr-2`} />
-                      <span className="text-gray-700">{meal.name}</span>
+                      <span className="text-gray-700">{meal.recipe.name}</span>
                     </div>
                     <div className="flex w-1/5">
-                      <span className="text-gray-700">{meal.amount}</span>
-                      <span className="text-gray-700 ml-2">{meal.measure}</span>
+                      <span className="text-gray-700">{meal.servings}</span>
+                      <span className="text-gray-700 ml-2">servings</span>
                     </div>
                     <div className="flex w-1/5 justify-end">
-                      <span className="text-gray-700">{meal.dailyNutrientAmount}</span>
-                      <span className="text-gray-700 ml-2">{unit}</span>
+                      <span className="text-gray-700">{Math.round(dailyNutrientAmountOfMeal)}</span>
+                      <span className="text-gray-700 ml-2">{nutrient.unit}</span>
                     </div>
                     <div className="flex w-1/5 justify-end pr-8">
-                      <span className="text-gray-700">{meal.dailyNutrientPercentage}</span>
+                      <span className="text-gray-700">
+                        {Math.round((dailyNutrientAmountOfMeal / dailyAmountInPlan) * 100)}
+                      </span>
                       <span className="text-gray-700 ml-2">%</span>
                     </div>
                   </div>
@@ -59,9 +69,15 @@ export default function Meal({ meal, unit }: Props) {
             >
               <Disclosure.Panel className="px-4 text-sm">
                 <div>
-                  {meal.ingredients.map((ingredient: IIngredient) => (
-                    <Ingredient ingredient={ingredient} unit={unit} key={ingredient.id} />
-                  ))}
+                  {[...meal.ingredients]
+                    .sort(
+                      (a, b) =>
+                        (readNutrientAmountFromIngredient(b, nutrientId) ?? 0) -
+                        (readNutrientAmountFromIngredient(a, nutrientId) ?? 0)
+                    )
+                    .map((ingredient) => (
+                      <Ingredient id={ingredient.id} key={ingredient.id} nutrientId={nutrientId} />
+                    ))}
                 </div>
               </Disclosure.Panel>
             </Transition>
@@ -71,24 +87,3 @@ export default function Meal({ meal, unit }: Props) {
     </Disclosure>
   );
 }
-
-// <div
-//   key={meal.id}
-//   className="flex items-center  px-2 py-4 flex-grow w-full justify-between border-b border-gray-200"
-// >
-//   <div className="flex w-2/5">
-//     <span className="text-gray-700">{meal.name}</span>
-//   </div>
-//   <div className="flex w-1/5">
-//     <span className="text-gray-700">{meal.amount}</span>
-//     <span className="text-gray-700 ml-2">{meal.measure}</span>
-//   </div>
-//   <div className="flex w-1/5 justify-end">
-//     <span className="text-gray-700">{meal.dailyNutrientAmount}</span>
-//     <span className="text-gray-700 ml-2">{unit}</span>
-//   </div>
-//   <div className="flex w-1/5 justify-end pr-8">
-//     <span className="text-gray-700">{meal.dailyNutrientPercentage}</span>
-//     <span className="text-gray-700 ml-2">%</span>
-//   </div>
-// </div>
