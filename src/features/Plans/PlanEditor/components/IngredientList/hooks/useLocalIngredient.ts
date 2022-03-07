@@ -63,7 +63,6 @@ export const useLocalIngredient = (id: number) => {
     // use optimistic results
     true
   );
-  const [localAmount, setLocalAmount] = useState<number>(ingredient?.amount || 0);
 
   const [removeIngredient] = useRemoveIngredientMutation({
     update: (cache) => {
@@ -94,26 +93,15 @@ export const useLocalIngredient = (id: number) => {
     }),
   });
 
-  // Need the debounce function to not change (otherwise the internal debounce queue will be cleared)
-  const debouncedUpdateAmount = useMemo(
-    () =>
-      debounce((amount: number) => {
-        void updateIngredientMutation({
-          variables: {
-            input: {
-              id,
-              amount,
-            },
-          },
-        });
-        // Not sure we actually need this debounce... and UI is faster without it because nutrients can update immediately
-      }, 0),
-    [updateIngredientMutation, id]
-  );
-
   const updateAmount = (amount: number) => {
-    setLocalAmount(amount);
-    debouncedUpdateAmount(amount);
+    void updateIngredientMutation({
+      variables: {
+        input: {
+          id,
+          amount,
+        },
+      },
+    });
   };
 
   const updateMeasure = (measure: string) => {
@@ -136,7 +124,5 @@ export const useLocalIngredient = (id: number) => {
     }
   };
 
-  const ingredientWithLocalAmount = ingredient ? { ...ingredient, amount: localAmount } : undefined;
-
-  return { ingredient: ingredientWithLocalAmount, removeIngredient, updateIngredient };
+  return { ingredient, removeIngredient, updateIngredient };
 };

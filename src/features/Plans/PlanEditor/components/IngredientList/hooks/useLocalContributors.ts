@@ -35,12 +35,15 @@ export const useLocalContributors = ({ nutrientId }: Options = {}) => {
   const { id: planId } = useCurrentPlan();
   const client = useApolloClient();
 
-  const planData = client.readQuery<GetPlanWithNutrientsQuery>({
-    query: GetPlanWithNutrientsDocument,
-    variables: {
-      planId,
+  const planData = client.readQuery<GetPlanWithNutrientsQuery>(
+    {
+      query: GetPlanWithNutrientsDocument,
+      variables: {
+        planId,
+      },
     },
-  });
+    true
+  );
 
   if (!planData?.plan) {
     return { contributors: [] };
