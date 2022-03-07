@@ -51,88 +51,92 @@ export default function NutrientModal({ nutrientId, onClose }: Props) {
   };
 
   return (
-    <ContentModal
-      open
-      onClose={onClose}
-      title={
+    <ContentModal open onClose={onClose}>
+      <ContentModal.Header onClose={onClose}>
         <p>
           {name} - <span className="font-medium">{calculateTargetStatus()}</span>
         </p>
-      }
-    >
-      <div className="flex justify-between mb-10">
-        <div className="flex flex-col">
-          <span className="text-sm font-medium text-gray-400">Amount in current plan</span>
-          <p className=" text-gray-900">
-            {Math.round(dailyAmount)} {unit}
-          </p>
-        </div>
-        <div>
-          <div className="flex items-end">
-            <div>
-              <span className="text-sm font-medium text-gray-400">Target</span>
-              <p className=" text-gray-900">
-                {min} - {max} {unit}
-              </p>
+      </ContentModal.Header>
+      <ContentModal.Content>
+        <div className="flex justify-between mb-10">
+          <div className="flex flex-col">
+            <span className="text-sm font-medium text-gray-400">Amount in current plan</span>
+            <p className=" text-gray-900">
+              {Math.round(dailyAmount)} {unit}
+            </p>
+          </div>
+          <div>
+            <div className="flex items-end">
+              <div>
+                <span className="text-sm font-medium text-gray-400">Target</span>
+                <p className=" text-gray-900">
+                  {min} - {max} {unit}
+                </p>
+              </div>
+              <Button variant="ghost" onClick={onClose} size="small" className="ml-4">
+                Change target
+              </Button>
             </div>
-            <Button variant="ghost" onClick={onClose} size="small" className="ml-4">
-              Change target
-            </Button>
           </div>
         </div>
-      </div>
-      <div>
-        <Tab.Group>
-          <Tab.List className="border-b border-gray-200 mb-4">
-            <Tab>
-              {({ selected }) => (
-                <button
-                  type="button"
-                  className={classNames(
-                    selected
-                      ? "border-blue-500 text-blue-600"
-                      : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300",
-                    " py-2 px-4 text-center border-b-2 font-medium text-sm -mb-px"
-                  )}
-                >
-                  Top Contributors
-                </button>
-              )}
-            </Tab>
-            <Tab>
-              {({ selected }) => (
-                <button
-                  type="button"
-                  className={classNames(
-                    selected
-                      ? "border-blue-500 text-blue-600"
-                      : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300",
-                    " py-2 px-4 text-center border-b-2 font-medium text-sm -mb-px"
-                  )}
-                >
-                  Best Sources
-                </button>
-              )}
-            </Tab>
-          </Tab.List>
-          <Tab.Panels>
-            <Tab.Panel>
-              <div className="px-4">
-                {contributors
-                  .sort((a, b) => (b.nutrientAmount ?? 0) - (a.nutrientAmount ?? 0))
-                  .map((contributor) =>
-                    contributor.__typename === "Meal" ? (
-                      <Meal id={contributor.id} key={contributor.id} nutrientId={nutrientId} />
-                    ) : (
-                      <Ingredient id={contributor.id} key={contributor.id} nutrientId={nutrientId} />
-                    )
-                  )}
-              </div>
-            </Tab.Panel>
-            <Tab.Panel>Coming soon</Tab.Panel>
-          </Tab.Panels>
-        </Tab.Group>
-      </div>
+        <div>
+          <Tab.Group>
+            <Tab.List className="border-b border-gray-200 mb-4">
+              <Tab>
+                {({ selected }) => (
+                  <button
+                    type="button"
+                    className={classNames(
+                      selected
+                        ? "border-blue-500 text-blue-600"
+                        : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300",
+                      " py-2 px-4 text-center border-b-2 font-medium text-sm -mb-px"
+                    )}
+                  >
+                    Top Contributors
+                  </button>
+                )}
+              </Tab>
+              <Tab>
+                {({ selected }) => (
+                  <button
+                    type="button"
+                    className={classNames(
+                      selected
+                        ? "border-blue-500 text-blue-600"
+                        : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300",
+                      " py-2 px-4 text-center border-b-2 font-medium text-sm -mb-px"
+                    )}
+                  >
+                    Best Sources
+                  </button>
+                )}
+              </Tab>
+            </Tab.List>
+            <Tab.Panels>
+              <Tab.Panel>
+                <div className="px-4">
+                  {contributors
+                    .sort((a, b) => (b.nutrientAmount ?? 0) - (a.nutrientAmount ?? 0))
+                    .map((contributor) =>
+                      contributor.__typename === "Meal" ? (
+                        <Meal id={contributor.id} key={contributor.id} nutrientId={nutrientId} />
+                      ) : (
+                        <Ingredient id={contributor.id} key={contributor.id} nutrientId={nutrientId} />
+                      )
+                    )}
+                </div>
+              </Tab.Panel>
+              <Tab.Panel>Coming soon</Tab.Panel>
+            </Tab.Panels>
+          </Tab.Group>
+        </div>
+      </ContentModal.Content>
+      <ContentModal.Footer>
+        <Button variant="ghost" onClick={onClose}>
+          Close
+        </Button>
+      </ContentModal.Footer>
     </ContentModal>
   );
 }

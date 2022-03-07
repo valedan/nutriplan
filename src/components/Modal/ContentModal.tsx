@@ -1,12 +1,27 @@
-import { Fragment, ReactNode, useRef } from "react";
+import { Fragment, ReactNode } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { XIcon } from "@heroicons/react/outline";
-import Button from "../Button/Button";
+import classNames from "classnames";
 
-interface Props {
+interface ModalProps {
   open: boolean;
-  title: string | ReactNode;
   onClose: () => void;
+  children: ReactNode;
+}
+
+interface HeaderProps {
+  onClose: () => void;
+  className?: string;
+  children: ReactNode;
+}
+
+interface ContentProps {
+  className?: string;
+  children: ReactNode;
+}
+
+interface FooterProps {
+  className?: string;
   children: ReactNode;
 }
 
@@ -14,12 +29,10 @@ interface Props {
 
 // I've remove mobile-specific styling here. When doing mobile, refer to the code examples on tailwindui and headlessui for what's missing.
 
-export default function ContentModal({ open, onClose, title, children }: Props) {
-  const closeButtonRef = useRef(null);
-
+function ContentModal({ open, onClose, children }: ModalProps) {
   return (
     <Transition.Root show={open} as={Fragment}>
-      <Dialog as="div" className="fixed z-50 inset-0 overflow-y-auto" initialFocus={closeButtonRef} onClose={onClose}>
+      <Dialog as="div" className="fixed z-50 inset-0 overflow-y-auto" onClose={onClose}>
         <div className="min-h-screen text-center block">
           <Transition.Child
             as={Fragment}
@@ -47,29 +60,7 @@ export default function ContentModal({ open, onClose, title, children }: Props) 
             leaveTo="opacity-0 translate-y-0 scale-95"
           >
             <div className="inline-block bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all align-middle max-w-4xl w-full ">
-              <div className="flex flex-col max-h-3/4 min-h-3/4">
-                <div className="p-4 flex justify-between text-left w-full border-b">
-                  <Dialog.Title as="h3" className="text-xl leading-6 text-gray-900 ">
-                    {title}
-                  </Dialog.Title>
-                  <div className="block absolute top-0 right-0 pt-4 pr-4">
-                    <button
-                      type="button"
-                      className="bg-white rounded-md text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-                      onClick={onClose}
-                    >
-                      <span className="sr-only">Close</span>
-                      <XIcon className="h-6 w-6" aria-hidden="true" />
-                    </button>
-                  </div>
-                </div>
-                <div className="p-4 overflow-y-auto flex-grow">{children}</div>
-                <div className="p-4 gap-4 flex flex-row-reverse border-t">
-                  <Button onClick={onClose} variant="ghost" ref={closeButtonRef}>
-                    Close
-                  </Button>
-                </div>
-              </div>
+              <div className="flex flex-col max-h-3/4 min-h-3/4">{children}</div>
             </div>
           </Transition.Child>
         </div>
@@ -77,3 +68,38 @@ export default function ContentModal({ open, onClose, title, children }: Props) 
     </Transition.Root>
   );
 }
+
+// TODO: Parent should automatically pass in `onClose`
+function Header({ children, className, onClose }: HeaderProps) {
+  return (
+    <div className={classNames("p-4 flex justify-between text-left w-full border-b", className)}>
+      <Dialog.Title as="h3" className="text-xl leading-6 text-gray-900 ">
+        {children}
+      </Dialog.Title>
+      <div className="block absolute top-0 right-0 pt-4 pr-4">
+        <button
+          type="button"
+          className="bg-white rounded-md text-gray-400 hover:text-gray-500 focus:outline-none "
+          onClick={onClose}
+        >
+          <span className="sr-only">Close</span>
+          <XIcon className="h-6 w-6" aria-hidden="true" />
+        </button>
+      </div>
+    </div>
+  );
+}
+
+function Content({ children, className }: ContentProps) {
+  return <div className={classNames("p-4 overflow-y-auto flex-grow", className)}>{children}</div>;
+}
+
+function Footer({ children, className }: FooterProps) {
+  return <div className={classNames("p-4 gap-4 flex flex-row-reverse border-t", className)}>{children}</div>;
+}
+
+ContentModal.Header = Header;
+ContentModal.Content = Content;
+ContentModal.Footer = Footer;
+
+export default ContentModal;

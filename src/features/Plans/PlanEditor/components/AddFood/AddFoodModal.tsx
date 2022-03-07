@@ -41,10 +41,14 @@ export default function AddFoodModal({ onClose }: Props) {
     onClose();
   };
   return (
-    <ContentModal open onClose={onClose} title="Add Food">
-      <Heading>Add Food</Heading>
-      <RecipeLibraryDropdown onSelect={handleSelectRecipe} />
-      <FoodSearch onSelectFood={handleSelectFood} />
+    <ContentModal open onClose={onClose}>
+      <ContentModal.Header onClose={onClose}>
+        <Heading>Add Food</Heading>
+      </ContentModal.Header>
+      <ContentModal.Content>
+        <RecipeLibraryDropdown onSelect={handleSelectRecipe} />
+        <FoodSearch onSelectFood={handleSelectFood} />
+      </ContentModal.Content>
     </ContentModal>
   );
 }
