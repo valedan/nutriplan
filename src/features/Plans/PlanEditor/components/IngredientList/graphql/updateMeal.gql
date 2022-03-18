@@ -1,0 +1,6 @@
+mutation updateMeal($input: UpdateMealInput!) {
+  updateMeal(input: $input) {
+    id
+    servings
+  }
+}

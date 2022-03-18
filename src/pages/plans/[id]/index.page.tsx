@@ -1,5 +1,4 @@
-import ClientOnly from "../../../utils/ClientOnly";
-import RequireAuth from "../../../utils/RequireAuth";
+import { ClientOnly, RequireAuth } from "providers";
 
 export default function Plan() {
   return (

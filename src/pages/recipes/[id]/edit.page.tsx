@@ -1,6 +1,5 @@
-import ClientOnly from "../../../utils/ClientOnly";
-import RequireAuth from "../../../utils/RequireAuth";
-import RecipeEditor from "../../../components/Recipes/RecipeEditor";
+import { ClientOnly, RequireAuth } from "providers";
+import { RecipeEditor } from "features/Recipes";
 
 export default function EditRecipe() {
   return (

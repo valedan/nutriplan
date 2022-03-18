@@ -1,9 +1,0 @@
-export { default as FoodSearch } from "./FoodSearch/FoodSearch";
-export { default as Layout } from "./Layout/Layout";
-export { default as Button } from "./Button/Button";
-export { default as LoadingScreen } from "./LoadingScreen";
-export { default as Input } from "./Forms/Input/Input";
-export { default as Select } from "./Forms/Select/Select";
-export { default as Checkbox } from "./Forms/Checkbox/Checkbox";
-export { default as Dropdown } from "./Dropdown/Dropdown";
-export { default as DropdownItem } from "./Dropdown/DropdownItem";

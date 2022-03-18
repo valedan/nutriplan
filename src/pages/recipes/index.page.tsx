@@ -1,6 +1,5 @@
-import ClientOnly from "../../utils/ClientOnly";
-import RequireAuth from "../../utils/RequireAuth";
-import RecipeDashboard from "../../components/Recipes/RecipeDashboard";
+import { ClientOnly, RequireAuth } from "providers";
+import { RecipeDashboard } from "features/Recipes";
 
 export default function Home() {
   return (

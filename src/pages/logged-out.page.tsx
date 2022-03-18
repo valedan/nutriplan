@@ -1,5 +1,5 @@
 import { useAuth0 } from "@auth0/auth0-react";
-import { Button } from "../components/shared";
+import { Button } from "components";
 
 const LoggedOut = () => {
   const { loginWithRedirect } = useAuth0();
