@@ -1,11 +1,15 @@
-import { Tab } from "@headlessui/react";
 import classNames from "classnames";
-import { ContentModal, Button } from "components";
+import { Button, ContentModal } from "components";
 import { useLocalPlan } from "features/Plans/PlanEditor/hooks/useLocalPlan";
+
+import { Tab } from "@headlessui/react";
+
+import {
+  useLocalContributors
+} from "../../Plans/PlanEditor/components/IngredientList/hooks/useLocalContributors";
+import useLocalNutrient from "../Nutrient/useLocalNutrient";
 import Ingredient from "./Ingredient";
 import Meal from "./Meal";
-import useLocalNutrient from "../Nutrient/useLocalNutrient";
-import { useLocalContributors } from "../../Plans/PlanEditor/components/IngredientList/hooks/useLocalContributors";
 
 interface Props {
   nutrientId: number;
@@ -52,12 +56,12 @@ export default function NutrientModal({ nutrientId, onClose }: Props) {
 
   return (
     <ContentModal open onClose={onClose}>
-      <ContentModal.Header onClose={onClose}>
+      <ContentModal.Header onClose={onClose} className="p-4">
         <p>
           {name} - <span className="font-medium">{calculateTargetStatus()}</span>
         </p>
       </ContentModal.Header>
-      <ContentModal.Content>
+      <ContentModal.Content className="p-4">
         <div className="flex justify-between mb-10">
           <div className="flex flex-col">
             <span className="text-sm font-medium text-gray-400">Amount in current plan</span>
@@ -132,7 +136,7 @@ export default function NutrientModal({ nutrientId, onClose }: Props) {
           </Tab.Group>
         </div>
       </ContentModal.Content>
-      <ContentModal.Footer>
+      <ContentModal.Footer className="p-4">
         <Button variant="ghost" onClick={onClose}>
           Close
         </Button>

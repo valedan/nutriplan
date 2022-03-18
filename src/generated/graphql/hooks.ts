@@ -359,10 +359,11 @@ export type UpdateTargetInput = {
 
 export type SearchFoodsQueryVariables = Exact<{
   searchTerm: Scalars['String'];
+  nutrientIds?: Maybe<Array<Scalars['Int']> | Scalars['Int']>;
 }>;
 
 
-export type SearchFoodsQuery = { __typename?: 'Query', searchFoods?: Maybe<Array<Maybe<{ __typename?: 'Food', description: string, id: number, dataSource: string, category?: Maybe<string>, brandName?: Maybe<string>, searchScore?: Maybe<number>, nutrientCount: number }>>> };
+export type SearchFoodsQuery = { __typename?: 'Query', searchFoods?: Maybe<Array<Maybe<{ __typename?: 'Food', description: string, id: number, dataSource: string, category?: Maybe<string>, brandName?: Maybe<string>, searchScore?: Maybe<number>, nutrientCount: number, foodNutrients: Array<{ __typename?: 'FoodNutrient', id: number, amount: number, nutrient: { __typename?: 'Nutrient', id: number, name: string, unit: string } }> }>>> };
 
 export type GetNutrientGroupsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -480,7 +481,7 @@ export type UpdateRecipeMutation = { __typename?: 'Mutation', updateRecipe?: May
 
 
 export const SearchFoodsDocument = gql`
-    query SearchFoods($searchTerm: String!) {
+    query SearchFoods($searchTerm: String!, $nutrientIds: [Int!]) {
   searchFoods(searchTerm: $searchTerm) {
     description
     id
@@ -489,6 +490,15 @@ export const SearchFoodsDocument = gql`
     brandName
     searchScore
     nutrientCount
+    foodNutrients(nutrientIds: $nutrientIds) {
+      id
+      amount
+      nutrient {
+        id
+        name
+        unit
+      }
+    }
   }
 }
     `;
@@ -506,6 +516,7 @@ export const SearchFoodsDocument = gql`
  * const { data, loading, error } = useSearchFoodsQuery({
  *   variables: {
  *      searchTerm: // value for 'searchTerm'
+ *      nutrientIds: // value for 'nutrientIds'
  *   },
  * });
  */

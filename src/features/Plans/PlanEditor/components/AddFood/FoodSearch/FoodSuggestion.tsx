@@ -1,6 +1,6 @@
-import React, { forwardRef } from "react";
-import { capitalize } from "lodash";
 import { Food } from "generated/graphql/hooks";
+import { capitalize } from "lodash";
+import React, { forwardRef } from "react";
 
 interface Props extends React.HTMLAttributes<HTMLElement> {
   selected: boolean;
@@ -53,9 +53,9 @@ const DebugSuggestion = ({ food }: { food: Food }) => {
   );
 };
 
-const FoodSuggestion = forwardRef<HTMLDivElement, Props>(({ food, debug, ...props }, ref) => {
+const FoodSuggestion = forwardRef<HTMLDivElement, Props>(({ food, debug, onClick, ...props }, ref) => {
   return (
-    <div {...props} ref={ref} className="py-4 cursor-pointer hover:bg-blue-200 px-4">
+    <div {...props} ref={ref} className="py-4 cursor-pointer hover:bg-blue-200 px-4" onClick={onClick}>
       {debug ? (
         <DebugSuggestion food={food} />
       ) : (

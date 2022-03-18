@@ -1,0 +1,20 @@
+query SearchFoods($searchTerm: String!, $nutrientIds: [Int!]) {
+  searchFoods(searchTerm: $searchTerm) {
+    description
+    id
+    dataSource
+    category
+    brandName
+    searchScore
+    nutrientCount
+    foodNutrients(nutrientIds: $nutrientIds) {
+      id
+      amount
+      nutrient {
+        id
+        name
+        unit
+      }
+    }
+  }
+}

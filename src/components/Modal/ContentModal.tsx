@@ -1,7 +1,8 @@
+import classNames from "classnames";
 import { Fragment, ReactNode } from "react";
+
 import { Dialog, Transition } from "@headlessui/react";
 import { XIcon } from "@heroicons/react/outline";
-import classNames from "classnames";
 
 interface ModalProps {
   open: boolean;
@@ -32,7 +33,7 @@ interface FooterProps {
 function ContentModal({ open, onClose, children }: ModalProps) {
   return (
     <Transition.Root show={open} as={Fragment}>
-      <Dialog as="div" className="fixed z-50 inset-0 overflow-y-auto" onClose={onClose}>
+      <Dialog as="div" className="fixed z-50 inset-0 " onClose={onClose}>
         <div className="min-h-screen text-center block">
           <Transition.Child
             as={Fragment}
@@ -59,8 +60,8 @@ function ContentModal({ open, onClose, children }: ModalProps) {
             leaveFrom="opacity-100 translate-y-0 scale-100"
             leaveTo="opacity-0 translate-y-0 scale-95"
           >
-            <div className="inline-block bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all align-middle max-w-4xl w-full ">
-              <div className="flex flex-col max-h-3/4 min-h-3/4">{children}</div>
+            <div className="inline-block bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all align-middle max-w-4xl w-full max-h-[95vh]">
+              <div className="flex flex-col ">{children}</div>
             </div>
           </Transition.Child>
         </div>
@@ -72,7 +73,7 @@ function ContentModal({ open, onClose, children }: ModalProps) {
 // TODO: Parent should automatically pass in `onClose`
 function Header({ children, className, onClose }: HeaderProps) {
   return (
-    <div className={classNames("p-4 flex justify-between text-left w-full border-b", className)}>
+    <div className={classNames("flex justify-between text-left w-full border-b", className)}>
       <Dialog.Title as="h3" className="text-xl leading-6 text-gray-900 ">
         {children}
       </Dialog.Title>
@@ -91,11 +92,11 @@ function Header({ children, className, onClose }: HeaderProps) {
 }
 
 function Content({ children, className }: ContentProps) {
-  return <div className={classNames("p-4 overflow-y-auto flex-grow", className)}>{children}</div>;
+  return <div className={classNames(" flex-grow min-h-[10vh]", className)}>{children}</div>;
 }
 
 function Footer({ children, className }: FooterProps) {
-  return <div className={classNames("p-4 gap-4 flex flex-row-reverse border-t", className)}>{children}</div>;
+  return <div className={classNames("gap-4 flex flex-row-reverse border-t", className)}>{children}</div>;
 }
 
 ContentModal.Header = Header;
